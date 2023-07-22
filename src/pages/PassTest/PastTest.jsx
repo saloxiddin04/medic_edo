@@ -14,7 +14,7 @@ import {
 import {setItem, getItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const PastTest = () => {
-  const {testList, exactTest, answer, loading} = useSelector(({pastTest}) => pastTest);
+  const {testList, exactTest, answer, loading, question} = useSelector(({pastTest}) => pastTest);
   const {testID, exactTestID} = useSelector((state) => state.localStorage);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -32,7 +32,11 @@ const PastTest = () => {
   const changeTest = (id, test_id, idx) => {
     dispatch(getExactTest({id, test_id}))
     dispatch(setItem(id))
-    // dispatch(setExactTestID(test_id))
+    setSelectedAnswerAnswer({
+      test_question: "",
+      key: "",
+      id: null
+    })
     setCountIndex(idx)
     setTestId(test_id + 1)
     setId(id + 1)
@@ -53,22 +57,34 @@ const PastTest = () => {
   }
 
   const submitOnClick = () => {
-    setCountIndex(prevState => testList?.count > prevState ? prevState + 1 : prevState)
-    dispatch(
-      submitTheAnswer({
-        id: selectedAnswer.id,
-        answer: selectedAnswer.key,
-        test_question_id: selectedAnswer.test_question,
-        start_test_id: testList.id,
-      })
-    );
-    testList.count > countIndex && dispatch(getExactTest({id: testList?.id, test_id: testList?.test_ids[countIndex + 1]?.test_id}))
+    if (!question.is_tutor) {
+      setCountIndex(prevState => testList?.count > prevState ? prevState + 1 : prevState)
+      dispatch(
+        submitTheAnswer({
+          id: selectedAnswer.id,
+          answer: selectedAnswer.key,
+          test_question_id: selectedAnswer.test_question,
+          start_test_id: testList.id,
+        })
+      );
+      testList.count > countIndex && dispatch(getExactTest({id: testList?.id, test_id: testList?.test_ids[countIndex + 1]?.test_id}))
+    } else {
+      dispatch(
+        submitTheAnswer({
+          id: selectedAnswer.id,
+          answer: selectedAnswer.key,
+          test_question_id: selectedAnswer.test_question,
+          start_test_id: testList.id,
+        })
+      );
+    }
   };
 
   useEffect(() => {
     dispatch(getItem({key: 'testID'}))
     dispatch(getItem({key: 'exactTestID'}))
-  }, [dispatch])
+    dispatch(getExactTest({id: testID, test_id: exactTestID}))
+  }, [])
 
   useEffect(() => {
     dispatch(getItem({key: 'testID'}))
@@ -108,7 +124,7 @@ const PastTest = () => {
       <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
           dangerouslySetInnerHTML={{
-            __html: exactTest.isFilled ? exactTest.question : "",
+            __html: exactTest.isFilled ? question.question : "",
           }}
         />
         {testList?.isFilled && testList?.test_ids[0]?.test?.image2 && (
@@ -121,18 +137,24 @@ const PastTest = () => {
 
         <div className="border-primary border-2 mt-10 px-5">
           {exactTest.isFilled &&
-            exactTest?.options?.map((option, idx) => (
+            question?.options?.map((option, idx) => (
               <label
-                className={option?.test_question === testID && option?.key === answer?.answer?.correct_answer_key ? 'text-green-500 flex items-center gap-2 cursor-pointer my-5' : "flex items-center gap-2 cursor-pointer my-5"}
+                className={`flex items-center gap-2 cursor-pointer my-5 ${
+                  selectedAnswer?.key === option.key ?
+                  selectedAnswer?.key === answer?.answer?.correct_answer_key
+                    ? 'text-green-500'
+                    : `text-${answer?.color}`
+                    : `${option.key === answer?.answer?.correct_answer_key && 'text-green-500'}`
+                }`}
                 htmlFor={option.key}
                 key={idx}
               >
-                {console.log(option)}
                 <input
                   type="radio"
                   name="keys"
                   id={option.key}
                   value={option.key}
+                  checked={selectedAnswer?.key === option?.key}
                   onChange={() => currentAnswer(option)}
                 />
                 <span className="uppercase">{option.key}</span>
@@ -140,7 +162,8 @@ const PastTest = () => {
                     {option.answer}
                   </span>
               </label>
-            ))}
+            ))
+          }
         </div>
         <button
           className="btn-primary mt-10 inline-block"

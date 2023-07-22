@@ -66,27 +66,17 @@ const pastTestSlice = createSlice({
   initialState: {
     loading: false,
     answer: null,
+    question: null,
     error: null,
-    testID: localStorage.getItem("testID") || null,
-    exactTestID: localStorage.getItem("exactTestID") || null,
     testList: {
       isFilled: false,
     },
     exactTest: {
-      isFilled: false,
+      isFilled: false
     },
   },
 
-  reducers: {
-    setTestIdRedux: (state, {payload}) => {
-      state.testID = payload
-      localStorage.setItem("testID", JSON.stringify(payload))
-    },
-    setExactTestID: (state, {payload}) => {
-      state.testID = payload
-      localStorage.setItem("exactTestID", JSON.stringify(payload))
-    }
-  },
+  reducers: {},
 
   extraReducers: (builder) => {
     // get test
@@ -110,10 +100,8 @@ const pastTestSlice = createSlice({
     });
     builder.addCase(getExactTest.fulfilled, (state, { payload }) => {
       state.loading = false
-      state.exactTest = payload;
       state.exactTest.isFilled = true;
-      state.exactTestID = JSON.parse(localStorage.getItem('exactTestID'))
-      state.testID = JSON.parse(localStorage.getItem('testID'))
+      state.question = payload;
     });
     builder.addCase(getExactTest.rejected, (state) => {
       state.loading = false

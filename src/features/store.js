@@ -3,7 +3,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import moduleSlice from "./modules/moduleSlice";
 import pastTestSlice from "./pastTest/pastTestSlice";
 import localStorageSlice from "./LocalStorageSlice/LocalStorageSlice";
-import localStorageMiddleware from "./LocalStorageMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +10,8 @@ export const store = configureStore({
     pastTest: pastTestSlice,
     localStorage: localStorageSlice
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(localStorageMiddleware),
   devTools: true,
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(localStorageMiddleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({serializableCheck: false})
 });
