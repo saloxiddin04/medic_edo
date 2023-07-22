@@ -1,0 +1,128 @@
+.btn-primary {
+  @apply rounded-md bg-primary px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-primary active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-secondary {
+  @apply rounded-md bg-secondary px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-secondary active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-success {
+  @apply rounded-md bg-success px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-success active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-danger {
+  @apply rounded-md bg-danger px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-danger active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-warning {
+  @apply rounded-md bg-warning px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-warning active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-info {
+  @apply rounded-md bg-info px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-info active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-dark {
+  @apply rounded-md bg-dark px-8 py-2 text-white duration-100 hover:shadow-buttonShadow hover:shadow-dark active:shadow-none disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+// outline buttons
+.btn-outline-primary {
+  @apply rounded-md px-8 py-2 text-primary border border-primary duration-100 active:opacity-80 hover:bg-primary/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-secondary {
+  @apply rounded-md px-8 py-2 text-secondary border border-secondary duration-100 active:opacity-80 hover:bg-secondary/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-success {
+  @apply rounded-md px-8 py-2 text-success border border-success duration-100 active:opacity-80 hover:bg-success/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-danger {
+  @apply rounded-md px-8 py-2 text-danger border border-danger duration-100 active:opacity-80 hover:bg-danger/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-warning {
+  @apply rounded-md px-8 py-2 text-warning border border-warning duration-100 active:opacity-80 hover:bg-warning/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-info {
+  @apply rounded-md px-8 py-2 text-info border border-info duration-100 active:opacity-80 hover:bg-info/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-outline-dark {
+  @apply rounded-md px-8 py-2 text-dark border border-dark duration-100 active:opacity-80 hover:bg-dark/10 disabled:bg-secondary disabled:hover:shadow-none disabled:opacity-70;
+}
+
+.btn-small {
+  @apply px-5;
+}
+
+.btn-sm {
+  @apply p-2
+}
+
+.btn-xs {
+  @apply p-1
+}
+
+// forms
+.form-input {
+  @apply mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary;
+}
+
+.form-file-input {
+  @apply block w-full mt-1 p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+}
+
+input.form-file-input::file-selector-button {
+  // display: none;
+  background: none;
+  border: none;
+  border-right: 1px solid gray;
+  color: #000;
+  padding-right: 10px;
+  margin-right: 10px;
+}
+
+.dark input.form-file-input::file-selector-button {
+  color: #fff;
+}
+
+
+// card
+.card {
+  @apply bg-white shadow rounded px-5 py-3
+}
+
+
+.active {
+  @apply bg-primary/10 text-primary
+}
+
+.user-block {
+  position: relative;
+}
+
+.tooltip {
+  display: none;
+  padding-top: 20px;
+  border-radius: 5px;
+  width: 150px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+
+.user-block:hover .tooltip{
+  display: block;
+}
+
+#react-select-2-placeholder {
+  color: #000;
+}
+
+iframe {
+  display: none;
+}
