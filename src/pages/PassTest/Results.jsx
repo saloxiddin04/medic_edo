@@ -4,12 +4,30 @@ import { ROUTES } from "../../Routes/constants";
 import { AiOutlineHome } from "react-icons/ai";
 import ProgressBar from "../../components/ProgressBar";
 import { Bar, BarChart, Cell, Pie, PieChart, Tooltip } from "recharts";
-import { GiPlainCircle } from "react-icons/gi";
+import { GiPlainCircle, GiCancel } from "react-icons/gi";
+import { FcBookmark } from "react-icons/fc";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTestResults } from "../../features/testResults/testResultsSlice";
 
 const Results = () => {
+  const { testResults } = useSelector(({ testResults }) => testResults);
+  const dispatch = useDispatch();
+
   const data = [
-    { name: "Correct", value: 8 },
-    { name: "Incorrect", value: 4 },
+    { name: "Correct", value: testResults.correct_answer_interest },
+    { name: "Incorrect", value: testResults.worning_interest },
+  ];
+
+  const comparison = [
+    {
+      name: "Your accuracy",
+      value: testResults.your_accuracy,
+    },
+    {
+      name: "Peer accuracy",
+      value: testResults.peers_accuracy,
+    },
   ];
 
   const COLORS = ["#1d89e4", "#ffcf00"];
@@ -42,6 +60,12 @@ const Results = () => {
     );
   };
 
+  useEffect(() => {
+    const id = JSON.parse(localStorage.getItem("testID"));
+    console.log(id);
+    dispatch(getTestResults(id));
+  }, [dispatch]);
+
   return (
     <div className="bg-[#f5f5f5] pb-10">
       <nav className="bg-white shadow-md flex items-center px-5 py-4">
@@ -53,24 +77,16 @@ const Results = () => {
       </nav>
 
       <section className="card w-8/12 mt-10 mx-auto">
-        <div className="flex items-center justify-end gap-3">
-          <span>Include omitted questions:</span>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" className="sr-only peer" />
-            <div
-              className="w-11 h-6 bg-gray-200 peer-focus:outline-none 
-          rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
-            ></div>
-          </label>
-        </div>
-
         <div className="mt-10">
           <h1 className="text-xl font-semibold text-gray-600">
-            Date: 01.06.2023 09:36 PM
+            Date: {testResults.end_date}
           </h1>
-          <h1 className=" text-gray-500">ID: 01589</h1>
+          <h1 className=" text-gray-500">ID: {testResults.id}</h1>
           <h1 className="text-lg font-medium text-gray-600">
-            5/40 answered, 4 correct
+            {testResults.correct_answer_count +
+              testResults.worning_answer_count}
+            /{testResults.test_count} answered,{" "}
+            {testResults.correct_answer_count} correct
           </h1>
           <ProgressBar />
         </div>
@@ -103,20 +119,28 @@ const Results = () => {
                 <ul>
                   <li className="flex items-center gap-3 ">
                     <GiPlainCircle className="mt-1 text-primary" size="20" />
-                    <span> Correct: 67%</span>
+                    <span>
+                      {" "}
+                      Correct: {testResults.correct_answer_interest}% (
+                      {testResults.correct_answer_count})
+                    </span>
                   </li>
                   <li className="flex items-center gap-3 mt-2">
                     <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                    <span> Incorrect: 33% </span>
+                    <span>
+                      {" "}
+                      Incorrect: {testResults.worning_interest}% (
+                      {testResults.correct_answer_count})
+                    </span>
                   </li>
                 </ul>
               </div>
             </div>
 
             <div className="flex items-center gap-10 w-1/2">
-              <BarChart width={150} height={180} data={data}>
+              <BarChart width={150} height={180} data={comparison}>
                 <Bar dataKey="value">
-                  {data.map((entry, index) => (
+                  {comparison.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS2[index % COLORS.length]}
@@ -130,11 +154,11 @@ const Results = () => {
                 <ul>
                   <li className="flex items-center gap-3 ">
                     <GiPlainCircle className="mt-1 text-primary" size="20" />
-                    <span>Your accuracy: 20%</span>
+                    <span>Your accuracy: {testResults.your_accuracy}</span>
                   </li>
                   <li className="flex items-center gap-3 mt-2">
                     <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                    <span>Peers accuracy: 50%</span>
+                    <span>Peers accuracy: {testResults.peers_accuracy}</span>
                   </li>
                 </ul>
               </div>
@@ -151,38 +175,58 @@ const Results = () => {
                   scope="col"
                   className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  ID
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
                   Name
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Unique Name
+                  Answered
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Completion
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Answered
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Accuracy
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {[{ id: 1, name: "Name", unique_name: "name_2" }].map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    {item.id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    {item.name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {item.unique_name}
-                  </td>
-                </tr>
-              ))}
+              {testResults.isFilled &&
+                testResults.test_results.map((item, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item.modul_name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item.answer}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {item.conpletion}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {item.correct}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {item.accuracy}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
+          {!testResults.isFilled && <p className="text-center mt-5">No data</p>}
         </div>
         <div className="mt-20">
           <table className="min-w-full divide-y divide-gray-200">
@@ -192,19 +236,25 @@ const Results = () => {
                   scope="col"
                   className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
+                  Result
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Marked
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   ID
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Name
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Unique Name
+                  Subjects
                 </th>
                 <th
                   scope="col"
@@ -215,32 +265,34 @@ const Results = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {[
-                { id: 122, name: "Name", unique_name: "name_2" },
-                { id: 125, name: "Name", unique_name: "name_2" },
-              ].map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    {item.id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    {item.name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {item.unique_name}
-                  </td>
-                  <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                    <Link
-                      className="btn-outline-primary btn-sm inline-block"
-                      to={`/test`}
-                    >
-                      <span>EXPLANATION</span>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+              {testResults.isFilled &&
+                testResults.worning_answers.map((item, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap flex items-center justify-center">
+                      <GiCancel className="text-danger" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item.mark && <FcBookmark />}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {item.id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {item.modul_name}
+                    </td>
+                    <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                      <Link
+                        className="btn-outline-primary btn-sm inline-block"
+                        to={`/test`}
+                      >
+                        <span>EXPLANATION</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
+          {!testResults.isFilled && <p className="text-center my-5">No data</p>}
         </div>
       </section>
     </div>

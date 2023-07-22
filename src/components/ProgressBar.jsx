@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/progressbar.css";
+import { useSelector } from "react-redux";
 
 const MultiColorProgressBar = ({ readings }) => {
   let values =
@@ -77,20 +78,26 @@ const MultiColorProgressBar = ({ readings }) => {
   );
 };
 
-const readings = [
-  {
-    name: "Correct",
-    value: 90,
-    color: "#1d89e4",
-  },
-  {
-    name: "Incorrect",
-    value: 10,
-    color: "#ffcf00",
-  },
-];
-
 const App = () => {
+  const { testResults } = useSelector(({ testResults }) => testResults);
+
+  const readings = [
+    {
+      name: "Correct",
+      value: 10,
+      color: "#1d89e4",
+    },
+    {
+      name: "Incorrect",
+      value: 20,
+      color: "#ffcf00",
+    },
+    {
+      name: "Incorrect",
+      value: 70,
+      color: "#666666",
+    },
+  ];
   return <MultiColorProgressBar readings={readings} />;
 };
 
