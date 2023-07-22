@@ -111,11 +111,13 @@ const PastTest = () => {
             __html: exactTest.isFilled ? exactTest.question : "",
           }}
         />
-        <img
-          src={testList?.isFilled && testList?.test_ids[0]?.test?.image2}
-          className='w-full h-[50vh] object-cover'
-          alt=""
-        />
+        {testList?.isFilled && testList?.test_ids[0]?.test?.image2 && (
+          <img
+            src={testList?.isFilled && testList?.test_ids[0]?.test?.image2}
+            className='w-full h-[50vh] object-cover'
+            alt=""
+          />
+        )}
 
         <div className="border-primary border-2 mt-10 px-5">
           {exactTest.isFilled &&
