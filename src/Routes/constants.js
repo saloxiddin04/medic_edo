@@ -9,5 +9,6 @@ export const ROUTES = {
   CUSTOMTEST: "/create-custom-test",
   TEST: "/test",
   RESULTS: "/test-results",
+  EXPLANATION: "/explanation/:id",
   NOTFOUND: "*",
 };

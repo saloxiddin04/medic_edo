@@ -193,7 +193,7 @@ const Results = () => {
                   scope="col"
                   className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Answered
+                  Correct
                 </th>
                 <th
                   scope="col"
@@ -283,7 +283,7 @@ const Results = () => {
                     <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       <Link
                         className="btn-outline-primary btn-sm inline-block"
-                        to={`/test`}
+                        to={`${ROUTES.EXPLANATION}/${item.id}`}
                       >
                         <span>EXPLANATION</span>
                       </Link>

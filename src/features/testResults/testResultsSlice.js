@@ -17,15 +17,34 @@ export const getTestResults = createAsyncThunk(
   }
 );
 
+export const getExplanation = createAsyncThunk(
+  "testResults/getExplanation",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get(`test/test_result/get_detail_test/`, {
+        params,
+      });
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 const testResultsSlice = createSlice({
   name: "testResults",
   initialState: {
     testResults: {
       isFilled: false,
     },
+    explanation: {
+      isFilled: false,
+    },
   },
 
   extraReducers: (builder) => {
+    // Test results
     builder.addCase(getTestResults.pending, (state) => {
       state.testResults.isFilled = false;
     });
@@ -37,6 +56,20 @@ const testResultsSlice = createSlice({
 
     builder.addCase(getTestResults.rejected, (state) => {
       state.testResults.isFilled = false;
+    });
+
+    // Explanation
+    builder.addCase(getExplanation.pending, (state) => {
+      state.explanation.isFilled = false;
+    });
+
+    builder.addCase(getExplanation.fulfilled, (state, { payload }) => {
+      state.explanation = payload;
+      state.explanation.isFilled = true;
+    });
+
+    builder.addCase(getExplanation.rejected, (state) => {
+      state.explanation.isFilled = false;
     });
   },
 });
