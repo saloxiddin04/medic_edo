@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import PastTest from "./pages/PassTest/PastTest";
 import { getUserData } from "./auth/jwtService.js";
 import Results from "./pages/PassTest/Results.jsx";
+import Explanation from "./pages/Explanations/Explanation.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -63,6 +64,7 @@ const App = () => {
           <Route path={ROUTES.SINGUP} element={<SignUp />} />
           <Route path={ROUTES.TEST} element={<PastTest />} />
           <Route path={ROUTES.RESULTS} element={<Results />} />
+          <Route path={ROUTES.EXPLANATION} element={<Explanation />} />
         </Routes>
       )}
 
