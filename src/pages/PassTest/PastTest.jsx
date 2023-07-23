@@ -30,8 +30,9 @@ const PastTest = () => {
   const [testId, setTestId] = useState(null)
 
   const changeTest = (id, test_id, idx) => {
+    dispatch(setItem({key: 'exactTestID', value: test_id}))
     dispatch(getExactTest({id, test_id}))
-    dispatch(setItem(id))
+    console.log(test_id)
     setSelectedAnswerAnswer({
       test_question: "",
       key: "",
@@ -95,7 +96,7 @@ const PastTest = () => {
         {testList &&
           testList?.test_ids?.map((test, index) => (
             <li
-              onClick={() => changeTest(testList.id, test.test_id, index)}
+              onClick={() => changeTest(testList.id, test.test_question.id, index)}
               key={index}
               className={`${index % 2 === 0 && "bg-gray-300"} 
                 h-10 flex items-center justify-center cursor-pointer`}
@@ -115,15 +116,18 @@ const PastTest = () => {
 
       <Header index={countIndex}/>
 
+      {console.log(testList)}
+      {console.log(exactTest)}
+
       <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
           dangerouslySetInnerHTML={{
-            __html: exactTest.isFilled ? question.question : "",
+            __html: exactTest.isFilled && testList?.test_ids[countIndex]?.test_question?.question,
           }}
         />
-        {testList?.isFilled && testList?.test_ids[0]?.test?.image2 && (
+        {exactTest.isFilled && testList?.test_ids[countIndex]?.test_question?.test_image && (
           <img
-            src={testList?.isFilled && testList?.test_ids[0]?.test?.image2}
+            src={testList && testList?.test_ids[countIndex]?.test_question?.test_image}
             className='w-full h-[50vh] object-cover'
             alt=""
           />
@@ -131,7 +135,7 @@ const PastTest = () => {
 
         <div className="border-primary border-2 mt-10 px-5">
           {exactTest.isFilled &&
-            question?.options?.map((option, idx) => (
+            question?.test_question?.options?.map((option, idx) => (
               <label
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
                   selectedAnswer?.key === option.key ?
@@ -159,11 +163,28 @@ const PastTest = () => {
             ))
           }
         </div>
+        <div>
+          {selectedAnswer?.key !== answer?.answer?.correct_answer_key && (
+            <div>
+              {answer?.answer?.image && (
+                <img src={answer?.answer?.image} alt={answer?.answer?.image_name}/>
+              )}
+              <div className=''>
+                <div>{answer?.answer?.correct_answer_key}</div>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: answer ? answer?.answer?.correct_answer : "",
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
         >
-          Sumit the Answer
+          Submit the Answer
         </button>
       </div>
 
