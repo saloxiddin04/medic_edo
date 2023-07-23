@@ -34,7 +34,8 @@ const App = () => {
       pathname === "/sign-up" ||
       pathname === "/sign-in" ||
       pathname === "/test" ||
-      pathname === "/test-results"
+      pathname === "/test-results" ||
+      pathname.includes("explanation")
     ) {
       return false;
     } else {
