@@ -1,7 +1,6 @@
 import React from "react";
 
 import Footer from "../PassTest/Footer";
-import Header from "../PassTest/Header";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getExplanation } from "../../features/testResults/testResultsSlice";
@@ -18,7 +17,7 @@ const Explanation = () => {
 
   useEffect(() => {
     const testID = JSON.parse(localStorage.getItem("testID"));
-    dispatch(getExplanation({ id: 252, test_id: id }));
+    dispatch(getExplanation({ id: testID, test_id: id }));
   }, [dispatch, id]);
 
   return (
