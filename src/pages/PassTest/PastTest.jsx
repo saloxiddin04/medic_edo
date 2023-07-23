@@ -83,13 +83,7 @@ const PastTest = () => {
   useEffect(() => {
     dispatch(getItem({key: 'testID'}))
     dispatch(getItem({key: 'exactTestID'}))
-    dispatch(getExactTest({id: testID, test_id: exactTestID}))
-  }, [])
-
-  useEffect(() => {
-    dispatch(getItem({key: 'testID'}))
-    dispatch(getItem({key: 'exactTestID'}))
-    testID && dispatch(getTestsById(testID));
+    dispatch(getTestsById(testID));
     dispatch(getExactTest({id: testID, test_id: exactTestID}))
   }, [dispatch]);
 
