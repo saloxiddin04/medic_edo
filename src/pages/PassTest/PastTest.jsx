@@ -69,7 +69,12 @@ const PastTest = () => {
           start_test_id: testList.id,
         })
       );
-      testList.count > countIndex && dispatch(getExactTest({id: testList?.id, test_id: testList?.test_ids[countIndex + 1]?.test_id}))
+      testList.count > countIndex && dispatch(getExactTest(
+        {
+          id: testList?.id, test_id:
+          testList?.test_ids[countIndex + 1]?.test_question?.id
+        }
+      ))
     } else {
       dispatch(
         submitTheAnswer({
@@ -116,7 +121,7 @@ const PastTest = () => {
           ))}
       </ul>
 
-      <Header index={countIndex}/>
+      <Header index={countIndex} setIndex={setCountIndex}/>
 
       <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
@@ -137,6 +142,7 @@ const PastTest = () => {
             question?.test_question?.options?.map((option, idx) => (
               <label
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
+                  question?.is_tutor &&
                   selectedAnswer?.key === option.key ?
                   selectedAnswer?.key === answer?.answer?.correct_answer_key
                     ? 'text-green-500'
@@ -162,23 +168,25 @@ const PastTest = () => {
             ))
           }
         </div>
-        <div>
-          {selectedAnswer?.key !== answer?.answer?.correct_answer_key && (
-            <div className='mt-3'>
-              {answer?.answer?.image && (
-                <img src={answer?.answer?.image} alt={answer?.answer?.image_name}/>
-              )}
-              <div className='flex gap-3'>
-                <div>{answer?.answer?.correct_answer_key}</div>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: answer ? answer?.answer?.correct_answer : "",
-                  }}
-                />
+        {question?.is_tutor && (
+          <div>
+            {selectedAnswer?.key !== answer?.answer?.correct_answer_key && (
+              <div className='mt-3'>
+                {answer?.answer?.image && (
+                  <img src={answer?.answer?.image} alt={answer?.answer?.image_name}/>
+                )}
+                <div className='flex gap-3'>
+                  <div>{answer?.answer?.correct_answer_key}</div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: answer ? answer?.answer?.correct_answer : "",
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
