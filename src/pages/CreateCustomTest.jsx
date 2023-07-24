@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {json, useNavigate} from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { useDispatch, useSelector } from "react-redux";
 import {startTest} from "../features/pastTest/pastTestSlice";
@@ -32,7 +32,20 @@ const CreateCustomTest = () => {
     });
   };
 
+  const getCookieItem = (name) => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1, cookie.length);
+      }
+    }
+    return null;
+  };
+
   const pastTest = () => {
+    const cookieItemValue = getCookieItem('user');
+    const jsonParseCookie = cookieItemValue !== null ? JSON.parse(cookieItemValue) : ''
     const selectedModules = Object.keys(checkedItems).filter(
       (key) => checkedItems[key]
     );
@@ -43,6 +56,7 @@ const CreateCustomTest = () => {
           modul_ids: selectedModules,
           timer: isTimer,
           tutor: isTutor,
+          user: jsonParseCookie.id
         })
       ).then((res) => {
         dispatch(setItem({key: 'testID', value: res.payload.id}))
