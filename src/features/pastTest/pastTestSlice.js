@@ -76,7 +76,11 @@ const pastTestSlice = createSlice({
     },
   },
 
-  reducers: {},
+  reducers: {
+    clearAnswer: (state) => {
+      state.answer = null
+    }
+  },
 
   extraReducers: (builder) => {
     // get test
@@ -123,4 +127,5 @@ const pastTestSlice = createSlice({
     })
   },
 });
+export const {clearAnswer} = pastTestSlice.actions
 export default pastTestSlice.reducer;

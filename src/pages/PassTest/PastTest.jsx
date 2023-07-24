@@ -7,6 +7,7 @@ import Header from "./Header";
 import {useNavigate} from "react-router-dom";
 
 import {
+  clearAnswer,
   getExactTest,
   getTestsById,
   submitTheAnswer,
@@ -32,7 +33,7 @@ const PastTest = () => {
   const changeTest = (id, test_id, idx) => {
     dispatch(setItem({key: 'exactTestID', value: test_id}))
     dispatch(getExactTest({id, test_id}))
-    console.log(test_id)
+    dispatch(clearAnswer())
     setSelectedAnswerAnswer({
       test_question: "",
       key: "",
@@ -78,6 +79,7 @@ const PastTest = () => {
           start_test_id: testList.id,
         })
       );
+      dispatch(getExactTest({id: testID, test_id: exactTestID}))
     }
   };
 
@@ -116,18 +118,15 @@ const PastTest = () => {
 
       <Header index={countIndex}/>
 
-      {console.log(testList)}
-      {console.log(exactTest)}
-
       <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
           dangerouslySetInnerHTML={{
-            __html: exactTest.isFilled && testList?.test_ids[countIndex]?.test_question?.question,
+            __html: exactTest.isFilled && question?.test_question?.question,
           }}
         />
-        {exactTest.isFilled && testList?.test_ids[countIndex]?.test_question?.test_image && (
+        {exactTest.isFilled && question?.test_question?.test_image && (
           <img
-            src={testList && testList?.test_ids[countIndex]?.test_question?.test_image}
+            src={testList && question?.test_question?.test_image}
             className='w-full h-[50vh] object-cover'
             alt=""
           />
@@ -165,11 +164,11 @@ const PastTest = () => {
         </div>
         <div>
           {selectedAnswer?.key !== answer?.answer?.correct_answer_key && (
-            <div>
+            <div className='mt-3'>
               {answer?.answer?.image && (
                 <img src={answer?.answer?.image} alt={answer?.answer?.image_name}/>
               )}
-              <div className=''>
+              <div className='flex gap-3'>
                 <div>{answer?.answer?.correct_answer_key}</div>
                 <div
                   dangerouslySetInnerHTML={{
@@ -183,6 +182,7 @@ const PastTest = () => {
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
+          disabled={selectedAnswer?.key === '' ? true : false}
         >
           Submit the Answer
         </button>
