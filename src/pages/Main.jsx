@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // charts
 import {
@@ -23,14 +23,28 @@ import { GiPlainCircle } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserStatisticsForAdmin } from "../features/testResults/testResultsSlice";
 
 const Main = () => {
-  const data = [
-    { name: "Correct", value: 8 },
-    { name: "Incorrect", value: 4 },
+  const COLORS = ["#1d89e4", "#ffcf00"];
+  const COLORS2 = ["#1d89e4", "#ffcf00"];
+
+  const dispatch = useDispatch();
+  const { userStatisticsForAdmin } = useSelector(
+    ({ testResults }) => testResults
+  );
+
+  useEffect(() => {
+    dispatch(getUserStatisticsForAdmin({ id: getUserData().id }));
+  }, [dispatch]);
+
+  const adminData = [
+    { name: "Correct", value: userStatisticsForAdmin?.correct_answer_interest },
+    { name: "Incorrect", value: userStatisticsForAdmin?.worning_interest },
   ];
 
-  const newData = [
+  const adminData2 = [
     {
       name: "Page A",
       pv: 2400,
@@ -45,8 +59,21 @@ const Main = () => {
     },
   ];
 
-  const COLORS = ["#1d89e4", "#ffcf00"];
-  const COLORS2 = ["#1d89e4", "#ffcf00"];
+  const studentData = [
+    { name: "Correct", value: userStatisticsForAdmin?.correct_answer_interest },
+    {
+      name: "Incorrect",
+      value: userStatisticsForAdmin?.worning_interest,
+    },
+  ];
+
+  const studentData2 = [
+    { name: "Correct", value: userStatisticsForAdmin?.your_accuracy },
+    {
+      name: "Incorrect",
+      value: userStatisticsForAdmin?.peers_accuracy,
+    },
+  ];
 
   return (
     <section>
@@ -92,9 +119,10 @@ const Main = () => {
             <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
             <div className="flex item-center gap-8">
               <div className="flex items-center gap-10 w-1/2">
+                {console.log(userStatisticsForAdmin)}
                 <PieChart width={180} height={200}>
                   <Pie
-                    data={data}
+                    data={adminData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
@@ -102,7 +130,7 @@ const Main = () => {
                     fill="#8884d8"
                     dataKey="value"
                   >
-                    {data.map((entry, index) => (
+                    {adminData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -114,13 +142,13 @@ const Main = () => {
                 <div>
                   <h2 className="text-lg mb-5">Your accuracy:</h2>
                   <ul>
-                    <li className="flex items-center gap-3 ">
+                    <li className="flex items-center gap-3">
                       <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span> Correct: 67%</span>
+                      <span> Correct: {adminData[0]?.value}%</span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span> Incorrect: 33% </span>
+                      <span> Incorrect: {adminData[1]?.value}% </span>
                     </li>
                   </ul>
                 </div>
@@ -130,7 +158,7 @@ const Main = () => {
                 <BarChart
                   width={300}
                   height={300}
-                  data={newData}
+                  data={adminData2}
                   margin={{
                     top: 5,
                     right: 30,
@@ -177,7 +205,7 @@ const Main = () => {
               <div className="flex items-center gap-10 w-1/2">
                 <PieChart width={180} height={200}>
                   <Pie
-                    data={data}
+                    data={studentData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
@@ -185,7 +213,7 @@ const Main = () => {
                     fill="#8884d8"
                     dataKey="value"
                   >
-                    {data.map((entry, index) => (
+                    {studentData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -199,20 +227,20 @@ const Main = () => {
                   <ul>
                     <li className="flex items-center gap-3 ">
                       <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span> Correct: 67%</span>
+                      <span> Correct: {studentData[0].value}%</span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span> Incorrect: 33% </span>
+                      <span> Incorrect: {studentData[0].value}%</span>
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="flex items-center gap-10 w-1/2">
-                <BarChart width={150} height={180} data={data}>
+                <BarChart width={150} height={180} data={studentData2}>
                   <Bar dataKey="value">
-                    {data.map((entry, index) => (
+                    {studentData2.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS2[index % COLORS.length]}
@@ -226,11 +254,11 @@ const Main = () => {
                   <ul>
                     <li className="flex items-center gap-3 ">
                       <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span>Your accuracy: 20%</span>
+                      <span>Your accuracy: {studentData2[0].value}%</span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span>Peers accuracy: 50%</span>
+                      <span>Peers accuracy: {studentData2[0].value}%</span>
                     </li>
                   </ul>
                 </div>

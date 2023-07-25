@@ -32,6 +32,21 @@ export const getExplanation = createAsyncThunk(
   }
 );
 
+export const getUserStatisticsForAdmin = createAsyncThunk(
+  "pastTest/getUserStatisticsForAdmin",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        `/test/test_result/${payload.id}/result_user_statistic/`
+      );
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 const testResultsSlice = createSlice({
   name: "testResults",
   initialState: {
@@ -39,6 +54,9 @@ const testResultsSlice = createSlice({
       isFilled: false,
     },
     explanation: {
+      isFilled: false,
+    },
+    userStatisticsForAdmin: {
       isFilled: false,
     },
   },
@@ -70,6 +88,23 @@ const testResultsSlice = createSlice({
 
     builder.addCase(getExplanation.rejected, (state) => {
       state.explanation.isFilled = false;
+    });
+
+    // User statistics for admin
+    builder.addCase(getUserStatisticsForAdmin.pending, (state) => {
+      state.userStatisticsForAdmin.isFilled = false;
+    });
+
+    builder.addCase(
+      getUserStatisticsForAdmin.fulfilled,
+      (state, { payload }) => {
+        state.userStatisticsForAdmin = payload;
+        state.userStatisticsForAdmin.isFilled = true;
+      }
+    );
+
+    builder.addCase(getUserStatisticsForAdmin.rejected, (state) => {
+      state.userStatisticsForAdmin.isFilled = false;
     });
   },
 });
