@@ -1,7 +1,8 @@
 import React from "react";
 import { FcBookmark } from "react-icons/fc";
 import {useSelector, useDispatch} from "react-redux";
-import {getExactTest} from "../../features/pastTest/pastTestSlice";
+import {getExactTest, submitMarked} from "../../features/pastTest/pastTestSlice";
+import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const Header = ({index, setIndex}) => {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ const Header = ({index, setIndex}) => {
           id: testList?.id,
           test_id: testList?.test_ids[index + 1]?.test_question?.id,
         }));
+        dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index + 1]?.test_question?.id}))
       }
     } else {
       setIndex((prev) => prev > 0 ? prev - 1 : 0);
@@ -23,9 +25,18 @@ const Header = ({index, setIndex}) => {
           id: testList?.id,
           test_id: testList?.test_ids[index - 1]?.test_question?.id,
         }));
+        dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index - 1]?.test_question?.id}))
       }
     }
   };
+
+  const submitMark = () => {
+    dispatch(submitMarked({id: testList?.test_ids[index]?.id, mark: true}))
+    dispatch(getExactTest({
+      id: testList?.id,
+      test_id: testList?.test_ids[index]?.test_question?.id,
+    }));
+  }
 
   return (
     <nav className="fixed top-0 right-0 w-[94vw] z-10 bg-primary px-4 py-2">
@@ -35,7 +46,10 @@ const Header = ({index, setIndex}) => {
             Question {index + 1} of {testList?.count}
             <span className="block font-medium">ID: 1844</span>
           </h1>
-          <div className="cursor-pointer">
+          <div
+            className="cursor-pointer"
+            onClick={submitMark}
+          >
             <FcBookmark className="text-white ml-1" size="22" />
             <p className="text-sm text-white">Mark</p>
           </div>

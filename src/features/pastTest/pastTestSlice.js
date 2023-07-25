@@ -61,6 +61,22 @@ export const submitTheAnswer = createAsyncThunk(
   }
 );
 
+export const submitMarked = createAsyncThunk(
+  'pastTest/marked',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(
+        `/test/test_result/${payload?.id}/mark_check/`,
+        payload
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 const pastTestSlice = createSlice({
   name: "pastTest",
   initialState: {
