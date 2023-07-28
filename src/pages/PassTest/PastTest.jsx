@@ -5,7 +5,6 @@ import {FaCircle} from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
 import {useNavigate} from "react-router-dom";
-
 import {
   clearAnswer,
   getExactTest,
@@ -16,7 +15,7 @@ import {setItem, getItem} from "../../features/LocalStorageSlice/LocalStorageSli
 
 const PastTest = () => {
   const {testList, exactTest, answer, loading, question} = useSelector(({pastTest}) => pastTest);
-  const {testID, exactTestID} = useSelector((state) => state.localStorage);
+  const {testID, exactTestID, idx} = useSelector((state) => state.localStorage);
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -27,8 +26,6 @@ const PastTest = () => {
   });
 
   const [countIndex, setCountIndex] = useState(0)
-  const [iD, setId] = useState(null)
-  const [testId, setTestId] = useState(null)
 
   const changeTest = (id, test_id, idx) => {
     dispatch(setItem({key: 'exactTestID', value: test_id}))
@@ -40,8 +37,7 @@ const PastTest = () => {
       id: null
     })
     setCountIndex(idx)
-    setTestId(test_id + 1)
-    setId(id + 1)
+    dispatch(setItem({key: 'idx', value: idx}))
   };
 
   const currentAnswer = (option) => {
@@ -54,7 +50,7 @@ const PastTest = () => {
 
   if (testList.count <= countIndex) {
     alert('All questions are solved')
-    navigate('/create-custom-test')
+    navigate('/test-results')
     setCountIndex(0)
   }
 
@@ -68,13 +64,16 @@ const PastTest = () => {
           test_question_id: selectedAnswer.test_question,
           start_test_id: testList.id,
         })
-      );
-      testList.count > countIndex && dispatch(getExactTest(
-        {
-          id: testList?.id, test_id:
-          testList?.test_ids[countIndex + 1]?.test_question?.id
-        }
-      ))
+      ).then(() => {
+        dispatch(getTestsById(testID));
+        testList.count > idx && dispatch(getExactTest(
+          {
+            id: testList?.id, test_id:
+            testList?.test_ids[countIndex + 1]?.test_question?.id
+          }
+        ))
+        // dispatch(getExactTest({id: testID, test_id: exactTestID}))
+      })
     } else {
       dispatch(
         submitTheAnswer({
@@ -83,17 +82,22 @@ const PastTest = () => {
           test_question_id: selectedAnswer.test_question,
           start_test_id: testList.id,
         })
-      );
-      dispatch(getExactTest({id: testID, test_id: exactTestID}))
+      ).then(() => {
+        dispatch(getTestsById(testID));
+        dispatch(getExactTest({id: testID, test_id: exactTestID}))
+      })
     }
   };
 
   useEffect(() => {
     dispatch(getItem({key: 'testID'}))
     dispatch(getItem({key: 'exactTestID'}))
+  }, []);
+  
+  useEffect(() => {
     dispatch(getTestsById(testID));
     dispatch(getExactTest({id: testID, test_id: exactTestID}))
-  }, [dispatch]);
+  }, [dispatch, exactTestID, testID])
 
   if (loading) return 'Loading...'
 
@@ -110,11 +114,11 @@ const PastTest = () => {
             >
               <div className="flex relative justify-center items-center w-full">
                 <span className="absolute top-2 left-2 text-dark">
-                  {!test?.is_check && (<FaCircle size="6"/>)}
+                  {!test.is_check && (<FaCircle size="6"/>)}
                 </span>
                 {test.order_number}
                 <span className="absolute top-1 right-2">
-                  {test?.mark && (<FcBookmark className="text-white ml-1" size="14"/>)}
+                  {test.mark && (<FcBookmark className="text-white ml-1" size="14"/>)}
                 </span>
               </div>
             </li>
@@ -142,12 +146,12 @@ const PastTest = () => {
             question?.test_question?.options?.map((option, idx) => (
               <label
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
-                  question?.is_tutor &&
+                  question.is_tutor &&
                   selectedAnswer?.key === option.key ?
                   selectedAnswer?.key === answer?.answer?.correct_answer_key
                     ? 'text-green-500'
-                    : `text-${answer?.color}`
-                    : `${option.key === answer?.answer?.correct_answer_key && 'text-green-500'}`
+                    : `text-${answer?.color}-500`
+                    : `${option.key === answer?.answer?.correct_answer_key && `text-${answer?.color}-500`}`
                 }`}
                 htmlFor={option.key}
                 key={idx}
@@ -157,13 +161,15 @@ const PastTest = () => {
                   name="keys"
                   id={option.key}
                   value={option.key}
-                  checked={selectedAnswer?.key === option?.key}
+                  checked={question.answer && option?.key === question?.answer}
                   onChange={() => currentAnswer(option)}
                 />
+                {console.log(question.answer)}
+                {console.log(question)}
                 <span className="uppercase">{option.key}</span>
                 <span>
-                    {option.answer}
-                  </span>
+                  {option.answer}
+                </span>
               </label>
             ))
           }
@@ -190,7 +196,7 @@ const PastTest = () => {
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
-          disabled={selectedAnswer?.key === '' ? true : false}
+          disabled={selectedAnswer?.key === '' && question?.is_check}
         >
           Submit the Answer
         </button>

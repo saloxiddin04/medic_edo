@@ -1,12 +1,13 @@
 import React from "react";
 import { FcBookmark } from "react-icons/fc";
 import {useSelector, useDispatch} from "react-redux";
-import {getExactTest, submitMarked} from "../../features/pastTest/pastTestSlice";
+import {getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const Header = ({index, setIndex}) => {
   const dispatch = useDispatch()
-  const {testList} = useSelector(({pastTest}) => pastTest);
+  const {testList, question} = useSelector(({pastTest}) => pastTest);
+  const {testID} = useSelector((state) => state.localStorage);
 
   const handleStep = (direction) => {
     if (direction === 'next') {
@@ -32,6 +33,7 @@ const Header = ({index, setIndex}) => {
 
   const submitMark = () => {
     dispatch(submitMarked({id: testList?.test_ids[index]?.id, mark: true}))
+    dispatch(getTestsById(testID));
     dispatch(getExactTest({
       id: testList?.id,
       test_id: testList?.test_ids[index]?.test_question?.id,
@@ -43,8 +45,8 @@ const Header = ({index, setIndex}) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-5">
           <h1 className="text-white text-center text-sm">
-            Question {index + 1} of {testList?.count}
-            <span className="block font-medium">ID: 1844</span>
+            Question {question?.order_number} of {testList?.count}
+            <span className="block font-medium">ID: {testList?.id}</span>
           </h1>
           <div
             className="cursor-pointer"

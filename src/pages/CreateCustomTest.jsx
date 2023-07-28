@@ -61,6 +61,7 @@ const CreateCustomTest = () => {
       ).then((res) => {
         dispatch(setItem({key: 'testID', value: res.payload.id}))
         dispatch(setItem({key: 'exactTestID', value: res.payload.test_ids[0]?.test_question?.id}))
+        dispatch(setItem({key: 'idx', value: 0}))
         navigate(ROUTES.TEST);
         setIsSubmitted(false);
       });
