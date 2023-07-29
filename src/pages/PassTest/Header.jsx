@@ -1,7 +1,7 @@
 import React from "react";
 import { FcBookmark } from "react-icons/fc";
 import {useSelector, useDispatch} from "react-redux";
-import {getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
+import {clearAnswer, getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const Header = ({index, setIndex}) => {
@@ -19,6 +19,7 @@ const Header = ({index, setIndex}) => {
         }));
         dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index + 1]?.test_question?.id}))
       }
+      dispatch(clearAnswer())
     } else {
       setIndex((prev) => prev > 0 ? prev - 1 : 0);
       if (index > 0) {
@@ -27,6 +28,7 @@ const Header = ({index, setIndex}) => {
           test_id: testList?.test_ids[index - 1]?.test_question?.id,
         }));
         dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index - 1]?.test_question?.id}))
+        dispatch(clearAnswer())
       }
     }
   };
