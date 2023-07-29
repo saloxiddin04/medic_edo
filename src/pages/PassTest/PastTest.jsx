@@ -151,7 +151,7 @@ const PastTest = () => {
                   selectedAnswer?.key === answer?.answer?.correct_answer_key
                     ? 'text-green-500'
                     : `text-${answer?.color}-500`
-                    : `${option.key === answer?.answer?.correct_answer_key && `text-${answer?.color}-500`}`
+                    : `${option.key === answer?.answer?.correct_answer_key && `text-green-500`}`
                 }`}
                 htmlFor={option.key}
                 key={idx}
@@ -164,8 +164,6 @@ const PastTest = () => {
                   checked={question.answer && option?.key === question?.answer}
                   onChange={() => currentAnswer(option)}
                 />
-                {console.log(question.answer)}
-                {console.log(question)}
                 <span className="uppercase">{option.key}</span>
                 <span>
                   {option.answer}
@@ -196,7 +194,7 @@ const PastTest = () => {
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
-          disabled={selectedAnswer?.key === '' && question?.is_check}
+          disabled={selectedAnswer?.key === '' || question?.is_check}
         >
           Submit the Answer
         </button>

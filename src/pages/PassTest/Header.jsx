@@ -32,12 +32,13 @@ const Header = ({index, setIndex}) => {
   };
 
   const submitMark = () => {
-    dispatch(submitMarked({id: testList?.test_ids[index]?.id, mark: true}))
-    dispatch(getTestsById(testID));
-    dispatch(getExactTest({
-      id: testList?.id,
-      test_id: testList?.test_ids[index]?.test_question?.id,
-    }));
+    dispatch(submitMarked({id: testList?.test_ids[index]?.id, mark: true})).then(() => {
+      dispatch(getTestsById(testID));
+      dispatch(getExactTest({
+        id: testList?.id,
+        test_id: testList?.test_ids[index]?.test_question?.id,
+      }));
+    })
   }
 
   return (
