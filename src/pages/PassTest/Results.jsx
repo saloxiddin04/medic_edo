@@ -283,7 +283,7 @@ const Results = () => {
                     <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       <Link
                         className="btn-outline-primary btn-sm inline-block"
-                        to={`explanation/${item.id}`}
+                        to={`/explanation/${item.id}`}
                       >
                         <span>EXPLANATION</span>
                       </Link>
