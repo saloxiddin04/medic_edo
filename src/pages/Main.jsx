@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import Highlight from "react-highlighter";
-
 
 // charts
 import {
@@ -27,7 +25,6 @@ import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserStatisticsForAdmin } from "../features/testResults/testResultsSlice";
-import { useState } from "react";
 
 const Main = () => {
   const COLORS = ["#1d89e4", "#ffcf00"];
@@ -78,38 +75,8 @@ const Main = () => {
     },
   ];
 
-  const [highlightedTexts, setHighlightedTexts] = useState("");
-
-  useEffect(() => {
-    document.addEventListener("mouseup", handleSelection);
-    return () => {
-      document.removeEventListener("mouseup", handleSelection);
-    };
-  }, []);
-
-  const handleSelection = () => {
-    const selection = window.getSelection();
-    if (selection.toString()) {
-      setHighlightedTexts(selection.toString());
-      localStorage.setItem(
-        "highlightedTexts",
-        JSON.stringify(selection.toString())
-      );
-    }
-  };
-
-  useEffect(() => {
-    setHighlightedTexts(JSON.parse(localStorage.getItem("highlightedTexts")));
-  }, [highlightedTexts]);
-
   return (
     <section>
-      <Highlight search={highlightedTexts || ""}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum doloremque
-        praesentium, dolorem consectetur id soluta similique sunt blanditiis
-        alias laudantium natus, sequi officiis enim delectus, laborum optio
-        voluptas aperiam! Sit?
-      </Highlight>
       <div className="flex items-center gap-8">
         <div className="card w-1/2">
           <div className="flex items-center gap-5">
@@ -152,6 +119,7 @@ const Main = () => {
             <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
             <div className="flex item-center gap-8">
               <div className="flex items-center gap-10 w-1/2">
+                {console.log(userStatisticsForAdmin)}
                 <PieChart width={180} height={200}>
                   <Pie
                     data={adminData}
