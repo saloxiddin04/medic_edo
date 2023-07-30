@@ -20,8 +20,10 @@ export const getTestsById = createAsyncThunk(
   "pastTest/getTestsById",
   async (id, thunkAPI) => {
     try {
-      const res = await $axios.get(`/test/test_result/${id}/start_test_get/`);
-      return res.data;
+      if (id !== undefined) {
+        const res = await $axios.get(`/test/test_result/${id}/start_test_get/`);
+        return res.data;
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
@@ -33,10 +35,10 @@ export const getExactTest = createAsyncThunk(
   "pastTest/getExactTest",
   async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`test/test_result/get_detail_test/`, {
-        params,
-      });
-      return res.data;
+      if (params.id) {
+        const res = await $axios.get(`test/test_result/get_detail_test/?id=${params.id}&test_id=${params.test_id}`);
+        return res.data;
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);

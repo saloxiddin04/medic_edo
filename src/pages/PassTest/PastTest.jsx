@@ -48,12 +48,6 @@ const PastTest = () => {
     });
   };
 
-  if (testList.count <= countIndex) {
-    alert('All questions are solved')
-    navigate('/test-results')
-    setCountIndex(0)
-  }
-
   const submitOnClick = () => {
     if (!question.is_tutor) {
       setCountIndex(prevState => testList?.count > prevState ? prevState + 1 : prevState)
@@ -66,7 +60,7 @@ const PastTest = () => {
         })
       ).then(() => {
         dispatch(getTestsById(testID));
-        testList.count > idx && dispatch(getExactTest(
+        testList.count > countIndex + 1 && dispatch(getExactTest(
           {
             id: testList?.id, test_id:
             testList?.test_ids[countIndex + 1]?.test_question?.id
@@ -133,9 +127,9 @@ const PastTest = () => {
             __html: exactTest.isFilled && question?.test_question?.question,
           }}
         />
-        {exactTest.isFilled && question?.test_question?.test_image && (
+        {exactTest.isFilled && question?.test_question?.image2 && (
           <img
-            src={testList && question?.test_question?.test_image}
+            src={testList && question?.test_question?.image2}
             className='w-full h-[50vh] object-cover'
             alt=""
           />
@@ -146,12 +140,9 @@ const PastTest = () => {
             question?.test_question?.options?.map((option, idx) => (
               <label
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
-                  question.is_tutor &&
-                  selectedAnswer?.key === option.key ?
-                  selectedAnswer?.key === answer?.answer?.correct_answer_key
-                    ? 'text-green-500'
-                    : `text-${answer?.color}-500`
-                    : `${option.key === answer?.answer?.correct_answer_key && `text-green-500`}`
+                  question.is_tutor ?
+                    (option.key === question.wrong_key && `text-danger`) || 
+                    (option.key === question.right_key && `text-success`) : ''
                 }`}
                 htmlFor={option.key}
                 key={idx}
@@ -161,6 +152,7 @@ const PastTest = () => {
                   name="keys"
                   id={option.key}
                   value={option.key}
+                  disabled={question?.is_check}
                   checked={question.answer && option?.key === question?.answer}
                   onChange={() => currentAnswer(option)}
                 />
@@ -174,19 +166,22 @@ const PastTest = () => {
         </div>
         {question?.is_tutor && (
           <div>
-            {selectedAnswer?.key !== answer?.answer?.correct_answer_key && (
+            {question?.is_check && (
               <div className='mt-3'>
-                {answer?.answer?.image && (
-                  <img src={answer?.answer?.image} alt={answer?.answer?.image_name}/>
-                )}
                 <div className='flex gap-3'>
-                  <div>{answer?.answer?.correct_answer_key}</div>
+                  <div>{question?.test_question.correct_answer_key}</div>
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: answer ? answer?.answer?.correct_answer : "",
+                      __html: question?.test_question?.correct_answer ? question?.test_question?.correct_answer : "",
                     }}
                   />
                 </div>
+                {question?.test_question.image3 && (
+                  <img src={question?.test_question.image3} alt={'img'}/>
+                )}
+                {question?.test_question.image && (
+                  <img src={question?.test_question.image} alt={'img'}/>
+                )}
               </div>
             )}
           </div>
