@@ -3272,11 +3272,6 @@
   "resolved" "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   "version" "2.2.0"
 
-"blacklist@^1.1.4":
-  "integrity" "sha512-DWdfwimA1WQxVC69Vs1Fy525NbYwisMSCdYQmW9zyzOByz9OB/tQwrKZ3T3pbTkuFjnkJFlJuyiDjPiXL5kzew=="
-  "resolved" "https://registry.npmjs.org/blacklist/-/blacklist-1.1.4.tgz"
-  "version" "1.1.4"
-
 "bluebird@^3.5.5":
   "integrity" "sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg=="
   "resolved" "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
@@ -3842,14 +3837,6 @@
     "path-type" "^4.0.0"
     "yaml" "^1.10.0"
 
-"create-react-class@^15.6.2":
-  "integrity" "sha512-QZv4sFWG9S5RUvkTYWbflxeZX+JG7Cz0Tn33rQBJ+WFQTqTfUTjMjiv9tnfXazjsO5r0KhPs+AqCjyrQX6h2ng=="
-  "resolved" "https://registry.npmjs.org/create-react-class/-/create-react-class-15.7.0.tgz"
-  "version" "15.7.0"
-  dependencies:
-    "loose-envify" "^1.3.1"
-    "object-assign" "^4.1.1"
-
 "cross-spawn@^7.0.2", "cross-spawn@^7.0.3":
   "integrity" "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
@@ -4106,11 +4093,6 @@
   "resolved" "https://registry.npmjs.org/d3-path/-/d3-path-3.1.0.tgz"
   "version" "3.1.0"
 
-"d3-path@1":
-  "integrity" "sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg=="
-  "resolved" "https://registry.npmjs.org/d3-path/-/d3-path-1.0.9.tgz"
-  "version" "1.0.9"
-
 "d3-scale@^4.0.2":
   "integrity" "sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ=="
   "resolved" "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz"
@@ -4128,13 +4110,6 @@
   "version" "3.2.0"
   dependencies:
     "d3-path" "^3.1.0"
-
-"d3-shape@~1.0.4":
-  "integrity" "sha512-7cazlkh7DuLGJLRQK2rHS+E01J22HLriofOJbpziR5aAQjV8Yk0MPtUbSwzSEfCHjyMRdWqc3b4DvboAfW8ZQQ=="
-  "resolved" "https://registry.npmjs.org/d3-shape/-/d3-shape-1.0.6.tgz"
-  "version" "1.0.6"
-  dependencies:
-    "d3-path" "1"
 
 "d3-time-format@2 - 4":
   "integrity" "sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg=="
@@ -7071,7 +7046,7 @@
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
 
-"loose-envify@^1.1.0", "loose-envify@^1.3.1", "loose-envify@^1.4.0":
+"loose-envify@^1.1.0", "loose-envify@^1.4.0":
   "integrity" "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q=="
   "resolved" "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
   "version" "1.4.0"
@@ -8594,14 +8569,6 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.13.1"
 
-"prop-types@15.6.2":
-  "integrity" "sha512-3pboPvLiWD7dkI3qf3KbUe6hKFKa52w+AE0VCqECtf+QHAKgOL37tTaNCnuX1nAAQ4ZhyP+kYVKf8rLmJ/feDQ=="
-  "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.6.2.tgz"
-  "version" "15.6.2"
-  dependencies:
-    "loose-envify" "^1.3.1"
-    "object-assign" "^4.1.1"
-
 "proxy-addr@~2.0.7":
   "integrity" "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg=="
   "resolved" "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.7.tgz"
@@ -8681,14 +8648,6 @@
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
 
-"react-annotation@^2.2.1":
-  "integrity" "sha512-r+NQfhe9hUDGNo9Th73CLzQGQjCYO7h1w9r4uQygVIhmgd31q8r85dk3BgQJZkhPkb+A/ezf85NGdvIpYZ33Xw=="
-  "resolved" "https://registry.npmjs.org/react-annotation/-/react-annotation-2.2.1.tgz"
-  "version" "2.2.1"
-  dependencies:
-    "prop-types" "15.6.2"
-    "viz-annotation" "0.0.5"
-
 "react-app-polyfill@^3.0.0":
   "integrity" "sha512-sZ41cxiU5llIB003yxxQBYrARBqe0repqPTTYBTmMqTz9szeBbE37BehCE891NZsmdZqqP+xWKdT3eo3vOzN8w=="
   "resolved" "https://registry.npmjs.org/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz"
@@ -8743,16 +8702,6 @@
   "integrity" "sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg=="
   "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
   "version" "6.0.11"
-
-"react-highlighter@^0.4.3":
-  "integrity" "sha512-dwItRaGRHBceuzZd5NXeroapdmZ2JCAWZ3AdwdthRlSkdtPCY18DWrd6mPmiMCfSB6lgVwwCPQl4unZzG5sXXw=="
-  "resolved" "https://registry.npmjs.org/react-highlighter/-/react-highlighter-0.4.3.tgz"
-  "version" "0.4.3"
-  dependencies:
-    "blacklist" "^1.1.4"
-    "create-react-class" "^15.6.2"
-    "escape-string-regexp" "^1.0.5"
-    "prop-types" "^15.6.0"
 
 "react-icons@^4.9.0":
   "integrity" "sha512-ijUnFr//ycebOqujtqtV9PFS7JjhWg0QU6ykURVHuL4cbofvRCf3f6GMn9+fBktEFQOIVZnuAYLZdiyadRQRFg=="
@@ -10497,13 +10446,6 @@
     "d3-shape" "^3.1.0"
     "d3-time" "^3.0.0"
     "d3-timer" "^3.0.1"
-
-"viz-annotation@0.0.5":
-  "integrity" "sha512-2l65EVx7AgGGNJQRxYdqScmpZiA5+OvwvcfGEaPZA0SBaQJfJd3dh0CR5fTcgBQoylTopFEMqEcjVEutW0CG6A=="
-  "resolved" "https://registry.npmjs.org/viz-annotation/-/viz-annotation-0.0.5.tgz"
-  "version" "0.0.5"
-  dependencies:
-    "d3-shape" "~1.0.4"
 
 "w3c-hr-time@^1.0.2":
   "integrity" "sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ=="

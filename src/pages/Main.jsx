@@ -75,6 +75,19 @@ const Main = () => {
     },
   ];
 
+  useEffect(() => {
+    document.addEventListener("mouseup", handleSelection);
+    return () => {
+      document.removeEventListener("mouseup", handleSelection);
+    };
+  }, []);
+
+  const handleSelection = () => {
+    const selected = window.selected();
+
+    console.log(selected.toString());
+  };
+
   return (
     <section>
       <div className="flex items-center gap-8">
