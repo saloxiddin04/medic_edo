@@ -1,5 +1,5 @@
-import React from "react";
-import { FcBookmark } from "react-icons/fc";
+import React, {useEffect, useRef, useState} from "react";
+import {FcBookmark} from "react-icons/fc";
 import {useSelector, useDispatch} from "react-redux";
 import {clearAnswer, getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
@@ -8,6 +8,52 @@ const Header = ({index, setIndex}) => {
   const dispatch = useDispatch()
   const {testList, question} = useSelector(({pastTest}) => pastTest);
   const {testID} = useSelector((state) => state.localStorage);
+
+  const [hour, setHour] = useState(localStorage.getItem('hour') || '01');
+  const [minutes, setMinutes] = useState(localStorage.getItem('minutes') || '00');
+  const [seconds, setSeconds] = useState(localStorage.getItem('seconds') || '00');
+
+  let interval = useRef();
+
+  localStorage.setItem('targetTimestamp', JSON.stringify(new Date().getTime() + 60 * 60 * 1000))
+  localStorage.setItem('now', JSON.stringify(new Date().getTime()))
+  const startTimer = () => {
+    const targetTimestamp = localStorage.getItem('targetTimestamp') ? JSON.parse(localStorage.getItem('targetTimestamp')) : null
+
+    interval.current = setInterval(() => {
+      const now = localStorage.getItem('now') ? JSON.parse(localStorage.getItem('now')) : null;
+      const distance = targetTimestamp - now;
+
+      if (distance < 0) {
+        // stop
+        clearInterval(interval.current);
+      } else {
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setHour(hours.toString().padStart(2, '0'));
+        setMinutes(minutes.toString().padStart(2, '0'));
+        setSeconds(seconds.toString().padStart(2, '0'));
+
+        // Save the countdown values to localStorage
+        localStorage.setItem('hour', hours.toString().padStart(2, '0'));
+        localStorage.setItem('minutes', minutes.toString().padStart(2, '0'));
+        localStorage.setItem('seconds', seconds.toString().padStart(2, '0'));
+      }
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (!question?.is_tutor) {
+      startTimer();
+      return () => {
+        clearInterval(interval.current);
+      };
+    }
+  }, []);
+
+
 
   const handleStep = (direction) => {
     if (direction === 'next') {
@@ -55,7 +101,7 @@ const Header = ({index, setIndex}) => {
             className="cursor-pointer"
             onClick={submitMark}
           >
-            <FcBookmark className="text-white ml-1" size="22" />
+            <FcBookmark className="text-white ml-1" size="22"/>
             <p className="text-sm text-white">Mark</p>
           </div>
         </div>
@@ -68,12 +114,18 @@ const Header = ({index, setIndex}) => {
           </span>
           <span
             onClick={() => handleStep('next')}
-            className={`cursor-pointer ${index+1 === testList.count ? 'opacity-5' : ''}`}
+            className={`cursor-pointer ${index + 1 === testList.count ? 'opacity-5' : ''}`}
           >
             &#8250;
           </span>
         </div>
-        <div className="flex items-center gap-7"></div>
+        <div className="flex items-center gap-7">
+          {!question?.is_tutor && (
+            <>
+              <p>{hour}:{minutes}:{seconds}</p>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
