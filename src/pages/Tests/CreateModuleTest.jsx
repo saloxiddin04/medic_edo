@@ -46,6 +46,7 @@ const CreateModuleTest = () => {
     modul_id: null,
     image: null,
     image2: null,
+    image3: null,
     question: "",
     correct_answer: "",
     correct_answer_key: "",
@@ -56,8 +57,10 @@ const CreateModuleTest = () => {
 
   const [isUploaded, setIsUploaded] = useState(false);
   const [isUploaded2, setIsUploaded2] = useState(false);
+  const [isUploaded3, setIsUploaded3] = useState(false);
   const [imageName, setImageName] = useState("");
   const [imageName2, setImageName2] = useState("");
+  const [imageName3, setImageName3] = useState("");
   const [showRequired, setShowRequired] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -97,6 +100,12 @@ const CreateModuleTest = () => {
     setData({ ...data, image2: files[0] });
   };
 
+  const uploadThirdImage = ({ target: { files } }) => {
+    setImageName3(files[0].name);
+    setIsUploaded3(true);
+    setData({ ...data, image3: files[0] });
+  };
+
   // api
   const saveDatas = (e) => {
     e.preventDefault();
@@ -128,6 +137,18 @@ const CreateModuleTest = () => {
       formData.append("options", JSON.stringify(data.options));
       formData.append("image", data.image);
       formData.append("image2", data.image2);
+      formData.append("image3", data.image3);
+
+      if (typeof data.image == "string") {
+        formData.delete("image");
+      }
+      if (typeof data.image2 == "string") {
+        formData.delete("image2");
+      }
+      if (typeof data.image3 == "string") {
+        formData.delete("image3");
+      }
+
       if (Number(id)) {
         dispatch(updateTest(formData)).then(() => {
           navigate("/module-test");
@@ -152,6 +173,7 @@ const CreateModuleTest = () => {
     correct_answer_key,
     image,
     image2,
+    image3,
     modul_id,
     question,
     modul_name,
@@ -164,6 +186,7 @@ const CreateModuleTest = () => {
       correct_answer_key,
       image,
       image2,
+      image3,
       modul_id,
       question,
       modul_name,
@@ -183,6 +206,7 @@ const CreateModuleTest = () => {
             payload.correct_answer_key,
             payload.image,
             payload.image2,
+            payload.image3,
             payload.modul,
             payload.question,
             payload.modul_name,
@@ -190,6 +214,7 @@ const CreateModuleTest = () => {
           );
           setImageName(payload.image_name);
           setImageName2(payload.image2_name);
+          setImageName3(payload.image3_name);
         }
       });
     }
@@ -341,6 +366,22 @@ const CreateModuleTest = () => {
             <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
               {isUploaded ? imageName : imageName || "No photo"}
             </span>
+
+            <div className="mt-5">
+              <label htmlFor="fileUpload" className="inline-block">
+                Image 2
+              </label>
+              <input
+                id="fileUpload"
+                type="file"
+                className="form-file-input"
+                onChange={uploadThirdImage}
+              />
+
+              <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
+                {isUploaded3 ? imageName3 : imageName3 || "No photo"}
+              </span>
+            </div>
           </div>
 
           <label className="w-11/12">

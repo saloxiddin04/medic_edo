@@ -75,18 +75,18 @@ const Main = () => {
     },
   ];
 
-  useEffect(() => {
-    document.addEventListener("mouseup", handleSelection);
-    return () => {
-      document.removeEventListener("mouseup", handleSelection);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener("mouseup", handleSelection);
+  //   return () => {
+  //     document.removeEventListener("mouseup", handleSelection);
+  //   };
+  // }, []);
 
-  const handleSelection = () => {
-    const selected = window.selected();
+  // const handleSelection = () => {
+  //   const selection = window.getSelection();
 
-    console.log(selected.toString());
-  };
+  //   console.log(selection.toString());
+  // };
 
   return (
     <section>
