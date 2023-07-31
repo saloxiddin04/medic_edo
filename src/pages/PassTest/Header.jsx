@@ -15,9 +15,9 @@ const Header = ({index, setIndex}) => {
 
   let interval = useRef();
 
-  localStorage.setItem('targetTimestamp', JSON.stringify(new Date().getTime() + 60 * 60 * 1000))
-  localStorage.setItem('now', JSON.stringify(new Date().getTime()))
   const startTimer = () => {
+    localStorage.setItem('targetTimestamp', JSON.stringify(new Date().getTime() + 60 * 60 * 1000))
+    localStorage.setItem('now', JSON.stringify(new Date().getTime()))
     const targetTimestamp = localStorage.getItem('targetTimestamp') ? JSON.parse(localStorage.getItem('targetTimestamp')) : null
 
     interval.current = setInterval(() => {

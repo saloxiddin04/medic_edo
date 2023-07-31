@@ -79,6 +79,22 @@ export const submitMarked = createAsyncThunk(
   }
 );
 
+export const submitSelectQuestion = createAsyncThunk(
+  "pastTest/selected",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(
+        `/test/test_result/${payload?.id}/select_yellow_text/`,
+        payload
+      );
+      return res.data;
+    } catch (e) {
+      toast.error(e.message);
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+);
+
 const pastTestSlice = createSlice({
   name: "pastTest",
   initialState: {

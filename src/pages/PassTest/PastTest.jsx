@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
 import {FaCircle, FaCheck} from "react-icons/fa";
@@ -8,7 +8,7 @@ import Header from "./Header";
 import {
   clearAnswer,
   getExactTest,
-  getTestsById,
+  getTestsById, submitSelectQuestion,
   submitTheAnswer,
 } from "../../features/pastTest/pastTestSlice";
 import {setItem, getItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
@@ -25,6 +25,8 @@ const PastTest = () => {
   });
 
   const [countIndex, setCountIndex] = useState(0)
+
+  const [selectedText, setSelectedText] = useState('');
 
   const changeTest = (id, test_id, idx) => {
     dispatch(setItem({key: 'exactTestID', value: test_id}))
@@ -86,11 +88,41 @@ const PastTest = () => {
     dispatch(getItem({key: 'testID'}))
     dispatch(getItem({key: 'exactTestID'}))
   }, []);
-  
+
   useEffect(() => {
     dispatch(getTestsById(testID));
     dispatch(getExactTest({id: testID, test_id: exactTestID}))
   }, [dispatch, exactTestID, testID])
+
+  const handleSelectionChange = () => {
+    const selectedText = window.getSelection().toString();
+    setSelectedText(selectedText);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleSelectionChange);
+    return () => {
+      window.removeEventListener('mousemove', handleSelectionChange);
+    };
+  }, []);
+
+  const timeoutId = useRef(null)
+  const selectedQuestion = () => {
+    if (selectedText) {
+      clearTimeout(timeoutId.current)
+      timeoutId.current = setTimeout(() => {
+        dispatch(submitSelectQuestion(
+          {
+            id: question?.id,
+            text: selectedText
+          }
+        )).then(() => {
+          dispatch(getExactTest({id: testID, test_id: exactTestID}))
+          setSelectedText('')
+        })
+      }, 200)
+    }
+  }
 
   if (loading) return 'Loading...'
 
@@ -108,7 +140,8 @@ const PastTest = () => {
               }
             >
               <div className="flex relative justify-center items-center w-full">
-                <span className={`absolute top-2 left-2 ${test?.order_number === countIndex + 1 ? 'bg-blue-400 text-white' : 'text-dark'}`}>
+                <span
+                  className={`absolute top-2 left-2 ${test?.order_number === countIndex + 1 ? 'bg-blue-400 text-white' : 'text-dark'}`}>
                   {!test.is_check && (<FaCircle size="6"/>)}
                 </span>
                 {test.order_number}
@@ -127,6 +160,7 @@ const PastTest = () => {
           dangerouslySetInnerHTML={{
             __html: exactTest.isFilled && question?.test_question?.question,
           }}
+          onMouseUp={selectedQuestion}
         />
         {exactTest.isFilled && question?.test_question?.image2 && (
           <img
@@ -142,11 +176,11 @@ const PastTest = () => {
               <label
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
                   question.is_tutor ?
-                    (option.key === question.wrong_key && `text-danger`) || 
-                    (option.key === question.right_key && `text-success`) : 
+                    (option.key === question.wrong_key && `text-danger`) ||
+                    (option.key === question.right_key && `text-success`) :
                     `${
-                      question?.is_check ? 
-                        option?.key === question?.answer && `text-gray-400` : 
+                      question?.is_check ?
+                        option?.key === question?.answer && `text-gray-400` :
                         option?.key === selectedAnswer.key && `text-gray-400`
                     }`
                 }`}
@@ -198,7 +232,7 @@ const PastTest = () => {
                   dangerouslySetInnerHTML={{
                     __html: question?.test_question?.correct_answer
                       ?
-                        (`
+                      (`
                           <span class="font-black">Correct Answer ${question?.test_question.correct_answer_key}:</span> ${question?.test_question?.correct_answer}
                         `)
                       :
