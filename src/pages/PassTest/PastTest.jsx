@@ -103,11 +103,13 @@ const PastTest = () => {
             <li
               onClick={() => changeTest(testList.id, test.test_question.id, index)}
               key={index}
-              className={`${index % 2 === 0 && "bg-gray-300"} 
-                h-10 flex items-center justify-center cursor-pointer`}
+              className={
+                `${index % 2 === 0 && "bg-gray-300"} 
+                h-6 flex items-center justify-center cursor-pointer ${test?.order_number === countIndex + 1 ? 'bg-blue-400 text-white' : ''}`
+              }
             >
               <div className="flex relative justify-center items-center w-full">
-                <span className="absolute top-2 left-2 text-dark">
+                <span className={`absolute top-2 left-2 ${test?.order_number === countIndex + 1 ? 'bg-blue-400 text-white' : 'text-dark'}`}>
                   {!test.is_check && (<FaCircle size="6"/>)}
                 </span>
                 {test.order_number}
@@ -121,7 +123,7 @@ const PastTest = () => {
 
       <Header index={countIndex} setIndex={setCountIndex}/>
 
-      <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
+      <div className="w-1/2 mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
           dangerouslySetInnerHTML={{
             __html: exactTest.isFilled && question?.test_question?.question,
@@ -135,7 +137,7 @@ const PastTest = () => {
           />
         )}
 
-        <div className="border-primary border-2 mt-10 px-5">
+        <div className="border-primary border-2 mt-10 px-5 w-1/2">
           {exactTest.isFilled &&
             question?.test_question?.options?.map((option, idx) => (
               <label
@@ -164,28 +166,6 @@ const PastTest = () => {
             ))
           }
         </div>
-        {question?.is_tutor && (
-          <div>
-            {question?.is_check && (
-              <div className='mt-3'>
-                <div className='flex gap-3'>
-                  <div>{question?.test_question.correct_answer_key}</div>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: question?.test_question?.correct_answer ? question?.test_question?.correct_answer : "",
-                    }}
-                  />
-                </div>
-                {question?.test_question.image3 && (
-                  <img src={question?.test_question.image3} alt={'img'}/>
-                )}
-                {question?.test_question.image && (
-                  <img src={question?.test_question.image} alt={'img'}/>
-                )}
-              </div>
-            )}
-          </div>
-        )}
         <button
           className="btn-primary mt-10 inline-block"
           onClick={() => submitOnClick()}
@@ -194,6 +174,29 @@ const PastTest = () => {
           Submit the Answer
         </button>
       </div>
+
+      {question?.is_tutor && (
+        <div className='w-1/2 mt-20 p-5 h-[80vh] overflow-y-scroll'>
+          {question?.is_check && (
+            <div className='mt-3'>
+              <div className='flex gap-3'>
+                <div>{question?.test_question.correct_answer_key}</div>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: question?.test_question?.correct_answer ? question?.test_question?.correct_answer : "",
+                  }}
+                />
+              </div>
+              {question?.test_question.image3 && (
+                <img src={question?.test_question.image3} alt={'img'}/>
+              )}
+              {question?.test_question.image && (
+                <img src={question?.test_question.image} alt={'img'}/>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       <Footer/>
     </div>

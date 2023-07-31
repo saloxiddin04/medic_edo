@@ -92,7 +92,7 @@ const Header = ({index, setIndex}) => {
   return (
     <nav className="fixed top-0 right-0 w-[94vw] z-10 bg-primary px-4 py-2">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 shadow-lg shadow-blue-400 p-1 border border-blue-400 rounded">
           <h1 className="text-white text-center text-sm">
             Question {question?.order_number} of {testList?.count}
             <span className="block font-medium">ID: {testList?.id}</span>
@@ -105,7 +105,7 @@ const Header = ({index, setIndex}) => {
             <p className="text-sm text-white">Mark</p>
           </div>
         </div>
-        <div className="flex items-center gap-10 text-white text-5xl">
+        <div className="flex items-center gap-10 text-white text-7xl">
           <span
             onClick={() => handleStep('prev')}
             className={`cursor-pointer ${index === 0 ? 'opacity-5' : ''}`}
