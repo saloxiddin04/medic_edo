@@ -154,11 +154,11 @@ const Results = () => {
                 <ul>
                   <li className="flex items-center gap-3 ">
                     <GiPlainCircle className="mt-1 text-primary" size="20" />
-                    <span>Your accuracy: {testResults.your_accuracy}</span>
+                    <span>Your accuracy: {testResults.your_accuracy}%</span>
                   </li>
                   <li className="flex items-center gap-3 mt-2">
                     <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                    <span>Peers accuracy: {testResults.peers_accuracy}</span>
+                    <span>Peers accuracy: {testResults.peers_accuracy}%</span>
                   </li>
                 </ul>
               </div>

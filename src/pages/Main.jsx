@@ -25,6 +25,7 @@ import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserStatisticsForAdmin } from "../features/testResults/testResultsSlice";
+import { useState } from "react";
 
 const Main = () => {
   const COLORS = ["#1d89e4", "#ffcf00"];
@@ -75,21 +76,29 @@ const Main = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   document.addEventListener("mouseup", handleSelection);
-  //   return () => {
-  //     document.removeEventListener("mouseup", handleSelection);
-  //   };
-  // }, []);
+  useEffect(() => {
+    document.addEventListener("mouseup", handleSelection);
+    return () => {
+      document.removeEventListener("mouseup", handleSelection);
+    };
+  }, []);
 
-  // const handleSelection = () => {
-  //   const selection = window.getSelection();
+  const [highLighted, setHighLighted] = useState("<h1>hello world</h1>");
 
-  //   console.log(selection.toString());
-  // };
+  const handleSelection = () => {
+    const selection = window.getSelection();
+    if (selection.toString()) {
+      const newHighLighted = highLighted?.replace(
+        selection.toString(),
+        `<mark>${selection.toString()}</mark>`
+      );
+      setHighLighted(newHighLighted);
+    }
+  };
 
   return (
     <section>
+      {/* <div dangerouslySetInnerHTML={{ __html: highLighted }} /> */}
       <div className="flex items-center gap-8">
         <div className="card w-1/2">
           <div className="flex items-center gap-5">

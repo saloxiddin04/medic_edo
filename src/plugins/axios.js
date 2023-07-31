@@ -3,6 +3,7 @@ import axios from "axios";
 
 const axiosIns = axios.create({
   baseURL: "http://95.46.96.74:8011",
+  // baseURL: "https://bfe3-81-95-230-194.ngrok-free.app",
   // baseURL: "http://kh4mz4.uz:3030",
   timeout: 20000,
 
