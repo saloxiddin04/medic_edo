@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
-import {FaCircle} from "react-icons/fa";
+import {FaCircle, FaCheck} from "react-icons/fa";
+import {VscError} from "react-icons/vsc"
 import Footer from "./Footer";
 import Header from "./Header";
-import {useNavigate} from "react-router-dom";
 import {
   clearAnswer,
   getExactTest,
@@ -14,10 +14,9 @@ import {
 import {setItem, getItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const PastTest = () => {
-  const {testList, exactTest, answer, loading, question} = useSelector(({pastTest}) => pastTest);
-  const {testID, exactTestID, idx} = useSelector((state) => state.localStorage);
+  const {testList, exactTest, loading, question} = useSelector(({pastTest}) => pastTest);
+  const {testID, exactTestID} = useSelector((state) => state.localStorage);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
 
   const [selectedAnswer, setSelectedAnswerAnswer] = useState({
     id: null,
@@ -60,13 +59,13 @@ const PastTest = () => {
         })
       ).then(() => {
         dispatch(getTestsById(testID));
+        testList.count === countIndex + 1 && dispatch(getExactTest({id: testID, test_id: exactTestID}))
         testList.count > countIndex + 1 && dispatch(getExactTest(
           {
             id: testList?.id, test_id:
             testList?.test_ids[countIndex + 1]?.test_question?.id
           }
         ))
-        // dispatch(getExactTest({id: testID, test_id: exactTestID}))
       })
     } else {
       dispatch(
@@ -144,7 +143,12 @@ const PastTest = () => {
                 className={`flex items-center gap-2 cursor-pointer my-5 ${
                   question.is_tutor ?
                     (option.key === question.wrong_key && `text-danger`) || 
-                    (option.key === question.right_key && `text-success`) : ''
+                    (option.key === question.right_key && `text-success`) : 
+                    `${
+                      question?.is_check ? 
+                        option?.key === question?.answer && `text-gray-400` : 
+                        option?.key === selectedAnswer.key && `text-gray-400`
+                    }`
                 }`}
                 htmlFor={option.key}
                 key={idx}
@@ -173,17 +177,32 @@ const PastTest = () => {
         >
           Submit the Answer
         </button>
+        {question?.is_tutor && question?.is_check && (
+          <div className='p-2 mt-2 rounded shadow-lg shadow-blue-400 border border-blue-400'>
+            {selectedAnswer?.key === question?.right_key ? (
+              <FaCheck className='text-4xl m-auto' color={'green'} title={'correct'}/>
+            ) : (
+              <VscError className='text-4xl m-auto' color={'red'} title={'Incorrect'}/>
+            )}
+          </div>
+        )}
       </div>
 
       {question?.is_tutor && (
         <div className='w-1/2 mt-20 p-5 h-[80vh] overflow-y-scroll'>
           {question?.is_check && (
             <div className='mt-3'>
-              <div className='flex gap-3'>
-                <div>{question?.test_question.correct_answer_key}</div>
+              <FaCheck className='text-4xl m-auto mb-2' color={'green'} title={'correct'}/>
+              <div>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: question?.test_question?.correct_answer ? question?.test_question?.correct_answer : "",
+                    __html: question?.test_question?.correct_answer
+                      ?
+                        (`
+                          <span class="font-black">Correct Answer ${question?.test_question.correct_answer_key}:</span> ${question?.test_question?.correct_answer}
+                        `)
+                      :
+                      "",
                   }}
                 />
               </div>
