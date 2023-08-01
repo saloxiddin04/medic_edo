@@ -132,8 +132,8 @@ const PastTest = () => {
   if (loading) return 'Loading...'
 
   return (
-    <div className="min-h-screen bg-darkLayoutStrm flex">
-      <ul className="w-[6vw] h-screen overflow-y-scroll bg-white border-r-2">
+    <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap">
+      <ul className="w-[6%] h-full overflow-y-auto bg-white border-r-2">
         {testList &&
           testList?.test_ids?.map((test, index) => (
             <li
@@ -160,7 +160,7 @@ const PastTest = () => {
 
       <Header index={countIndex} setIndex={setCountIndex} setSelectedAnswerAnswer={setSelectedAnswerAnswer}/>
 
-      <div className="w-[94vw] mt-20 p-5 overflow-y-auto">
+      <div className="mt-20 p-5 overflow-y-auto w-[94%]">
         <div
           dangerouslySetInnerHTML={{
             __html: exactTest.isFilled && question?.test_question?.question,
@@ -246,6 +246,7 @@ const PastTest = () => {
       </div>
 
       <Footer/>
+
     </div>
   );
 };

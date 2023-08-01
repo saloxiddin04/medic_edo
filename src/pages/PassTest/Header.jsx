@@ -100,7 +100,7 @@ const Header = ({index, setIndex, setSelectedAnswerAnswer}) => {
   }
 
   return (
-    <nav className="fixed top-0 right-0 w-[94vw] z-10 bg-primary px-4 py-2">
+    <nav className="fixed top-0 right-0 w-[94%] z-10 bg-primary px-4 py-2">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-5 shadow-lg shadow-blue-400 p-1 border border-blue-400 rounded">
           <h1 className="text-white text-center text-sm">
