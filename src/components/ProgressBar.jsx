@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/progressbar.css";
 import { useSelector } from "react-redux";
 
@@ -81,24 +81,33 @@ const MultiColorProgressBar = ({ readings }) => {
 const App = () => {
   const { testResults } = useSelector(({ testResults }) => testResults);
 
+  useEffect(() => {
+    // testResults.test_results
+  }, [])
+
   const readings = [
     {
       name: "Correct",
-      value: 10,
+      value: 50,
       color: "#1d89e4",
     },
     {
       name: "Incorrect",
-      value: 20,
+      value: 0,
       color: "#ffcf00",
     },
     {
-      name: "Incorrect",
-      value: 70,
+      name: "unsolved",
+      value: 50,
       color: "#666666",
     },
   ];
-  return <MultiColorProgressBar readings={readings} />;
+  return (
+    <div>
+      {console.log(testResults)}
+      <MultiColorProgressBar readings={readings} />
+    </div>
+  );
 };
 
 export default App;
