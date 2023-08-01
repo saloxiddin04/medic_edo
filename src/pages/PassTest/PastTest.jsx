@@ -68,6 +68,11 @@ const PastTest = () => {
             testList?.test_ids[countIndex + 1]?.test_question?.id
           }
         ))
+        setSelectedAnswerAnswer({
+          test_question: "",
+          key: "",
+          id: null
+        })
       })
     } else {
       dispatch(
@@ -153,9 +158,9 @@ const PastTest = () => {
           ))}
       </ul>
 
-      <Header index={countIndex} setIndex={setCountIndex}/>
+      <Header index={countIndex} setIndex={setCountIndex} setSelectedAnswerAnswer={setSelectedAnswerAnswer}/>
 
-      <div className="w-1/2 mt-20 p-5 h-[80vh] overflow-y-scroll">
+      <div className="w-[94vw] mt-20 p-5 overflow-y-auto">
         <div
           dangerouslySetInnerHTML={{
             __html: exactTest.isFilled && question?.test_question?.question,
@@ -170,7 +175,7 @@ const PastTest = () => {
           />
         )}
 
-        <div className="border-primary border-2 mt-10 px-5 w-1/2">
+        <div className="border-primary border-2 mt-10 px-5 w-full">
           {exactTest.isFilled &&
             question?.test_question?.options?.map((option, idx) => (
               <label
@@ -193,7 +198,7 @@ const PastTest = () => {
                   id={option.key}
                   value={option.key}
                   disabled={question?.is_check}
-                  checked={question.answer && option?.key === question?.answer}
+                  checked={question.answer ? option?.key === question?.answer : option.id === selectedAnswer.id}
                   onChange={() => currentAnswer(option)}
                 />
                 <span className="uppercase">{option.key}</span>
@@ -211,45 +216,34 @@ const PastTest = () => {
         >
           Submit the Answer
         </button>
-        {question?.is_tutor && question?.is_check && (
-          <div className='p-2 mt-2 rounded shadow-lg shadow-blue-400 border border-blue-400'>
-            {selectedAnswer?.key === question?.right_key ? (
-              <FaCheck className='text-4xl m-auto' color={'green'} title={'correct'}/>
-            ) : (
-              <VscError className='text-4xl m-auto' color={'red'} title={'Incorrect'}/>
+        {question?.is_tutor && (
+          <div className='py-10 overflow-y-auto'>
+            {question?.is_check && (
+              <div className='mt-3'>
+                <div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: question?.test_question?.correct_answer
+                        ?
+                        (`
+                          <span class="font-black">Correct Answer ${question?.test_question.correct_answer_key}:</span> ${question?.test_question?.correct_answer}
+                        `)
+                        :
+                        "",
+                    }}
+                  />
+                </div>
+                {question?.test_question.image3 && (
+                  <img src={question?.test_question.image3} alt={'img'}/>
+                )}
+                {question?.test_question.image && (
+                  <img src={question?.test_question.image} alt={'img'}/>
+                )}
+              </div>
             )}
           </div>
         )}
       </div>
-
-      {question?.is_tutor && (
-        <div className='w-1/2 mt-20 p-5 h-[80vh] overflow-y-scroll'>
-          {question?.is_check && (
-            <div className='mt-3'>
-              <FaCheck className='text-4xl m-auto mb-2' color={'green'} title={'correct'}/>
-              <div>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: question?.test_question?.correct_answer
-                      ?
-                      (`
-                          <span class="font-black">Correct Answer ${question?.test_question.correct_answer_key}:</span> ${question?.test_question?.correct_answer}
-                        `)
-                      :
-                      "",
-                  }}
-                />
-              </div>
-              {question?.test_question.image3 && (
-                <img src={question?.test_question.image3} alt={'img'}/>
-              )}
-              {question?.test_question.image && (
-                <img src={question?.test_question.image} alt={'img'}/>
-              )}
-            </div>
-          )}
-        </div>
-      )}
 
       <Footer/>
     </div>

@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {clearAnswer, getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
-const Header = ({index, setIndex}) => {
+const Header = ({index, setIndex, setSelectedAnswerAnswer}) => {
   const dispatch = useDispatch()
   const {testList, question} = useSelector(({pastTest}) => pastTest);
   const {testID} = useSelector((state) => state.localStorage);
@@ -66,6 +66,11 @@ const Header = ({index, setIndex}) => {
         dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index + 1]?.test_question?.id}))
       }
       dispatch(clearAnswer())
+      setSelectedAnswerAnswer({
+        test_question: "",
+        key: "",
+        id: null
+      })
     } else {
       setIndex((prev) => prev > 0 ? prev - 1 : 0);
       if (index > 0) {
@@ -75,6 +80,11 @@ const Header = ({index, setIndex}) => {
         }));
         dispatch(setItem({key: 'exactTestID', value: testList?.test_ids[index - 1]?.test_question?.id}))
         dispatch(clearAnswer())
+        setSelectedAnswerAnswer({
+          test_question: "",
+          key: "",
+          id: null
+        })
       }
     }
   };
