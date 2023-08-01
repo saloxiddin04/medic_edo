@@ -9,7 +9,7 @@ const Footer = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <nav className="relative bottom-0 right-0 w-[94%] z-10 bg-primary px-4 py-2 overflow-hidden ml-auto">
+    <nav className="relative bottom-0 right-0 w-[94%] h-[80px] z-10 bg-primary px-4 py-4 overflow-hidden ml-auto mt-auto">
       <div className="flex justify-between items-center">
         <img className="absolute w-52 mt-5" src={LOGO} alt="" />
         <div>
