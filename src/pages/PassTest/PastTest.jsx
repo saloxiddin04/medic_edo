@@ -134,7 +134,7 @@ const PastTest = () => {
   if (loading) return 'Loading...'
 
   return (
-    <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap">
+    <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
       <ul className="w-[6%] h-full overflow-y-auto bg-white border-r-2">
         {testList &&
           testList?.test_ids?.map((test, index) => (

@@ -11,7 +11,7 @@ const Footer = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 right-0 w-[94%] h-[80px] z-10 bg-primary px-4 py-4 overflow-hidden ">
+    <nav className="fixed bottom-0 right-0 w-[93%] h-[80px] z-10 bg-primary px-4 py-4 overflow-hidden ">
       <div className="flex justify-between items-center">
         <img className="absolute w-52 mt-5" src={LOGO} alt="" />
         <div>
