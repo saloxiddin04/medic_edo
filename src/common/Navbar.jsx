@@ -7,27 +7,37 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
 
 // routes
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { getUserData, logout } from "../auth/jwtService";
+import { AiOutlineHome } from "react-icons/ai";
 
 const Navbar = () => {
+  const { pathname } = useLocation();
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
         <div>
-          <Link
-            className="text-primary text-lg font-semibold uppercase"
-            to={ROUTES.MAIN}
-          >
-            <div className="relative w-[280px] h-[42px] overflow-hidden">
-              <img
-                className="absolute -top-[110px] -left-[50px] scale-75"
-                src={LOGO}
-                alt=""
-              />
-            </div>
-          </Link>
+          {pathname === "/create-custom-test" ? (
+            <Link to={ROUTES.MAIN} className=" flex items-center px-5 py-4">
+              <AiOutlineHome size="20" className="mt-0.5" />
+
+              <h1 className="ml-5 text-xl">Back Home</h1>
+            </Link>
+          ) : (
+            <Link
+              className="text-primary text-lg font-semibold uppercase"
+              to={ROUTES.MAIN}
+            >
+              <div className="relative w-[280px] h-[42px] overflow-hidden">
+                <img
+                  className="absolute -top-[110px] -left-[50px] scale-75"
+                  src={LOGO}
+                  alt=""
+                />
+              </div>
+            </Link>
+          )}
         </div>
         <div className="flex items-center gap-7">
           <button className="btn-primary">Prising</button>
