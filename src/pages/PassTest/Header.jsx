@@ -3,6 +3,8 @@ import {FcBookmark} from "react-icons/fc";
 import {useSelector, useDispatch} from "react-redux";
 import {clearAnswer, getExactTest, getTestsById, submitMarked} from "../../features/pastTest/pastTestSlice";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
+import {GrCaretNext, GrCaretPrevious} from 'react-icons/gr'
+import {GiPreviousButton, GiNextButton} from 'react-icons/gi'
 
 const Header = ({index, setIndex, setSelectedAnswerAnswer}) => {
   const dispatch = useDispatch()
@@ -118,15 +120,15 @@ const Header = ({index, setIndex, setSelectedAnswerAnswer}) => {
         <div className="flex items-center gap-10 text-white text-7xl">
           <span
             onClick={() => handleStep('prev')}
-            className={`cursor-pointer ${index === 0 ? 'opacity-5' : ''}`}
+            className={`cursor-pointer p-1 border border-white rounded ${index === 0 ? 'opacity-5' : ''}`}
           >
-            &#8249;
+            <GiPreviousButton size={22} color='white' stroke='white'/>
           </span>
           <span
             onClick={() => handleStep('next')}
-            className={`cursor-pointer ${index + 1 === testList.count ? 'opacity-5' : ''}`}
+            className={`cursor-pointer p-1 border border-white rounded ${index + 1 === testList.count ? 'opacity-5' : ''}`}
           >
-            &#8250;
+            <GiNextButton size={22} color='white' stroke='white'/>
           </span>
         </div>
         <div className="flex items-center gap-7">

@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useRef, useMemo} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
-import {FaCircle, FaCheck} from "react-icons/fa";
-import {VscError} from "react-icons/vsc"
+import {FaCheck, FaCircle} from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
 import {
@@ -12,11 +11,14 @@ import {
   submitTheAnswer,
 } from "../../features/pastTest/pastTestSlice";
 import {setItem, getItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
+import {VscError} from "react-icons/vsc";
 
 const PastTest = () => {
   const {testList, exactTest, loading, question} = useSelector(({pastTest}) => pastTest);
   const {testID, exactTestID} = useSelector((state) => state.localStorage);
   const dispatch = useDispatch();
+
+  const selectedAnswerInput = document.querySelector('input[name="keys"]:checked');
 
   const [selectedAnswer, setSelectedAnswerAnswer] = useState({
     id: null,
@@ -216,11 +218,21 @@ const PastTest = () => {
         >
           Submit the Answer
         </button>
+        {question?.is_tutor && question?.is_check && (
+          <div className='p-2 mt-4 rounded shadow-lg shadow-blue-400 border border-blue-400'>
+            {selectedAnswerInput?.value === question?.right_key ? (
+              <FaCheck className='text-4xl m-auto' color={'green'} title={'correct'}/>
+            ) : (
+              <VscError className='text-4xl m-auto' color={'red'} title={'Incorrect'}/>
+            )}
+          </div>
+        )}
         {question?.is_tutor && (
           <div className='py-10 overflow-y-auto'>
             {question?.is_check && (
               <div className='mt-3'>
-                <div>
+                <div className='p-3 border-blue-400 border-2'>
+                  <strong className='text-3xl'>Explation:</strong>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: question?.test_question?.correct_answer
