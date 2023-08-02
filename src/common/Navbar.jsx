@@ -2,7 +2,6 @@ import React from "react";
 import LOGO from "../images/logo.png";
 
 // icons
-import { BsBell } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
 
@@ -40,11 +39,6 @@ const Navbar = () => {
           )}
         </div>
         <div className="flex items-center gap-7">
-          <button className="btn-primary">Prising</button>
-
-          <button className="text-primary">
-            <BsBell size="20" />
-          </button>
           <div className="user-block flex">
             {getUserData() && (
               <p className="text-end mr-2">
