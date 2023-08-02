@@ -83,22 +83,22 @@ const App = () => {
 
   useEffect(() => {
     // testResults.test_results
-  }, [])
+  }, []);
 
   const readings = [
     {
       name: "Correct",
-      value: 50,
+      value: testResults?.correct_answer_interest,
       color: "#1d89e4",
     },
     {
       name: "Incorrect",
-      value: 0,
+      value: testResults?.worning_interest,
       color: "#ffcf00",
     },
     {
       name: "unsolved",
-      value: 50,
+      // value: 50,
       color: "#666666",
     },
   ];

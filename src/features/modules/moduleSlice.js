@@ -34,7 +34,7 @@ export const getModules = createAsyncThunk(
   "modules/getModules",
   async (_, thunkAPI) => {
     try {
-      const res = await $axios.get(`test/modul/get_modules_used/`);
+      const res = await $axios.get(`test/modul/`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
