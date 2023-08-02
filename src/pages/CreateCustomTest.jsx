@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import {json, useNavigate} from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { useDispatch, useSelector } from "react-redux";
-import {startTest} from "../features/pastTest/pastTestSlice";
+import { startTest } from "../features/pastTest/pastTestSlice";
 import { useEffect } from "react";
 import { getModules } from "../features/modules/moduleSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import {setSelectionRange} from "@testing-library/user-event/dist/utils";
-import {setItem} from "../features/LocalStorageSlice/LocalStorageSlice";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
+import { setItem } from "../features/LocalStorageSlice/LocalStorageSlice";
+import { resetTimer } from "../features/Timer/timerSlice";
 
 const CreateCustomTest = () => {
   const navigate = useNavigate();
 
-  const {answer} = useSelector(({pastTest}) => pastTest)
+  const { answer } = useSelector(({ pastTest }) => pastTest);
   const { moduleList } = useSelector(({ module }) => module);
   const dispatch = useDispatch();
 
@@ -33,22 +34,29 @@ const CreateCustomTest = () => {
   };
 
   const getCookieItem = (name) => {
-    const cookies = document.cookie.split(';');
+    const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      if (cookie.startsWith(name + '=')) {
+      if (cookie.startsWith(name + "=")) {
         return cookie.substring(name.length + 1, cookie.length);
       }
     }
     return null;
   };
 
+  const handleReset = () => {
+    sessionStorage.removeItem("timerState");
+    dispatch(resetTimer());
+  };
+
   const pastTest = () => {
-    const cookieItemValue = getCookieItem('user');
-    const jsonParseCookie = cookieItemValue !== null ? JSON.parse(cookieItemValue) : ''
+    const cookieItemValue = getCookieItem("user");
+    const jsonParseCookie =
+      cookieItemValue !== null ? JSON.parse(cookieItemValue) : "";
     const selectedModules = Object.keys(checkedItems).filter(
       (key) => checkedItems[key]
     );
+    handleReset();
 
     if (selectedModules.length > 0) {
       dispatch(
@@ -56,12 +64,17 @@ const CreateCustomTest = () => {
           modul_ids: selectedModules,
           timer: isTimer,
           tutor: isTutor,
-          user: jsonParseCookie.id
+          user: jsonParseCookie.id,
         })
       ).then((res) => {
-        dispatch(setItem({key: 'testID', value: res.payload.id}))
-        dispatch(setItem({key: 'exactTestID', value: res.payload.test_ids[0]?.test_question?.id}))
-        dispatch(setItem({key: 'idx', value: 0}))
+        dispatch(setItem({ key: "testID", value: res.payload.id }));
+        dispatch(
+          setItem({
+            key: "exactTestID",
+            value: res.payload.test_ids[0]?.test_question?.id,
+          })
+        );
+        dispatch(setItem({ key: "idx", value: 0 }));
         navigate(ROUTES.TEST);
         setIsSubmitted(false);
       });

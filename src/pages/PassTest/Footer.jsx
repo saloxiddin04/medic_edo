@@ -6,7 +6,9 @@ import { useState } from "react";
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <nav className="relative bottom-0 right-0 w-[94%] h-[80px] z-10 bg-primary px-4 py-4 overflow-hidden ml-auto mt-auto">

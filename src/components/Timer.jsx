@@ -1,52 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { startTimer, tick } from "../features/Timer/timerSlice";
 
-const Timer = ({ onReset }) => {
-  const [seconds, setSeconds] = useState(3600);
+const formatTime = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+};
+
+const Timer = () => {
+  const dispatch = useDispatch();
+  const { seconds, startTime } = useSelector(({ timer }) => timer);
 
   useEffect(() => {
-    const storedStartTime = sessionStorage.getItem("startTime");
-    let startTime;
-
-    if (storedStartTime) {
-      startTime = new Date(storedStartTime);
-      const now = new Date();
-      const elapsedSeconds = Math.floor((now - startTime) / 1000);
-      setSeconds(Math.max(0, 3600 - elapsedSeconds));
-    } else {
-      startTime = new Date();
-      sessionStorage.setItem("startTime", startTime);
+    if (startTime === null) {
+      dispatch(startTimer());
     }
 
     const intervalId = setInterval(() => {
-      const now = new Date();
-      const elapsedSeconds = Math.floor((now - startTime) / 1000);
-      const remainingSeconds = Math.max(0, 3600 - elapsedSeconds);
-      setSeconds(remainingSeconds);
+      dispatch(tick());
     }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [dispatch, startTime]);
 
-  const formatTime = (time) => {
-    const pad = (num) => num.toString().padStart(2, "0");
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
-    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-  };
-
-  const handleReset = () => {
-    sessionStorage.removeItem("startTime");
-    setSeconds(3600);
-    onReset();
-  };
+  useEffect(() => {
+    const timerState = { seconds, startTime };
+    sessionStorage.setItem("timerState", JSON.stringify(timerState));
+  }, [seconds, startTime]);
 
   return (
     <div>
-      <h2 className="font-bold text-white">
+      <h2 className="text-lg text-white">
         Timer:{" "}
-        <span class="rounded-full bg-warning px-6 pb-1 pt-0.5 text-white ">
-          {formatTime(seconds)}{" "}
+        <span class="rounded-full font-semibold bg-warning px-6 pb-1  text-white ">
+          {formatTime(seconds)}
         </span>
       </h2>
     </div>

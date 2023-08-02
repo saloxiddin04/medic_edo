@@ -1,8 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
+import { useDispatch } from "react-redux";
+import { resetTimer } from "../../features/Timer/timerSlice";
 
 const AreYouSure = ({ isModalOpen, closeModal }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const endTheTest = () => {
+    closeModal();
+    dispatch(resetTimer());
+    navigate(ROUTES.RESULTS);
+  };
   return (
     <div
       className={
@@ -32,14 +41,9 @@ const AreYouSure = ({ isModalOpen, closeModal }) => {
             <button className="btn-secondary" onClick={closeModal}>
               Cancel
             </button>
-            <Link
-              to={ROUTES.RESULTS}
-              type="submit"
-              className="btn-danger"
-              onClick={closeModal}
-            >
+            <button type="submit" className="btn-danger" onClick={endTheTest}>
               Yes, I'm sure
-            </Link>
+            </button>
           </div>
         </div>
       </div>

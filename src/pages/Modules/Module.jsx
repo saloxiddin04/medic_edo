@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getModules } from "../../features/modules/moduleSlice";
 
 // icon
@@ -86,7 +85,7 @@ const Module = () => {
                       </td>
 
                       <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                      <Link
+                        <Link
                           className="btn-warning btn-sm inline-block"
                           to={`/create-module/${item.id}`}
                         >

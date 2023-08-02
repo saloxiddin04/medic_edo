@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { FcBookmark } from "react-icons/fc";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -15,60 +15,60 @@ const Header = ({ index, setIndex }) => {
   const { testList, question } = useSelector(({ pastTest }) => pastTest);
   const { testID } = useSelector((state) => state.localStorage);
 
-  const [hour, setHour] = useState(localStorage.getItem("hour") || "01");
-  const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") || "00"
-  );
-  const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") || "00"
-  );
+  // const [hour, setHour] = useState(localStorage.getItem("hour") || "01");
+  // const [minutes, setMinutes] = useState(
+  //   localStorage.getItem("minutes") || "00"
+  // );
+  // const [seconds, setSeconds] = useState(
+  //   localStorage.getItem("seconds") || "00"
+  // );
 
-  let interval = useRef();
+  // let interval = useRef();
 
-  const startTimer = () => {
-    localStorage.setItem(
-      "targetTimestamp",
-      JSON.stringify(new Date().getTime() + 60 * 60 * 1000)
-    );
-    localStorage.setItem("now", JSON.stringify(new Date().getTime()));
-    const targetTimestamp = localStorage.getItem("targetTimestamp")
-      ? JSON.parse(localStorage.getItem("targetTimestamp"))
-      : null;
+  // const startTimer = () => {
+  //   localStorage.setItem(
+  //     "targetTimestamp",
+  //     JSON.stringify(new Date().getTime() + 60 * 60 * 1000)
+  //   );
+  //   localStorage.setItem("now", JSON.stringify(new Date().getTime()));
+  //   const targetTimestamp = localStorage.getItem("targetTimestamp")
+  //     ? JSON.parse(localStorage.getItem("targetTimestamp"))
+  //     : null;
 
-    interval.current = setInterval(() => {
-      const now = localStorage.getItem("now")
-        ? JSON.parse(localStorage.getItem("now"))
-        : null;
-      const distance = targetTimestamp - now;
+  //   interval.current = setInterval(() => {
+  //     const now = localStorage.getItem("now")
+  //       ? JSON.parse(localStorage.getItem("now"))
+  //       : null;
+  //     const distance = targetTimestamp - now;
 
-      if (distance < 0) {
-        // stop
-        clearInterval(interval.current);
-      } else {
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  //     if (distance < 0) {
+  //       // stop
+  //       clearInterval(interval.current);
+  //     } else {
+  //       const hours = Math.floor(distance / (1000 * 60 * 60));
+  //       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  //       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        setHour(hours.toString().padStart(2, "0"));
-        setMinutes(minutes.toString().padStart(2, "0"));
-        setSeconds(seconds.toString().padStart(2, "0"));
+  //       setHour(hours.toString().padStart(2, "0"));
+  //       setMinutes(minutes.toString().padStart(2, "0"));
+  //       setSeconds(seconds.toString().padStart(2, "0"));
 
-        // Save the countdown values to localStorage
-        localStorage.setItem("hour", hours.toString().padStart(2, "0"));
-        localStorage.setItem("minutes", minutes.toString().padStart(2, "0"));
-        localStorage.setItem("seconds", seconds.toString().padStart(2, "0"));
-      }
-    }, 1000);
-  };
+  //       // Save the countdown values to localStorage
+  //       localStorage.setItem("hour", hours.toString().padStart(2, "0"));
+  //       localStorage.setItem("minutes", minutes.toString().padStart(2, "0"));
+  //       localStorage.setItem("seconds", seconds.toString().padStart(2, "0"));
+  //     }
+  //   }, 1000);
+  // };
 
-  useEffect(() => {
-    if (!question?.is_tutor) {
-      startTimer();
-      return () => {
-        clearInterval(interval.current);
-      };
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!question?.is_tutor) {
+  //     startTimer();
+  //     return () => {
+  //       clearInterval(interval.current);
+  //     };
+  //   }
+  // }, []);
 
   const handleStep = (direction) => {
     if (direction === "next") {
@@ -153,10 +153,8 @@ const Header = ({ index, setIndex }) => {
           </span>
         </div>
         <div className="flex items-center gap-7">
-          {!question?.is_tutor && (
-            <>
-              <p>{hour}:{minutes}:{seconds}</p>
-            </>
+          {testList?.is_time && (
+            <Timer />
           )}
         </div>
       </div>
