@@ -130,3 +130,7 @@ iframe {
 .highlight {
   background-color: yellow;
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}
