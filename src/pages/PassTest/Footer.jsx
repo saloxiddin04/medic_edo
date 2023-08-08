@@ -11,15 +11,18 @@ const Footer = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 right-0 w-[93%] h-[80px] z-10 bg-primary px-4 py-4 overflow-hidden ">
+    <nav className="fixed bottom-0 right-0 w-[94%] h-[50px] z-10 bg-primary px-4 py-4 overflow-hidden ">
       <div className="flex justify-between items-center">
-        <img className="absolute w-52 mt-5" src={LOGO} alt="" />
+        <img className="absolute w-32" src={LOGO} alt="" />
         <div>
           <div></div>
         </div>
-        <div className="flex items-center gap-7">
-          <button className="btn-danger" onClick={() => setIsModalOpen(true)}>
-            End The Test
+        <div className="flex items-center gap-7 -mt-2">
+          <button
+            className="btn-danger btn-xs"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <span className="text-sm mx-5">End The Test</span>
           </button>
         </div>
       </div>

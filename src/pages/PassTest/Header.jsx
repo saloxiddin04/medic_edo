@@ -126,9 +126,9 @@ const Header = ({ index, setIndex }) => {
   };
 
   return (
-    <nav className="fixed top-0 right-0 w-[93vw] z-10 bg-primary px-4 py-2">
+    <nav className="fixed top-0 right-0 w-[94vw] h-[50px] z-10 bg-primary px-4">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-5 shadow-lg shadow-blue-400 p-1 border border-blue-400 rounded">
+        <div className="flex items-center gap-5 mt-1">
           <h1 className="text-white text-center text-sm">
             Question {question?.order_number} of {testList?.count}
             <span className="block font-medium">ID: {testList?.id}</span>
@@ -138,24 +138,28 @@ const Header = ({ index, setIndex }) => {
             <p className="text-sm text-white">Mark</p>
           </div>
         </div>
-        <div className="flex items-center gap-10 text-white text-7xl">
-          <span
-            onClick={() => handleStep('prev')}
-            className={`cursor-pointer ${index === 0 ? 'opacity-5' : ''}`}
+
+        <div className="flex items-center gap-x-10 -mt-2 text-white">
+          <button
+            onClick={() => handleStep("prev")}
+            className={`text-5xl ${index === 0 ? "opacity-20" : ""}`}
+            disabled={index === 0}
           >
             &#8249;
-          </span>
-          <span
-            onClick={() => handleStep('next')}
-            className={`cursor-pointer ${index + 1 === testList.count ? 'opacity-5' : ''}`}
+          </button>
+          <button
+            onClick={() => handleStep("next")}
+            className={`text-5xl ${
+              index + 1 === testList.count ? "opacity-20" : ""
+            }`}
+            disabled={index + 1 === testList.count}
           >
             &#8250;
-          </span>
+          </button>
         </div>
+
         <div className="flex items-center gap-7">
-          {testList?.is_time && (
-            <Timer />
-          )}
+          {testList?.is_time && <Timer />}
         </div>
       </div>
     </nav>

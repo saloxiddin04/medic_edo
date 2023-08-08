@@ -27,7 +27,7 @@ const Timer = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [dispatch, startTime]);
+  }, [dispatch, startTime, seconds]);
 
   useEffect(() => {
     const timerState = { seconds, startTime };
@@ -36,9 +36,9 @@ const Timer = () => {
 
   return (
     <div>
-      <h2 className="text-lg text-white">
+      <h2 className="text-lg text-white flex items-center gap-3">
         Timer:{" "}
-        <span class="rounded-full font-semibold bg-warning px-6 pb-1  text-white ">
+        <span class="rounded-full font-bold bg-white/20 text-white w-[100px] text-center inline-block  ">
           {formatTime(seconds)}
         </span>
       </h2>
