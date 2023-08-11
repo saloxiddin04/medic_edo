@@ -10,7 +10,7 @@ import {
 import { setItem } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import Timer from "../../components/Timer";
 
-const Header = ({ index, setIndex }) => {
+const Header = ({ index, setIndex, setSelectedAnswerAnswer }) => {
   const dispatch = useDispatch();
   const { testList, question } = useSelector(({ pastTest }) => pastTest);
   const { testID } = useSelector((state) => state.localStorage);
@@ -72,6 +72,11 @@ const Header = ({ index, setIndex }) => {
 
   const handleStep = (direction) => {
     if (direction === "next") {
+      setSelectedAnswerAnswer({
+        id: null,
+        key: "",
+        test_question: "",
+      })
       setIndex((prev) => prev + 1);
       if (testList.count > index + 1) {
         dispatch(
@@ -90,6 +95,11 @@ const Header = ({ index, setIndex }) => {
       dispatch(clearAnswer());
     } else {
       setIndex((prev) => (prev > 0 ? prev - 1 : 0));
+      setSelectedAnswerAnswer({
+        id: null,
+        key: "",
+        test_question: "",
+      })
       if (index > 0) {
         dispatch(
           getExactTest({
