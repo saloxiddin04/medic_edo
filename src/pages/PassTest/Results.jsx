@@ -130,7 +130,7 @@ const Results = () => {
                     <span>
                       {" "}
                       Incorrect: {testResults.worning_interest}% (
-                      {testResults.correct_answer_count})
+                      {testResults.worning_answer_count})
                     </span>
                   </li>
                 </ul>

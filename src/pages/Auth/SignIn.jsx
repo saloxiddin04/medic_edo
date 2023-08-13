@@ -22,7 +22,7 @@ const SignIn = () => {
         }, 200);
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error(err.response.data.detail || err.message);
       });
   };
 

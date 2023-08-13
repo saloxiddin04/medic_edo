@@ -24,7 +24,7 @@ const SignUp = () => {
         toast.success("Successfully registered");
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error(err.response.data.username[0] || err.message);
       });
   };
 

@@ -1,18 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 // charts
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Cell, Pie, PieChart, Tooltip } from "recharts";
 
 // icons
 import { MdOutlinePlaylistAdd } from "react-icons/md";
@@ -25,80 +14,145 @@ import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserStatisticsForAdmin } from "../features/testResults/testResultsSlice";
+
+import ReactECharts from "echarts-for-react";
+
 import { useState } from "react";
 
 const Main = () => {
+  const [canShowBar, setCanShowBar] = useState(false);
   const COLORS = ["#1d89e4", "#ffcf00"];
-  const COLORS2 = ["#1d89e4", "#ffcf00"];
 
   const dispatch = useDispatch();
   const { userStatisticsForAdmin } = useSelector(
     ({ testResults }) => testResults
   );
 
-  useEffect(() => {
-    dispatch(getUserStatisticsForAdmin({ id: getUserData().id }));
-  }, [dispatch]);
-
   const adminData = [
-    { name: "Correct", value: userStatisticsForAdmin?.correct_answer_interest },
-    { name: "Incorrect", value: userStatisticsForAdmin?.worning_interest },
-  ];
-
-  const adminData2 = [
     {
-      name: "Page A",
-      pv: 2400,
+      name: "Count of correct answers",
+      value: userStatisticsForAdmin?.correct_answer_count,
     },
     {
-      name: "Page B",
-      pv: 1398,
-    },
-    {
-      name: "Page C",
-      pv: 2000,
+      name: "Count of incorrect answers",
+      value: userStatisticsForAdmin?.worning_count,
     },
   ];
 
   const studentData = [
-    { name: "Correct", value: userStatisticsForAdmin?.correct_answer_interest },
     {
-      name: "Incorrect",
-      value: userStatisticsForAdmin?.worning_interest,
+      name: "Count of correct answers",
+      value: userStatisticsForAdmin?.correct_answer_count,
+    },
+    {
+      name: "Count of incorrect answers",
+      value: userStatisticsForAdmin?.worning_count,
     },
   ];
 
-  const studentData2 = [
-    { name: "Correct", value: userStatisticsForAdmin?.your_accuracy },
-    {
-      name: "Incorrect",
-      value: userStatisticsForAdmin?.peers_accuracy,
-    },
-  ];
+  let option = useMemo(() => {
+    return {
+      title: {
+        text: "",
+        subtext: "",
+      },
+      tooltip: {
+        trigger: "axis",
+      },
+      legend: {
+        data: ["Users count"],
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ["line", "bar"] },
+          restore: { show: true },
+          saveAsImage: { show: true },
+        },
+      },
+      calculable: true,
 
-  useEffect(() => {
-    document.addEventListener("mouseup", handleSelection);
-    return () => {
-      document.removeEventListener("mouseup", handleSelection);
+      xAxis: {
+        type: "category",
+        data: [],
+        axisLabel: {
+          interval: 0,
+          fontSize: "10",
+        },
+      },
+
+      yAxis: [
+        {
+          type: "value",
+        },
+      ],
+      series: {
+        name: "Number of students",
+        type: "bar",
+        data: [],
+        markPoint: {
+          data: [
+            {
+              name: "Your point",
+              value: null,
+              xAxis: null,
+              yAxis: null,
+              itemStyle: {
+                color: "yellow",
+              },
+            },
+            {
+              name: "Minimum point",
+              value: 196,
+              xAxis: 3,
+              yAxis: 1,
+              itemStyle: {
+                color: "black",
+              },
+            },
+          ],
+        },
+      },
     };
   }, []);
 
-  const [highLighted, setHighLighted] = useState("<h1>hello world</h1>");
+  useEffect(() => {
+    dispatch(getUserStatisticsForAdmin({ id: getUserData().id }));
+  }, [dispatch]);
 
-  const handleSelection = () => {
-    const selection = window.getSelection();
-    if (selection.toString()) {
-      const newHighLighted = highLighted?.replace(
-        selection.toString(),
-        `<mark>${selection.toString()}</mark>`
+  useEffect(() => {
+    if (userStatisticsForAdmin.result) {
+      setCanShowBar(true);
+      option.xAxis.data = userStatisticsForAdmin.result.map(
+        (x) => `${x.first_count}-${x.last_count}`
       );
-      setHighLighted(newHighLighted);
+
+      option.series.data = userStatisticsForAdmin.result.map(
+        (series) => series.user_count
+      );
+
+      const maxValue = Math.max(...option.series.data);
+      option.series.markPoint.data[1].yAxis = maxValue;
+
+      const findIndex = userStatisticsForAdmin.result.findIndex(
+        (obj) => obj.user_result !== 0
+      );
+
+      if (findIndex >= 0) {
+        option.series.markPoint.data[0].xAxis = findIndex;
+
+        option.series.markPoint.data[0].yAxis =
+          userStatisticsForAdmin.result[findIndex].user_count;
+
+        option.series.markPoint.data[0].value =
+          userStatisticsForAdmin.result[findIndex].user_result;
+      }
     }
-  };
+  }, [userStatisticsForAdmin, option]);
 
   return (
     <section>
-      {/* <div dangerouslySetInnerHTML={{ __html: highLighted }} /> */}
       <div className="flex items-center gap-8">
         <div className="card w-1/2">
           <div className="flex items-center gap-5">
@@ -139,9 +193,8 @@ const Main = () => {
         {getUserData().role === "admin" ? (
           <>
             <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-            <div className="flex item-center gap-8">
-              <div className="flex items-center gap-10 w-1/2">
-                {console.log(userStatisticsForAdmin)}
+            <div className="flex item-center gap-12 justify-between">
+              <div className="flex items-center  gap-10">
                 <PieChart width={180} height={200}>
                   <Pie
                     data={adminData}
@@ -166,57 +219,31 @@ const Main = () => {
                   <ul>
                     <li className="flex items-center gap-3">
                       <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span> Correct: {adminData[0]?.value}%</span>
+                      <span>
+                        Correct answers:{" "}
+                        <b>
+                          {userStatisticsForAdmin?.correct_answer_interest}%
+                        </b>
+                      </span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span> Incorrect: {adminData[1]?.value}% </span>
+                      <span>
+                        Incorrect answers:{" "}
+                        <b>{userStatisticsForAdmin?.worning_interest}%</b>
+                      </span>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              <div className="flex items-center gap-10 w-1/2">
-                <BarChart
-                  width={300}
-                  height={300}
-                  data={adminData2}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                  barSize={50}
-                >
-                  <XAxis
-                    dataKey="name"
-                    scale="point"
-                    padding={{ left: 10, right: 10 }}
+              <div className="flex items-center gap-10 w-7/12">
+                {canShowBar && (
+                  <ReactECharts
+                    option={option}
+                    style={{ height: "300px", width: "100%" }}
                   />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Bar
-                    dataKey="pv"
-                    fill="#8884d8"
-                    background={{ fill: "#eee" }}
-                  />
-                </BarChart>
-                <div>
-                  <h2 className="text-lg mb-5">Peer Comparison</h2>
-                  <ul>
-                    <li className="flex items-center gap-3 ">
-                      <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span>Your accuracy: 20%</span>
-                    </li>
-                    <li className="flex items-center gap-3 mt-2">
-                      <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span>Peers accuracy: 50%</span>
-                    </li>
-                  </ul>
-                </div>
+                )}
               </div>
             </div>
           </>
@@ -249,41 +276,33 @@ const Main = () => {
                   <ul>
                     <li className="flex items-center gap-3 ">
                       <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span> Correct: {studentData[0].value}%</span>
+                      <span>
+                        {" "}
+                        Correct answers:{" "}
+                        <b>
+                          {userStatisticsForAdmin?.correct_answer_interest}%
+                        </b>
+                      </span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span> Incorrect: {studentData[0].value}%</span>
+                      <span>
+                        {" "}
+                        Incorrect answers:{" "}
+                        <b>{userStatisticsForAdmin?.worning_interest}%</b>
+                      </span>
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="flex items-center gap-10 w-1/2">
-                <BarChart width={150} height={180} data={studentData2}>
-                  <Bar dataKey="value">
-                    {studentData2.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS2[index % COLORS.length]}
-                      />
-                    ))}
-                  </Bar>
-                  <Tooltip />
-                </BarChart>
-                <div>
-                  <h2 className="text-lg mb-5">Peer Comparison</h2>
-                  <ul>
-                    <li className="flex items-center gap-3 ">
-                      <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span>Your accuracy: {studentData2[0].value}%</span>
-                    </li>
-                    <li className="flex items-center gap-3 mt-2">
-                      <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span>Peers accuracy: {studentData2[0].value}%</span>
-                    </li>
-                  </ul>
-                </div>
+                {canShowBar && (
+                  <ReactECharts
+                    option={option}
+                    style={{ height: "300px", width: "100%" }}
+                  />
+                )}
               </div>
             </div>
           </>

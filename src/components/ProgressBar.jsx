@@ -88,23 +88,22 @@ const App = () => {
   const readings = [
     {
       name: "Correct",
-      value: testResults?.correct_answer_interest,
+      value: testResults?.correct_test_interest,
       color: "#1d89e4",
     },
     {
       name: "Incorrect",
-      value: testResults?.worning_interest,
+      value: testResults?.answered_interest,
       color: "#ffcf00",
     },
     {
       name: "unsolved",
-      // value: 50,
+      value: testResults?.unsolved_test_interest,
       color: "#666666",
     },
   ];
   return (
     <div>
-      {console.log(testResults)}
       <MultiColorProgressBar readings={readings} />
     </div>
   );
