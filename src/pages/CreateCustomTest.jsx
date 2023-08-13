@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { startTest } from "../features/pastTest/pastTestSlice";
 import { useEffect } from "react";
 import { getModules } from "../features/modules/moduleSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 import { setItem } from "../features/LocalStorageSlice/LocalStorageSlice";
 import { resetTimer } from "../features/Timer/timerSlice";
 
 const CreateCustomTest = () => {
   const navigate = useNavigate();
 
-  const { answer } = useSelector(({ pastTest }) => pastTest);
   const { moduleList } = useSelector(({ module }) => module);
   const dispatch = useDispatch();
 
   const [isTutor, setIsTutor] = useState(true);
   const [isTimer, setIsTimer] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   const [checkedItems, setCheckedItems] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -64,6 +63,7 @@ const CreateCustomTest = () => {
           modul_ids: selectedModules,
           timer: isTimer,
           tutor: isTutor,
+          is_selected: isSelected,
           user: jsonParseCookie.id,
         })
       ).then((res) => {
@@ -113,6 +113,20 @@ const CreateCustomTest = () => {
             <input
               type="checkbox"
               onChange={() => setIsTimer(!isTimer)}
+              className="sr-only peer"
+            />
+            <div
+              className="w-11 h-6 bg-gray-200 peer-focus:outline-none 
+          rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+            ></div>
+          </label>
+        </div>
+        <div className="flex items-center gap-3">
+          <span>Do not show solved tests:</span>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              onChange={() => setIsSelected(!isSelected)}
               className="sr-only peer"
             />
             <div
