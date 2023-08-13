@@ -122,6 +122,8 @@ const Main = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    setCanShowBar(false);
+
     if (userStatisticsForAdmin.result) {
       setCanShowBar(true);
       option.xAxis.data = userStatisticsForAdmin.result.map(

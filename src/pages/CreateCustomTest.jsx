@@ -167,7 +167,9 @@ const CreateCustomTest = () => {
         <button
           className="btn-primary mt-10"
           onClick={pastTest}
-          disabled={checkedItems.length === 0}
+          disabled={
+            !Object.values(checkedItems).some((value) => value === true)
+          }
         >
           Start Test
         </button>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 // Routes
@@ -11,19 +11,23 @@ import Sidebar from "./common/Sidebar";
 
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
+import { getUserData } from "./auth/jwtService.js";
 
 // toast
 import { ToastContainer } from "react-toastify";
+
+// pages
 import PastTest from "./pages/PassTest/PastTest";
-import { getUserData } from "./auth/jwtService.js";
 import Results from "./pages/PassTest/Results.jsx";
 import Explanation from "./pages/Explanations/Explanation.jsx";
+import LoadingPage from "./pages/LoadingPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    setIsLoading(false);
     if (pathname === "/") {
       navigate(ROUTES.MAIN);
     }
@@ -48,6 +52,8 @@ const App = () => {
       navigate(ROUTES.SINGIN);
     }
   }, [navigate, pathname]);
+
+  if (isLoading) return <LoadingPage />;
 
   return (
     <div>
