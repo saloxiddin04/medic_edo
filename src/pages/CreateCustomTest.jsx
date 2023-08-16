@@ -81,7 +81,7 @@ const CreateCustomTest = () => {
     }
 
     setIsSubmitted(true);
-  };
+    };
 
   useEffect(() => {
     dispatch(getModulesForTest());

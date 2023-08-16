@@ -9,6 +9,7 @@ import { getTests } from "../../features/modules/moduleSlice";
 // icon
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import DeleteModal from "./DeleteModal";
+import Pagination from "../../components/Pagination";
 
 const ModuleTest = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const ModuleTest = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [testToDelete, setTestToDelete] = useState(null);
+
+  const handlePageChange = (page) => {
+    dispatch(getTests({ page_size: 10, page }));
+  };
 
   const handleDeleteModal = (id) => {
     setIsModalOpen(true);
@@ -25,7 +30,7 @@ const ModuleTest = () => {
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
-    dispatch(getTests());
+    dispatch(getTests({ page_size: 10, page: 1 }));
   }, [dispatch]);
 
   return (
@@ -118,6 +123,13 @@ const ModuleTest = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="flex justify-end p-10">
+                <Pagination
+                  totalItems={1000} // Replace with the total number of items you have
+                  itemsPerPage={10} // Replace with the number of items to display per page
+                  onPageChange={handlePageChange} // Pass the handlePageChange function
+                />
+              </div>
             </div>
           </div>
         </div>

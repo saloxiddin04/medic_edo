@@ -32,9 +32,9 @@ export const updateModule = createAsyncThunk(
 
 export const getModules = createAsyncThunk(
   "modules/getModules",
-  async (_, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`test/modul/`);
+      const res = await $axios.get(`test/modul/`, { params });
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -116,9 +116,9 @@ export const updateTest = createAsyncThunk(
 
 export const getTests = createAsyncThunk(
   "modules/getTests",
-  async (_, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`/test/create_test/`);
+      const res = await $axios.get(`/test/create_test/`, { params });
       return res.data;
     } catch (err) {
       toast.error(err.message);
