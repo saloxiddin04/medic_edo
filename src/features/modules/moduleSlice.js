@@ -43,6 +43,19 @@ export const getModules = createAsyncThunk(
   }
 );
 
+export const getModulesForTest = createAsyncThunk(
+  "modules/getModulesForTest",
+  async (_, thunkAPI) => {
+    try {
+      const res = await $axios.get(`test/modul/get_modules_used/`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getModuleById = createAsyncThunk(
   "modules/getModuleById",
   async (id, thunkAPI) => {
@@ -145,6 +158,7 @@ const moduleSlice = createSlice({
   name: "module",
   initialState: {
     moduleList: [],
+    moduleListForTest: [],
     modul: {},
     testList: [],
     test: {},
@@ -198,6 +212,18 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getModuleById.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // modul for test
+    builder.addCase(getModulesForTest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getModulesForTest.fulfilled, (state, { payload }) => {
+      state.moduleListForTest = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getModulesForTest.rejected, (state) => {
       state.isLoading = false;
     });
   },

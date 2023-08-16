@@ -4,7 +4,7 @@ import { ROUTES } from "../Routes/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { startTest } from "../features/pastTest/pastTestSlice";
 import { useEffect } from "react";
-import { getModules } from "../features/modules/moduleSlice";
+import { getModulesForTest } from "../features/modules/moduleSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { setItem } from "../features/LocalStorageSlice/LocalStorageSlice";
 import { resetTimer } from "../features/Timer/timerSlice";
@@ -12,7 +12,7 @@ import { resetTimer } from "../features/Timer/timerSlice";
 const CreateCustomTest = () => {
   const navigate = useNavigate();
 
-  const { moduleList } = useSelector(({ module }) => module);
+  const { moduleListForTest } = useSelector(({ module }) => module);
   const dispatch = useDispatch();
 
   const [isTutor, setIsTutor] = useState(true);
@@ -84,7 +84,7 @@ const CreateCustomTest = () => {
   };
 
   useEffect(() => {
-    dispatch(getModules());
+    dispatch(getModulesForTest());
   }, [dispatch]);
 
   return (
@@ -139,7 +139,7 @@ const CreateCustomTest = () => {
       <hr />
 
       <div className="flex flex-wrap mt-10 mb-5">
-        {moduleList.map((item) => (
+        {moduleListForTest.map((item) => (
           <div className="w-1/2" key={item.id}>
             <label className="mb-2 block cursor-pointer">
               <input
