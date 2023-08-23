@@ -34,13 +34,19 @@ const Module = () => {
 
   return (
     <div className="card">
-      <div className="flex justify-end">
+      <div className="flex justify-between">
         <Link
           to={ROUTES.CREATEMODULE}
           className="btn-primary mt-3 inline-block"
         >
           Create Modul
         </Link>
+
+        <Pagination
+          totalItems={moduleList.count} // Replace with the total number of items you have
+          itemsPerPage={10} // Replace with the number of items to display per page
+          onPageChange={handlePageChange} // Pass the handlePageChange function
+        />
       </div>
       <div className="flex flex-col mt-3">
         <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -77,7 +83,7 @@ const Module = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {moduleList.map((item) => (
+                  {moduleList?.results?.map((item) => (
                     <tr key={item.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         {item.id}
@@ -110,13 +116,6 @@ const Module = () => {
                   ))}
                 </tbody>
               </table>
-              <div className="flex justify-end p-10">
-                <Pagination
-                  totalItems={184} // Replace with the total number of items you have
-                  itemsPerPage={10} // Replace with the number of items to display per page
-                  onPageChange={handlePageChange} // Pass the handlePageChange function
-                />
-              </div>
             </div>
           </div>
         </div>

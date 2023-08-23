@@ -22,12 +22,12 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
         paginationItems.push(
           <li
             key={i}
-            className={`inline-block mx-1 rounded-full border ${
+            className={`inline-block mx-1 rounded border ${
               isActive ? "bg-primary text-white" : "bg-white text-primary"
             }`}
           >
             <button
-              className="py-2 px-4 focus:outline-none"
+              className="py-1 w-8 focus:outline-none"
               onClick={() => handlePageChange(i)}
             >
               {i}

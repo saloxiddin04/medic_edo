@@ -218,7 +218,7 @@ const CreateModuleTest = () => {
         }
       });
     }
-    dispatch(getModules());
+    dispatch(getModules({ page_size: 1000 }));
   }, [dispatch, id]);
 
   return (
@@ -228,7 +228,7 @@ const CreateModuleTest = () => {
           <div>
             <label htmlFor="moduleName">Select Modul</label>
             <Select
-              options={moduleList}
+              options={moduleList?.results}
               getOptionLabel={(modul) => modul.name}
               getOptionValue={(modul) => modul.id}
               onChange={(e) => setData({ ...data, modul_id: e.id })}
