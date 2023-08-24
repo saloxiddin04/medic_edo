@@ -62,7 +62,6 @@ const Results = () => {
 
   useEffect(() => {
     const id = JSON.parse(localStorage.getItem("testID"));
-    console.log(id);
     dispatch(getTestResults(id));
   }, [dispatch]);
 

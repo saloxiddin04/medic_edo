@@ -46,6 +46,20 @@ export const getUserStatisticsForAdmin = createAsyncThunk(
     }
   }
 );
+export const getUserTestHistory = createAsyncThunk(
+  "pastTest/getUserTestHistory",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        `/test/test_result/${payload.id}/user_result_history/`
+      );
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
 
 const testResultsSlice = createSlice({
   name: "testResults",
@@ -59,6 +73,9 @@ const testResultsSlice = createSlice({
     userStatisticsForAdmin: {
       isFilled: false,
     },
+    userTestHistory: {
+      isFilled: false
+    }
   },
 
   extraReducers: (builder) => {
@@ -105,6 +122,20 @@ const testResultsSlice = createSlice({
 
     builder.addCase(getUserStatisticsForAdmin.rejected, (state) => {
       state.userStatisticsForAdmin.isFilled = false;
+    });
+
+    // User test history
+    builder.addCase(getUserTestHistory.pending, (state) => {
+      state.userTestHistory.isFilled = false
+    })
+
+    builder.addCase(getUserTestHistory.fulfilled, (state, {payload}) => {
+      state.userTestHistory = payload
+      state.userTestHistory.isFilled = true
+    })
+
+    builder.addCase(getUserTestHistory.rejected, (state) => {
+      state.userTestHistory.isFilled = false;
     });
   },
 });

@@ -11,4 +11,5 @@ export const ROUTES = {
   RESULTS: "/test-results",
   EXPLANATION: "/explanation/:id",
   NOTFOUND: "*",
+  PROFILE: '/profile'
 };

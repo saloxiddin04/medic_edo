@@ -5,6 +5,7 @@ import pastTestSlice from "./pastTest/pastTestSlice";
 import localStorageSlice from "./LocalStorageSlice/LocalStorageSlice";
 import testResultsSlice from "./testResults/testResultsSlice";
 import timerSlice from "./Timer/timerSlice";
+import userDetailSlice from "./userDetail/userDetailSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     localStorage: localStorageSlice,
     testResults: testResultsSlice,
     timer: timerSlice,
+    userDetail: userDetailSlice
   },
   devTools: true,
   // middleware: (getDefaultMiddleware) =>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 // charts
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
@@ -7,24 +7,25 @@ import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { CgMoveTask } from "react-icons/cg";
 import { GiPlainCircle } from "react-icons/gi";
+import {BiChevronRightCircle} from 'react-icons/bi'
 
 // routes
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserStatisticsForAdmin } from "../features/testResults/testResultsSlice";
+import {getUserStatisticsForAdmin, getUserTestHistory} from "../features/testResults/testResultsSlice";
 
 import ReactECharts from "echarts-for-react";
-
-import { useState } from "react";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
   const COLORS = ["#1d89e4", "#ffcf00"];
 
+  const navigate = useNavigate()
+
   const dispatch = useDispatch();
-  const { userStatisticsForAdmin } = useSelector(
+  const { userStatisticsForAdmin, userTestHistory } = useSelector(
     ({ testResults }) => testResults
   );
 
@@ -119,6 +120,7 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(getUserStatisticsForAdmin({ id: getUserData().id }));
+    dispatch(getUserTestHistory({ id: getUserData().id }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -251,65 +253,163 @@ const Main = () => {
           </>
         ) : (
           <>
-            <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-            <div className="flex item-center gap-8">
-              <div className="flex items-center gap-10 w-1/2">
-                <PieChart width={180} height={200}>
-                  <Pie
-                    data={studentData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {studentData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-                <div>
-                  <h2 className="text-lg mb-5">Your accuracy:</h2>
-                  <ul>
-                    <li className="flex items-center gap-3 ">
-                      <GiPlainCircle className="mt-1 text-primary" size="20" />
-                      <span>
+            <div>
+              <section>
+                <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
+                <div className="flex items-center gap-8">
+                  <div className="flex items-center gap-10 w-1/2">
+                    <PieChart width={180} height={200}>
+                      <Pie
+                        data={studentData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {studentData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                    <div>
+                      <h2 className="text-lg mb-5">Your accuracy:</h2>
+                      <ul>
+                        <li className="flex items-center gap-3 ">
+                          <GiPlainCircle className="mt-1 text-primary" size="20" />
+                          <span>
                         {" "}
-                        Correct answers:{" "}
-                        <b>
+                            Correct answers:{" "}
+                            <b>
                           {userStatisticsForAdmin?.correct_answer_interest}%
                         </b>
                       </span>
-                    </li>
-                    <li className="flex items-center gap-3 mt-2">
-                      <GiPlainCircle className="mt-1 text-yellow" size="20" />
-                      <span>
+                        </li>
+                        <li className="flex items-center gap-3 mt-2">
+                          <GiPlainCircle className="mt-1 text-yellow" size="20" />
+                          <span>
                         {" "}
-                        Incorrect answers:{" "}
-                        <b>{userStatisticsForAdmin?.worning_interest}%</b>
+                            Incorrect answers:{" "}
+                            <b>{userStatisticsForAdmin?.worning_interest}%</b>
                       </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
 
-              <div className="flex items-center gap-10 w-1/2">
-                {canShowBar && (
-                  <ReactECharts
-                    option={option}
-                    style={{ height: "300px", width: "100%" }}
-                  />
-                )}
-              </div>
+                  <div className="flex items-center gap-10 w-1/2">
+                    {canShowBar && (
+                      <ReactECharts
+                        option={option}
+                        style={{ height: "300px", width: "100%" }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </section>
             </div>
           </>
         )}
       </div>
+      {getUserData().role !== 'admin' && (
+        <div className="card mt-8">
+          <div>
+            <section>
+              <div className='flex items-center justify-center text-center gap-8'>
+                <div className='border py-2 px-2.5 rounded'>
+                  <h1>All tests</h1>
+                  <span>{userTestHistory.all_test_count}</span>
+                </div>
+                <div className='border py-2 px-2.5 rounded'>
+                  <h1>Correct answers</h1>
+                  <span>{userTestHistory.correct_answer_count}</span>
+                </div>
+                <div className='border py-2 px-2.5 rounded'>
+                  <h1>Unsolved answers</h1>
+                  <span>{userTestHistory.unsolved_test}</span>
+                </div>
+                <div className='border py-2 px-2.5 rounded'>
+                  <h1>Wrong answers</h1>
+                  <span>{userTestHistory.worning_answer_count}</span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div className='mt-3'>
+            <table className='min-w-full bg-gray-200'>
+              <thead className='bg-gray-50'>
+                <tr>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    id
+                  </th>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Correct answer
+                  </th>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Wrong answer
+                  </th>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Start test
+                  </th>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    End test
+                  </th>
+                  <th
+                    scope={'row'}
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {userTestHistory.isFilled && (
+                userTestHistory.tests_history.map((item, idx) => (
+                  <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.correct_answer_count}</td>
+                    <td>{item.worning_answer_count}</td>
+                    <td>{item.start_date ? item.start_date : '-'}</td>
+                    <td>{item.end_date ? item.end_date : '-'}</td>
+                    <td>
+                      <button
+                        className='mt-2'
+                        onClick={() => {
+                          localStorage.setItem("testID", item.id)
+                          navigate(`/test-results`)
+                        }}
+                      >
+                        <BiChevronRightCircle size='30' color={'#28CD41'}/>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

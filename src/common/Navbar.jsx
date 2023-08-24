@@ -56,6 +56,13 @@ const Navbar = () => {
             <div className="tooltip">
               <div className="shadow-md bg-white py-2 w-full rounded">
                 <Link
+                  to={'/profile'}
+                  className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"
+                >
+                  <span>Profile</span>
+                  <FaUserAlt size="22" />
+                </Link>
+                <Link
                   // to={ROUTES.SINGIN}
                   onClick={logout}
                   className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"

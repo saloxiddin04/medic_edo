@@ -12,12 +12,14 @@ import Module from "../pages/Modules/Module";
 import ModuleTest from "../pages/Tests/ModuleTest";
 import { ROUTES } from "./constants";
 import { getUserData } from "../auth/jwtService";
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
+      <Route path={ROUTES.PROFILE} element={<Profile />} />
       {getUserData() && getUserData().role === "admin" && (
         <>
           {" "}
