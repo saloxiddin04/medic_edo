@@ -1,16 +1,26 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../../Routes/constants";
-import { useDispatch } from "react-redux";
-import { resetTimer } from "../../features/Timer/timerSlice";
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../Routes/constants";
+import {useDispatch, useSelector} from "react-redux";
+import {resetTimer} from "../../features/Timer/timerSlice";
+import {getUserData} from "../../auth/jwtService";
+import {patchTestResult} from "../../features/testResults/testResultsSlice";
 
-const AreYouSure = ({ isModalOpen, closeModal }) => {
+const AreYouSure = ({isModalOpen, closeModal}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {testID} = useSelector((state) => state.localStorage);
   const endTheTest = () => {
     closeModal();
     dispatch(resetTimer());
-    navigate(ROUTES.RESULTS);
+    dispatch(
+      patchTestResult({
+        id: testID,
+        user_id: getUserData().id
+      })
+    ).then(() => {
+      navigate(ROUTES.RESULTS);
+    })
   };
   return (
     <div
@@ -28,7 +38,8 @@ const AreYouSure = ({ isModalOpen, closeModal }) => {
         }
       >
         <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
-        <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+        <div
+          className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
           <div className="bg-gray-100 p-4">
             <h3 className="text-lg font-medium text-gray-900">Warning!</h3>
           </div>

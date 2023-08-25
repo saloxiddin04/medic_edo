@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 export const getTestResults = createAsyncThunk(
   "testResults/getTestResults",
@@ -61,6 +61,21 @@ export const getUserTestHistory = createAsyncThunk(
   }
 );
 
+export const patchTestResult = createAsyncThunk(
+  'pastTest/patchTestResult',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(`/test/test_result/${payload.id}/result_user_statistic_patch/`, {
+        user_id: payload.user_id
+      })
+      return res.data
+    } catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 const testResultsSlice = createSlice({
   name: "testResults",
   initialState: {
@@ -77,63 +92,63 @@ const testResultsSlice = createSlice({
       isFilled: false
     }
   },
-
+  
   extraReducers: (builder) => {
     // Test results
     builder.addCase(getTestResults.pending, (state) => {
       state.testResults.isFilled = false;
     });
-
-    builder.addCase(getTestResults.fulfilled, (state, { payload }) => {
+    
+    builder.addCase(getTestResults.fulfilled, (state, {payload}) => {
       state.testResults = payload;
       state.testResults.isFilled = true;
     });
-
+    
     builder.addCase(getTestResults.rejected, (state) => {
       state.testResults.isFilled = false;
     });
-
+    
     // Explanation
     builder.addCase(getExplanation.pending, (state) => {
       state.explanation.isFilled = false;
     });
-
-    builder.addCase(getExplanation.fulfilled, (state, { payload }) => {
+    
+    builder.addCase(getExplanation.fulfilled, (state, {payload}) => {
       state.explanation = payload;
       state.explanation.isFilled = true;
     });
-
+    
     builder.addCase(getExplanation.rejected, (state) => {
       state.explanation.isFilled = false;
     });
-
+    
     // User statistics for admin
     builder.addCase(getUserStatisticsForAdmin.pending, (state) => {
       state.userStatisticsForAdmin.isFilled = false;
     });
-
+    
     builder.addCase(
       getUserStatisticsForAdmin.fulfilled,
-      (state, { payload }) => {
+      (state, {payload}) => {
         state.userStatisticsForAdmin = payload;
         state.userStatisticsForAdmin.isFilled = true;
       }
     );
-
+    
     builder.addCase(getUserStatisticsForAdmin.rejected, (state) => {
       state.userStatisticsForAdmin.isFilled = false;
     });
-
+    
     // User test history
     builder.addCase(getUserTestHistory.pending, (state) => {
       state.userTestHistory.isFilled = false
     })
-
+    
     builder.addCase(getUserTestHistory.fulfilled, (state, {payload}) => {
       state.userTestHistory = payload
       state.userTestHistory.isFilled = true
     })
-
+    
     builder.addCase(getUserTestHistory.rejected, (state) => {
       state.userTestHistory.isFilled = false;
     });
