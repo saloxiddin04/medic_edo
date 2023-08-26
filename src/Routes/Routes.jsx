@@ -13,6 +13,8 @@ import ModuleTest from "../pages/Tests/ModuleTest";
 import { ROUTES } from "./constants";
 import { getUserData } from "../auth/jwtService";
 import Profile from "../pages/Profile";
+import Users from "../pages/Users";
+import UsersDetail from "../pages/UsersDetail";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +32,8 @@ const AppRoutes = () => {
             path={ROUTES.CREATEMODULETEST}
             element={<CreateModuleTest />}
           />
+          <Route path={ROUTES.USERS} element={<Users/>} />
+          <Route path={ROUTES.USERS_DETAIL} element={<UsersDetail/>} />
         </>
       )}
 

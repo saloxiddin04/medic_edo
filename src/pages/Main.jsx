@@ -11,10 +11,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Legend,
   LabelList,
-  Label,
-  ResponsiveContainer
 } from "recharts";
 
 // icons
@@ -28,19 +25,28 @@ import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {getUserData} from "../auth/jwtService";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserStatisticsForAdmin, getUserTestHistory} from "../features/testResults/testResultsSlice";
+import {
+  allResultModules, getModules, getUsers,
+  getTopFiveStudents, getTopModules,
+  getUserStatisticsForAdmin,
+  getUserTestHistory
+} from "../features/testResults/testResultsSlice";
 
 import ReactECharts from "echarts-for-react";
+import LoadingPage from "./LoadingPage";
+import Select from "react-select";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
+  const [user, setUser] = useState('')
+  const [modulesState, setModules] = useState('')
   const COLORS = ["#1d89e4", "#ffcf00"];
   const TOP_STUDENTS_COLORS = ['#2C728C', '#AAC6D1', '#A7ECF5', '#E6E6E6', '#0092ED']
   
   const navigate = useNavigate()
   
   const dispatch = useDispatch();
-  const {userStatisticsForAdmin, userTestHistory} = useSelector(
+  const {userStatisticsForAdmin, userTestHistory, topFiveStudents, topModules, allTestResultModules, loading, users, modules} = useSelector(
     ({testResults}) => testResults
   );
   
@@ -134,6 +140,11 @@ const Main = () => {
   }, []);
   
   useEffect(() => {
+    dispatch(getTopFiveStudents())
+    dispatch(getTopModules())
+    dispatch(allResultModules())
+    dispatch(getModules())
+    dispatch(getUsers())
     dispatch(getUserStatisticsForAdmin({id: getUserData().id}));
     dispatch(getUserTestHistory({id: getUserData().id}));
   }, [dispatch]);
@@ -170,37 +181,17 @@ const Main = () => {
     }
   }, [userStatisticsForAdmin, option]);
   
-  const data = [
-    {
-      name: "Voucher",
-      remaining: 100,
-      total: 100
-    },
-    {
-      name: "Voucher",
-      remaining: 13,
-      total: 13
-    }, {
-      name: "Voucher",
-      remaining: 13,
-      total: 13
-    }, {
-      name: "Voucher",
-      remaining: 13,
-      total: 13
-    },
-    {
-      name: "Voucher",
-      remaining: 14,
-      total: 14
+  useEffect(() => {
+    if (user || modulesState) {
+      dispatch(allResultModules({user_id: user.id ? user.id : '', modul_id: modulesState.id ? modulesState.id : ''}))
     }
-  ];
+  }, [user, modulesState])
   
   const renderCustomizedLabel = (props) => {
     const {x, y, width, height, value} = props;
-    const offsetNumber = value.toString().length < 5 ? -40 : -80;
+    const offsetNumber = value?.toString()?.length < 5 ? -40 : -80;
     
-    const fireOffset = value.toString().length;
+    const fireOffset = value?.toString()?.length;
     const offset = fireOffset ? offsetNumber : 10;
     
     return (
@@ -214,6 +205,45 @@ const Main = () => {
       </text>
     );
   };
+  
+  const renderCustomizedLabelModules = (props) => {
+    const {x, y, width, height, value} = props;
+    const offsetNumber = value?.toString()?.length < 5 ? -40 : -80;
+    
+    const fireOffset = value?.toString()?.length;
+    const offset = fireOffset ? offsetNumber : 10;
+    
+    return (
+      <text
+        x={x + width - offset}
+        y={y + height - 20}
+        fill="#343B45"
+        textAnchor="end"
+      >
+        {`${value}`}
+      </text>
+    );
+  }
+  const renderCustomizedLabelSort = (props) => {
+    const {x, y, width, height, value} = props;
+    const offsetNumber = value?.toString()?.length < 5 ? -40 : -80;
+    
+    const fireOffset = value?.toString()?.length;
+    const offset = fireOffset ? offsetNumber : 10;
+    
+    return (
+      <text
+        x={x + width - 45}
+        y={y - 10}
+        fill="#343B45"
+        textAnchor="end"
+      >
+        {`${value}`}
+      </text>
+    );
+  }
+  
+  if (loading) return <LoadingPage/>
   
   return (
     <section>
@@ -309,90 +339,98 @@ const Main = () => {
               {/*    />*/}
               {/*  )}*/}
               {/*</div>*/}
-              <BarChart
-                margin={{
-                  top: 5,
-                  right: 50,
-                  left: 20,
-                  bottom: 5
-                }}
-                maxBarsize={100}
-                width={380}
-                height={250}
-                data={data}
-                layout="vertical"
-              >
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis type="number" hide height={10}/>
-                <YAxis
-                  height={10}
-                  type="category"
-                  dataKey="name"
-                  axisLine={true}
-                  tickLine={false}
-                />
-                <Bar
-                  height={10}
-                  dataKey="remaining"
-                  fill="#DBC8A4"
-                  stackId="a"
-                  isAnimationActive={false}
+              
+              <div className='flex flex-col text-center'>
+                <h1>Top 5 students</h1>
+                <BarChart
+                  margin={{
+                    top: 5,
+                    right: 50,
+                    left: 20,
+                    bottom: 5
+                  }}
+                  maxBarsize={100}
+                  width={380}
+                  height={250}
+                  data={topFiveStudents}
+                  layout="vertical"
                 >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={TOP_STUDENTS_COLORS[index % TOP_STUDENTS_COLORS.length]}
-                    />
-                  ))}
-                  <LabelList
-                    dataKey="total"
-                    content={renderCustomizedLabel}
-                    position="insideRight"
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <XAxis type="number" hide height={10}/>
+                  <YAxis
+                    height={10}
+                    type="category"
+                    dataKey="name"
+                    axisLine={true}
+                    tickLine={false}
                   />
-                </Bar>
-              </BarChart>
-              <BarChart
-                margin={{
-                  top: 5,
-                  right: 50,
-                  left: 20,
-                  bottom: 5
-                }}
-                maxBarsize={100}
-                width={380}
-                height={250}
-                data={data}
-                layout="vertical"
-              >
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis type="number" hide height={10}/>
-                <YAxis
-                  height={10}
-                  type="category"
-                  dataKey="name"
-                  axisLine={true}
-                  tickLine={false}
-                />
-                <Bar
-                  height={10}
-                  dataKey="remaining"
-                  fill="#DBC8A4"
-                  stackId="a"
-                  isAnimationActive={false}
+                  <Bar
+                    height={10}
+                    dataKey="value"
+                    fill="#DBC8A4"
+                    stackId="value"
+                    isAnimationActive={false}
+                  >
+                    {topFiveStudents && topFiveStudents.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={TOP_STUDENTS_COLORS[index % TOP_STUDENTS_COLORS.length]}
+                      />
+                    ))}
+                    <LabelList
+                      dataKey="value"
+                      content={renderCustomizedLabel}
+                      position="insideRight"
+                    />
+                  </Bar>
+                </BarChart>
+              </div>
+              
+              <div className='flex flex-col text-center'>
+                <h1>Active modules</h1>
+                <BarChart
+                  margin={{
+                    top: 5,
+                    right: 5,
+                    left: 50,
+                    bottom: 5
+                  }}
+                  width={380}
+                  height={250}
+                  data={topModules}
+                  layout="vertical"
                 >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={TOP_STUDENTS_COLORS[index % TOP_STUDENTS_COLORS.length]}
-                    />
-                  ))}
-                  <LabelList
-                    dataKey="total"
-                    content={renderCustomizedLabel}
-                    position="insideRight"
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <XAxis type="number" hide height={10}/>
+                  <YAxis
+                    height={10}
+                    type="category"
+                    dataKey="modul__name"
+                    axisLine={true}
+                    tickLine={false}
                   />
-                </Bar>
-              </BarChart>
+                  <Bar
+                    height={10}
+                    dataKey="count_moduls"
+                    fill="#DBC8A4"
+                    stackId="a"
+                    isAnimationActive={false}
+                  >
+                    {topModules && topModules.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={TOP_STUDENTS_COLORS[index % TOP_STUDENTS_COLORS.length]}
+                      />
+                    ))}
+                    <LabelList
+                      dataKey="count_moduls"
+                      content={renderCustomizedLabelModules}
+                      position="insideRight"
+                    />
+                  </Bar>
+                </BarChart>
+              </div>
+              
             </div>
           </>
         ) : (
@@ -460,6 +498,50 @@ const Main = () => {
           </>
         )}
       </div>
+      
+      <div className={`card mt-8 ${getUserData().role === 'admin' ? 'block' : 'none'}`}>
+        {getUserData().role === 'admin' && (
+          <>
+            <div className='flex items-center gap-10 mb-5'>
+              <div className='w-1/4'>
+                <label htmlFor="modul">Modules</label>
+                <Select
+                  options={modules?.results}
+                  getOptionLabel={(modul) => modul.name}
+                  getOptionValue={(modul) => modul.id}
+                  onChange={(e) => setModules(e)}
+                  placeholder={modulesState.name}
+                  className='w-full'
+                />
+              </div>
+              <div className='w-1/4'>
+                <label htmlFor="user">Users</label>
+                <Select
+                  options={users?.results}
+                  getOptionLabel={(modul) => modul.name}
+                  getOptionValue={(modul) => modul.id}
+                  onChange={(e) => setUser(e)}
+                  placeholder={user.name}
+                  className='w-full'
+                />
+              </div>
+            </div>
+            <BarChart
+              width={1300}
+              height={400}
+              data={allTestResultModules}
+              margin={{ left: 10, right: 10, top: 30 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
+              <XAxis dataKey="interest" />
+              <Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
+                <LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
+              </Bar>
+            </BarChart>
+          </>
+        )}
+      </div>
+      
       {getUserData().role !== 'admin' && (
         <div className="card mt-8">
           <div>

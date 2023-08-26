@@ -7,9 +7,11 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
   const maxVisiblePages = 8;
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
-    onPageChange(page);
-  };  
+    setCurrentPage(page)
+    onPageChange(page)
+    // console.log(page)
+  };
+  // console.log(currentPage)
 
   const renderPaginationItems = () => {
     const paginationItems = [];

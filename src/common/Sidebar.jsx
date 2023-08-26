@@ -4,6 +4,7 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
+import {FaUserAlt} from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -36,6 +37,15 @@ const Sidebar = () => {
                 >
                   <MdOutlineCreateNewFolder className="mt-1" size="20" />
                   <span>Test</span>
+                </NavLink>
+                <NavLink
+                  activeclassname="active"
+                  to={ROUTES.USERS}
+                  className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+                >
+                  <FaUserAlt size="22" className='mt-1' />
+                  {/*<MdOutlineCreateNewFolder className="mt-1" size="20" />*/}
+                  <span>Users</span>
                 </NavLink>
               </>
             )}

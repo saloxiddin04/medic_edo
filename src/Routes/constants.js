@@ -11,5 +11,7 @@ export const ROUTES = {
   RESULTS: "/test-results",
   EXPLANATION: "/explanation/:id",
   NOTFOUND: "*",
-  PROFILE: '/profile'
+  PROFILE: '/profile',
+  USERS: '/users',
+  USERS_DETAIL: '/users/:id',
 };

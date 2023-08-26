@@ -46,6 +46,22 @@ export const getUserStatisticsForAdmin = createAsyncThunk(
     }
   }
 );
+
+export const getTopFiveStudents = createAsyncThunk(
+  'pastTest/getTopFiveStudents',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        '/test/test_result/top_five_students/'
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 export const getUserTestHistory = createAsyncThunk(
   "pastTest/getUserTestHistory",
   async (payload, thunkAPI) => {
@@ -61,6 +77,21 @@ export const getUserTestHistory = createAsyncThunk(
   }
 );
 
+export const getTopModules = createAsyncThunk(
+  'pastTest/getTopModules',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        '/test/test_result/top_activ_moduls/'
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 export const patchTestResult = createAsyncThunk(
   'pastTest/patchTestResult',
   async (payload, thunkAPI) => {
@@ -72,6 +103,74 @@ export const patchTestResult = createAsyncThunk(
     } catch (err) {
       toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const allResultModules = createAsyncThunk(
+  'pastTest/allTestResultModules',
+  async (payload, thunkAPI) => {
+    try {
+      if (payload?.user_id || payload?.modul_id) {
+        const res = await $axios.get(
+          `/test/test_result/all_moduls_graph/?user_id=${payload.user_id}&modul_id=${payload.modul_id}`,
+        )
+        return res.data
+      } else {
+        const res = await $axios.get(
+          `/test/test_result/all_moduls_graph/`,
+        )
+        return res.data
+      }
+    } catch (e) {
+      console.log(e)
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
+export const getModules = createAsyncThunk(
+  'pastTest/getModules',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        '/test/modul/?page_size=1000'
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
+export const getUsers = createAsyncThunk(
+  'pastTest/getUsers',
+  async (params, thunkAPI) => {
+    try {
+      if (params) {
+        const res = await $axios.get('/users/register/', {params})
+        return res.data
+      } else {
+        const res = await $axios.get('/users/register/?page_size=10000')
+        return res.data
+      }
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
+export const deleteUser = createAsyncThunk(
+  'pastTest/deleteUser',
+  async (payload, thunkAPI) => {
+    try {
+      await $axios.delete(`/users/register/${payload}`)
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
     }
   }
 )
@@ -90,7 +189,8 @@ const testResultsSlice = createSlice({
     },
     userTestHistory: {
       isFilled: false
-    }
+    },
+    loading: false
   },
   
   extraReducers: (builder) => {
@@ -139,6 +239,38 @@ const testResultsSlice = createSlice({
       state.userStatisticsForAdmin.isFilled = false;
     });
     
+    // get top five students
+    builder.addCase(getTopFiveStudents.pending, (state) => {
+      state.loading = true
+    })
+    
+    builder.addCase(getTopFiveStudents.fulfilled,
+      (state, {payload}) => {
+        state.topFiveStudents = payload
+        state.loading = false
+      }
+    )
+    
+    builder.addCase(getTopFiveStudents.rejected, (state) => {
+      state.loading = false
+    })
+    
+    // get top modules
+    builder.addCase(getTopModules.pending, (state) => {
+      state.loading = true
+    })
+    
+    builder.addCase(getTopModules.fulfilled,
+      (state, {payload}) => {
+        state.topModules = payload
+        state.loading = false
+      }
+    )
+    
+    builder.addCase(getTopModules.rejected, (state) => {
+      state.loading = false
+    })
+    
     // User test history
     builder.addCase(getUserTestHistory.pending, (state) => {
       state.userTestHistory.isFilled = false
@@ -152,6 +284,48 @@ const testResultsSlice = createSlice({
     builder.addCase(getUserTestHistory.rejected, (state) => {
       state.userTestHistory.isFilled = false;
     });
+    
+    // get all modules result
+    builder.addCase(allResultModules.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(allResultModules.fulfilled,
+      (state, {payload}) => {
+        state.loading = false
+        state.allTestResultModules = payload
+      }
+    )
+    builder.addCase(allResultModules.rejected, (state) => {
+      state.loading = false
+    })
+    
+    // get modules
+    builder.addCase(getModules.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getModules.fulfilled,
+      (state, {payload}) => {
+        state.modules = payload
+        state.loading = false
+      }
+    )
+    builder.addCase(getModules.rejected, (state) => {
+      state.loading = false
+    })
+    
+    // get users
+    builder.addCase(getUsers.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getUsers.fulfilled,
+      (state, {payload}) => {
+        state.users = payload
+        state.loading = false
+      }
+    )
+    builder.addCase(getUsers.rejected, (state) => {
+      state.loading = false
+    })
   },
 });
 
