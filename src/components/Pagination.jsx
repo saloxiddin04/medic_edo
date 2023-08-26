@@ -1,36 +1,41 @@
-import React, { useState } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import React, {useState} from "react";
+import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
 
-const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
+const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const maxVisiblePages = 8;
-
+  
   const handlePageChange = (page) => {
     setCurrentPage(page)
     onPageChange(page)
-    // console.log(page)
   };
-  // console.log(currentPage)
-
+  
   const renderPaginationItems = () => {
     const paginationItems = [];
-
+    
     if (totalPages <= maxVisiblePages) {
       // Render all pages if the total number of pages is less than or equal to the maximum visible pages
       for (let i = 1; i <= totalPages; i++) {
         const isActive = currentPage === i;
-
+        
         paginationItems.push(
           <li
             key={i}
             className={`inline-block mx-1 rounded border ${
               isActive ? "bg-primary text-white" : "bg-white text-primary"
             }`}
+            onClick={() => {
+              setCurrentPage(i)
+              onPageChange(i)
+            }}
           >
             <button
               className="py-1 w-8 focus:outline-none"
-              onClick={() => handlePageChange(i)}
+              onClick={() => {
+                setCurrentPage(i)
+                onPageChange(i)
+              }}
             >
               {i}
             </button>
@@ -44,7 +49,10 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
         currentPage - Math.floor(maxVisiblePages / 2)
       );
       const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-
+      
+      console.log('else totalPages', totalPages)
+      console.log("else currentPage", currentPage)
+      
       if (startPage > 1) {
         paginationItems.push(
           <li
@@ -63,7 +71,7 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
             </button>
           </li>
         );
-
+        
         if (startPage > 2) {
           paginationItems.push(
             <li key="start-ellipsis">
@@ -72,10 +80,10 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
           );
         }
       }
-
+      
       for (let i = startPage; i <= endPage; i++) {
         const isActive = currentPage === i;
-
+        
         paginationItems.push(
           <li
             key={i}
@@ -92,7 +100,7 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
           </li>
         );
       }
-
+      
       if (endPage < totalPages) {
         if (endPage < totalPages - 1) {
           paginationItems.push(
@@ -101,7 +109,7 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
             </li>
           );
         }
-
+        
         paginationItems.push(
           <li
             key={totalPages}
@@ -121,10 +129,10 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
         );
       }
     }
-
+    
     return paginationItems;
   };
-
+  
   return (
     <ul className="flex items-center mt-4">
       <li>
@@ -133,7 +141,7 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-          <FiChevronLeft />
+          <FiChevronLeft/>
         </button>
       </li>
       {renderPaginationItems()}
@@ -143,7 +151,7 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          <FiChevronRight />
+          <FiChevronRight/>
         </button>
       </li>
     </ul>

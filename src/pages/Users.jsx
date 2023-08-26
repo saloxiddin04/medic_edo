@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../features/testResults/testResultsSlice";
 import Pagination from "../components/Pagination";
@@ -8,6 +8,7 @@ import LoadingPage from "./LoadingPage";
 import {BiChevronRightCircle} from "react-icons/bi";
 import {HiPencil, HiTrash} from 'react-icons/hi'
 import AreYouSureModalDeleteUser from "../components/AreYouSureModalDeleteUser";
+import {ROUTES} from "../Routes/constants";
 
 const Users = () => {
   const navigate = useNavigate()
@@ -36,17 +37,15 @@ const Users = () => {
     dispatch(getUsers({page_size: 10, page: 1}))
   }, [dispatch]);
   
-  if (loading) return <LoadingPage/>
-  
   return (
     <>
-      <div className={'flex justify-between items-center'}>
+      <div className={'card flex justify-between items-center'}>
         <div className='w-1/4'>
           <Select placeholder={'Select'}/>
         </div>
         <div>
           <Pagination
-            totalItems={users?.count}
+            totalItems={users && users.count}
             itemsPerPage={10}
             onPageChange={handlePageChange}
           />

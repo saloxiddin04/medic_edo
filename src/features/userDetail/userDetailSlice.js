@@ -24,7 +24,6 @@ export const patchUserDetail = createAsyncThunk(
         name: payload.name,
         password: payload.password
       })
-      console.log(payload)
       return res.data
     } catch (err) {
       toast.error(err.message);
