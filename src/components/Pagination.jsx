@@ -50,9 +50,6 @@ const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
       );
       const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
       
-      console.log('else totalPages', totalPages)
-      console.log("else currentPage", currentPage)
-      
       if (startPage > 1) {
         paginationItems.push(
           <li
