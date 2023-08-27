@@ -2,16 +2,17 @@ import React, {useEffect, useMemo, useState} from "react";
 
 // charts
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
   Cell,
+  LabelList,
   Pie,
   PieChart,
+  ResponsiveContainer,
   Tooltip,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
-  LabelList, ResponsiveContainer,
 } from "recharts";
 
 // icons
@@ -26,14 +27,16 @@ import {ROUTES} from "../Routes/constants";
 import {getUserData} from "../auth/jwtService";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  allResultModules, getModules, getUsers,
-  getTopFiveStudents, getTopModules,
+  allResultModules,
+  getModules,
+  getTopFiveStudents,
+  getTopModules,
+  getUsers,
   getUserStatisticsForAdmin,
   getUserTestHistory
 } from "../features/testResults/testResultsSlice";
 
 import ReactECharts from "echarts-for-react";
-import LoadingPage from "./LoadingPage";
 import Select from "react-select";
 
 const Main = () => {
@@ -52,7 +55,6 @@ const Main = () => {
     topFiveStudents,
     topModules,
     allTestResultModules,
-    loading,
     users,
     modules
   } = useSelector(
@@ -170,9 +172,8 @@ const Main = () => {
       option.series.data = userStatisticsForAdmin.result.map(
         (series) => series.user_count
       );
-      
-      const maxValue = Math.max(...option.series.data);
-      option.series.markPoint.data[1].yAxis = maxValue;
+
+      option.series.markPoint.data[1].yAxis = Math.max(...option.series.data);
       
       const findIndex = userStatisticsForAdmin.result.findIndex(
         (obj) => obj.user_result !== 0
@@ -194,7 +195,7 @@ const Main = () => {
     if (user || modulesState) {
       dispatch(allResultModules({user_id: user.id ? user.id : '', modul_id: modulesState.id ? modulesState.id : ''}))
     }
-  }, [user, modulesState])
+  }, [user, modulesState, dispatch])
   
   const renderCustomizedLabel = (props) => {
     const {x, y, width, height, value} = props;
@@ -234,11 +235,7 @@ const Main = () => {
     );
   }
   const renderCustomizedLabelSort = (props) => {
-    const {x, y, width, height, value} = props;
-    const offsetNumber = value?.toString()?.length < 5 ? -40 : -80;
-    
-    const fireOffset = value?.toString()?.length;
-    const offset = fireOffset ? offsetNumber : 10;
+    const {x, y, width, value} = props;
     
     return (
       <text
@@ -251,8 +248,6 @@ const Main = () => {
       </text>
     );
   }
-  
-  // if (loading) return <LoadingPage/>
   
   return (
     <section>
@@ -400,8 +395,8 @@ const Main = () => {
                 <BarChart
                   margin={{
                     top: 5,
-                    right: 5,
-                    left: 50,
+                    right: 40,
+                    left: 60,
                     bottom: 5
                   }}
                   width={380}
@@ -535,7 +530,7 @@ const Main = () => {
                 />
               </div>
             </div>
-            <ResponsiveContainer width={'100%'} aspect={3.0/1.0}>
+            <ResponsiveContainer width={'100%'} aspect={3.0}>
               <BarChart
                 height={400}
                 data={allTestResultModules}
@@ -620,7 +615,7 @@ const Main = () => {
               </thead>
               <tbody>
               {userTestHistory.isFilled && (
-                userTestHistory.tests_history.map((item, idx) => (
+                userTestHistory.tests_history.map((item) => (
                   <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
                     <td>{item.id}</td>
                     <td>{item.correct_answer_count}</td>
