@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  LabelList,
+  LabelList, ResponsiveContainer,
 } from "recharts";
 
 // icons
@@ -46,7 +46,16 @@ const Main = () => {
   const navigate = useNavigate()
   
   const dispatch = useDispatch();
-  const {userStatisticsForAdmin, userTestHistory, topFiveStudents, topModules, allTestResultModules, loading, users, modules} = useSelector(
+  const {
+    userStatisticsForAdmin,
+    userTestHistory,
+    topFiveStudents,
+    topModules,
+    allTestResultModules,
+    loading,
+    users,
+    modules
+  } = useSelector(
     ({testResults}) => testResults
   );
   
@@ -243,7 +252,7 @@ const Main = () => {
     );
   }
   
-  if (loading) return <LoadingPage/>
+  // if (loading) return <LoadingPage/>
   
   return (
     <section>
@@ -430,7 +439,7 @@ const Main = () => {
                   </Bar>
                 </BarChart>
               </div>
-              
+            
             </div>
           </>
         ) : (
@@ -526,18 +535,19 @@ const Main = () => {
                 />
               </div>
             </div>
-            <BarChart
-              width={1300}
-              height={400}
-              data={allTestResultModules}
-              margin={{ left: 10, right: 10, top: 30 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
-              <XAxis dataKey="interest" />
-              <Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
-                <LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
-              </Bar>
-            </BarChart>
+            <ResponsiveContainer width={'100%'} aspect={3.0/1.0}>
+              <BarChart
+                height={400}
+                data={allTestResultModules}
+                margin={{left: 10, right: 10, top: 30}}
+              >
+                <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
+                <XAxis dataKey="interest"/>
+                <Bar dataKey="count" fill="#82ca9d" isAnimationActive={true}>
+                  <LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </>
         )}
       </div>

@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, {useState, useEffect, useRef} from "react";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../features/testResults/testResultsSlice";
 import Pagination from "../components/Pagination";
-import Select from "react-select";
-import LoadingPage from "./LoadingPage";
 import {BiChevronRightCircle} from "react-icons/bi";
 import {HiPencil, HiTrash} from 'react-icons/hi'
 import AreYouSureModalDeleteUser from "../components/AreYouSureModalDeleteUser";
-import {ROUTES} from "../Routes/constants";
+import {searchUser} from "../features/testResults/testResultsSlice";
 
 const Users = () => {
   const navigate = useNavigate()
@@ -37,11 +35,24 @@ const Users = () => {
     dispatch(getUsers({page_size: 10, page: 1}))
   }, [dispatch]);
   
+  const timeoutId = useRef()
+  const searchUserfunc = (value) => {
+    clearTimeout(timeoutId.current)
+    timeoutId.current = setTimeout(() => {
+      dispatch(searchUser(value))
+    }, 500)
+  }
+  
   return (
     <>
       <div className={'card flex justify-between items-center'}>
         <div className='w-1/4'>
-          <Select placeholder={'Select'}/>
+          <input
+            className='border focus:border-blue-400 py-2 px-2.5 rounded'
+            type={'text'}
+            onChange={(e) => searchUserfunc(e.target.value)}
+            placeholder={'Select'}
+          />
         </div>
         <div>
           <Pagination
@@ -89,7 +100,7 @@ const Users = () => {
           </thead>
           <tbody>
           {users && (
-            users?.results?.map((item) => (
+            users.results.map((item) => (
               <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.username}</td>

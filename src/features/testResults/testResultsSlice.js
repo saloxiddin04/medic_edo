@@ -175,6 +175,24 @@ export const deleteUser = createAsyncThunk(
   }
 )
 
+export const searchUser = createAsyncThunk(
+  'user/searchUser',
+  async (params, thunkAPI) => {
+    try {
+      if (params) {
+        const res = await $axios.get(`/users/register/?search=${params}`)
+        return res.data
+      } else {
+        const res = await $axios.get(`/users/register/${params}`, {params})
+        return res.data
+      }
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+)
+
 const testResultsSlice = createSlice({
   name: "testResults",
   initialState: {
@@ -324,6 +342,18 @@ const testResultsSlice = createSlice({
       }
     )
     builder.addCase(getUsers.rejected, (state) => {
+      state.loading = false
+    })
+    
+    // search user
+    builder.addCase(searchUser.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(searchUser.fulfilled, (state, {payload}) => {
+      state.loading = false
+      state.users = payload
+    })
+    builder.addCase(searchUser.rejected, (state) => {
       state.loading = false
     })
   },

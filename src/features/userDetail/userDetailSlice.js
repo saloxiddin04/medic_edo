@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 
 export const getUserDetail = createAsyncThunk(
   'user/getUserDetail',
-  async (payload, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`/users/register/${payload}/`)
+      const res = await $axios.get(`/users/register/${params}/`, {params})
       return res.data
     } catch (err) {
       toast.error(err.message);
