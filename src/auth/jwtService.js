@@ -51,7 +51,7 @@ export function getUserData() {
   const cookies = document.cookie.split(";");
   const userCookie = cookies.find((cookie) => cookie.includes("user="));
   
-  if (userCookie) return JSON.parse(userCookie.split("=")[1]);
+  if (userCookie) return JSON.parse(userCookie.split("=")[1] || '{}');
 }
 
 export function refreshToken() {

@@ -38,6 +38,7 @@ import {
 
 import ReactECharts from "echarts-for-react";
 import Select from "react-select";
+import LoadingPage from "./LoadingPage";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
