@@ -7,7 +7,7 @@ import Header from "./Header";
 import {
   clearAnswer,
   getExactTest,
-  getTestsById,
+  getTestsById, patchLineOption,
   submitSelectQuestion,
   submitTheAnswer,
 } from "../../features/pastTest/pastTestSlice";
@@ -152,7 +152,7 @@ const PastTest = () => {
     }
   }, [seconds]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="w-[100wh] h-[100vh] flex justify-center items-center">
         <span className="relative flex h-16 w-16">
@@ -161,6 +161,7 @@ const PastTest = () => {
         </span>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
@@ -235,9 +236,21 @@ const PastTest = () => {
                           : option?.key === selectedAnswer.key &&
                             `text-gray-400`
                       }`
-                }`}
+                } ${option.is_strik ? 'line-through' : ''}`}
                 htmlFor={option.key}
                 key={idx}
+                onDoubleClick={() => {
+                  dispatch(
+                    patchLineOption({
+                      start_test_id: question?.start_test_result,
+                      test_id: question?.id,
+                      option_id: option?.id,
+                      is_strik: !option.is_strik
+                    })
+                  ).then(() => {
+                    dispatch(getTestsById(testID));
+                  })
+                }}
               >
                 <input
                   type="radio"

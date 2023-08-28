@@ -22,17 +22,17 @@ const Profile = () => {
   const [visible, setVisible] = useState(false)
 
   const [focusedDivId, setFocusedDivId] = useState(null);
-
+  
   useEffect(() => {
-    dispatch(getUserDetail(getUserData()?.id))
+    dispatch(getUserDetail(getUserData()))
     localStorage.setItem('username', username);
     localStorage.setItem('name', name);
   }, [dispatch])
 
   useEffect(() => {
-    setUserName(user.username || localStorage.getItem('username') || '');
-    setName(user.name || localStorage.getItem('name') || '');
-  }, [user]);
+    setUserName(user.username ? user.username :  localStorage.getItem('username') || '');
+    setName(user.name ? user.name : localStorage.getItem('name') || '');
+  }, [user, dispatch]);
 
   const handleDivFocus = (divId) => {
     setFocusedDivId(divId);
@@ -121,11 +121,16 @@ const Profile = () => {
           className='py-2 px-4 bg-green-400 text-white rounded text-lg'
           onClick={() => {
             dispatch(patchUserDetail({
-              id: getUserData().id,
+              id: getUserData()?.id,
               username,
               name,
               password
-            }))
+            })).then((res) => {
+              if (res.meta.requestStatus === 'fulfilled') {
+                setPassword('')
+                alert('Profile updated successfully!')
+              }
+            })
           }}
         >
           Save

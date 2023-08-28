@@ -38,7 +38,7 @@ import {
 
 import ReactECharts from "echarts-for-react";
 import Select from "react-select";
-import LoadingPage from "./LoadingPage";
+import {AiOutlineClose} from "react-icons/ai";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
@@ -157,8 +157,8 @@ const Main = () => {
     dispatch(allResultModules())
     dispatch(getModules())
     dispatch(getUsers())
-    dispatch(getUserStatisticsForAdmin({id: getUserData().id}));
-    dispatch(getUserTestHistory({id: getUserData().id}));
+    dispatch(getUserStatisticsForAdmin({id: getUserData()?.id}));
+    dispatch(getUserTestHistory({id: getUserData()?.id}));
   }, [dispatch]);
   
   useEffect(() => {
@@ -194,7 +194,7 @@ const Main = () => {
   
   useEffect(() => {
     if (user || modulesState) {
-      dispatch(allResultModules({user_id: user.id ? user.id : '', modul_id: modulesState.id ? modulesState.id : ''}))
+      dispatch(allResultModules({user_id: user?.id ? user?.id : '', modul_id: modulesState?.id ? modulesState?.id : ''}))
     }
   }, [user, modulesState, dispatch])
   
@@ -289,7 +289,7 @@ const Main = () => {
       </div>
       
       <div className="card mt-8">
-        {getUserData().role === "admin" ? (
+        {getUserData()?.role === "admin" ? (
           <>
             <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
             <div className="flex item-center justify-between">
@@ -504,31 +504,59 @@ const Main = () => {
         )}
       </div>
       
-      <div className={`card mt-8 ${getUserData().role === 'admin' ? 'block' : 'none'}`}>
-        {getUserData().role === 'admin' && (
+      <div className={`card mt-8 ${getUserData()?.role === 'admin' ? 'block' : 'none'}`}>
+        {getUserData()?.role === 'admin' && (
           <>
-            <div className='flex items-center gap-10 mb-5'>
-              <div className='w-1/4'>
-                <label htmlFor="modul">Modules</label>
-                <Select
-                  options={modules?.results}
-                  getOptionLabel={(modul) => modul.name}
-                  getOptionValue={(modul) => modul.id}
-                  onChange={(e) => setModules(e)}
-                  placeholder={modulesState.name}
-                  className='w-full'
-                />
+            <div className='flex items-center gap-[80px] mb-5'>
+              <div className='w-1/3 flex items-end gap-5'>
+                <div className='w-full'>
+                  <label htmlFor="modul">Modules</label>
+                  <Select
+                    options={modules?.results}
+                    getOptionLabel={(modul) => modul.name}
+                    getOptionValue={(modul) => modul.id}
+                    value={modulesState}
+                    onChange={(e) => setModules(e)}
+                    className='w-full'
+                  />
+                </div>
+                <div className='mb-3 cursor-pointer' onClick={() => {
+                  // dispatch(getTopFiveStudents())
+                  dispatch(getTopFiveStudents())
+                  dispatch(getTopModules())
+                  dispatch(allResultModules())
+                  dispatch(getModules())
+                  dispatch(getUsers())
+                  dispatch(getTopModules())
+                  setModules(null)
+                }}>
+                  <AiOutlineClose size={20}/>
+                </div>
               </div>
-              <div className='w-1/4'>
-                <label htmlFor="user">Users</label>
-                <Select
-                  options={users?.results}
-                  getOptionLabel={(modul) => modul.name}
-                  getOptionValue={(modul) => modul.id}
-                  onChange={(e) => setUser(e)}
-                  placeholder={user.name}
-                  className='w-full'
-                />
+              <div className='w-1/3 flex items-end gap-5'>
+                <div className='w-full'>
+                  <label htmlFor="user">Users</label>
+                  <Select
+                    options={users?.results}
+                    getOptionLabel={(modul) => modul.name}
+                    getOptionValue={(modul) => modul.id}
+                    value={user}
+                    onChange={(e) => setUser(e)}
+                    className='w-full'
+                  />
+                </div>
+                <div className='mb-3 cursor-pointer' onClick={() => {
+                  // dispatch(getTopFiveStudents())
+                  dispatch(getTopFiveStudents())
+                  dispatch(getTopModules())
+                  dispatch(allResultModules())
+                  dispatch(getModules())
+                  dispatch(getUsers())
+                  dispatch(getTopModules())
+                  setUser(null)
+                }}>
+                  <AiOutlineClose size={20}/>
+                </div>
               </div>
             </div>
             <ResponsiveContainer width={'100%'} aspect={3.0}>
@@ -548,7 +576,7 @@ const Main = () => {
         )}
       </div>
       
-      {getUserData().role !== 'admin' && (
+      {getUserData()?.role !== 'admin' && (
         <div className="card mt-8">
           <div>
             <section>
@@ -621,8 +649,8 @@ const Main = () => {
                     <td>{item.id}</td>
                     <td>{item.correct_answer_count}</td>
                     <td>{item.worning_answer_count}</td>
-                    <td>{item.start_date ? item.start_date : '-'}</td>
-                    <td>{item.end_date ? item.end_date : '-'}</td>
+                    <td>{item.start_date ? item.start_date?.split('T')[0] : '-'}</td>
+                    <td>{item.end_date ? item.end_date?.split('T')[0] : '-'}</td>
                     <td>
                       <button
                         className='mt-2'

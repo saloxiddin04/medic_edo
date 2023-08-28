@@ -6,8 +6,10 @@ export const getUserDetail = createAsyncThunk(
   'user/getUserDetail',
   async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`/users/register/${params}/`, {params})
-      return res.data
+      if (params?.id) {
+        const res = await $axios.get(`/users/register/${params.id}/`, {params})
+        return res.data
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
@@ -19,11 +21,7 @@ export const patchUserDetail = createAsyncThunk(
   'user/patchUserDetail',
   async (payload, thunkAPI) => {
     try {
-      const res = await $axios.patch(`/users/register/${payload.id}/`, {
-        username: payload.username,
-        name: payload.name,
-        password: payload.password
-      })
+      const res = await $axios.patch(`/users/register/${payload.id}/`, payload)
       return res.data
     } catch (err) {
       toast.error(err.message);

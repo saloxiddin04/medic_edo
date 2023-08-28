@@ -5,6 +5,7 @@ import {getUsers} from "../features/testResults/testResultsSlice";
 import Pagination from "../components/Pagination";
 import {BiChevronRightCircle} from "react-icons/bi";
 import {HiPencil, HiTrash} from 'react-icons/hi'
+import {AiOutlineClose} from 'react-icons/ai'
 import AreYouSureModalDeleteUser from "../components/AreYouSureModalDeleteUser";
 import {searchUser} from "../features/testResults/testResultsSlice";
 
@@ -14,6 +15,7 @@ const Users = () => {
   
   const [modal, setModal] = useState(false)
   const [userId, setUserId] = useState(null)
+  const [searchUserState, setSearchUser] = useState('')
   
   const handleOpenModal = (id) => {
     setUserId(id)
@@ -36,7 +38,8 @@ const Users = () => {
   }, [dispatch]);
   
   const timeoutId = useRef()
-  const searchUserfunc = (value) => {
+  const searchUserFunc = (value) => {
+    setSearchUser(value)
     clearTimeout(timeoutId.current)
     timeoutId.current = setTimeout(() => {
       dispatch(searchUser(value))
@@ -46,13 +49,20 @@ const Users = () => {
   return (
     <>
       <div className={'card flex justify-between items-center'}>
-        <div className='w-1/4'>
+        <div className='w-1/4 flex items-center gap-5'>
           <input
             className='border focus:border-blue-400 py-2 px-2.5 rounded'
             type={'text'}
-            onChange={(e) => searchUserfunc(e.target.value)}
-            placeholder={'Select'}
+            value={searchUserState}
+            onChange={(e) => searchUserFunc(e.target.value)}
+            placeholder={'Search User'}
           />
+          <div onClick={() => {
+            setSearchUser('')
+            dispatch(getUsers({page_size: 10, page: 1}))
+          }}>
+            <AiOutlineClose size={20}/>
+          </div>
         </div>
         <div>
           <Pagination

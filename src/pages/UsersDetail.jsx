@@ -7,14 +7,13 @@ import {getUserDetail, patchUserDetail} from "../features/userDetail/userDetailS
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
-import Select from "react-select";
 
 const UsersDetail = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {userTestHistory} = useSelector(({testResults}) => testResults)
   const {user, loading} = useSelector(({userDetail}) => userDetail)
-  const {id} = useParams()
+  const id = useParams()
   
   const divRef = useRef(null)
   
@@ -28,7 +27,7 @@ const UsersDetail = () => {
   
   useEffect(() => {
     dispatch(getUserDetail(id))
-    dispatch(getUserTestHistory({id}));
+    dispatch(getUserTestHistory(id));
   }, [dispatch, id]);
   
   useEffect(() => {
@@ -126,9 +125,9 @@ const UsersDetail = () => {
                 <label htmlFor="role">Role</label>
                 <select
                   id={'role'}
-                  onFocus={() => handleDivFocus(3)}
+                  onFocus={() => handleDivFocus(4)}
                   onBlur={handleDivBlur}
-                  className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(3) ? 'border-blue-400' : ''}`}
+                  className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(4) ? 'border-blue-400' : ''}`}
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 >
@@ -144,11 +143,16 @@ const UsersDetail = () => {
               className='py-2 px-4 bg-green-400 text-white rounded text-lg'
               onClick={() => {
                 dispatch(patchUserDetail({
-                  id,
+                  id: id.id,
                   username,
                   name,
                   password
-                }))
+                })).then((res) => {
+                  if (res.meta.requestStatus === 'fulfilled') {
+                    setPassword('')
+                    alert('Profile updated successfully!')
+                  }
+                })
               }}
             >
               Save
@@ -228,8 +232,8 @@ const UsersDetail = () => {
                   <td>{item.id}</td>
                   <td>{item.correct_answer_count}</td>
                   <td>{item.worning_answer_count}</td>
-                  <td>{item.start_date ? item.start_date : '-'}</td>
-                  <td>{item.end_date ? item.end_date : '-'}</td>
+                  <td>{item.start_date ? item.start_date?.split("T")[0] : '-'}</td>
+                  <td>{item.end_date ? item.end_date?.split("T")[0] : '-'}</td>
                   <td>
                     <button
                       className='mt-2'

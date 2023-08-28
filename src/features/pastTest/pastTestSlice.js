@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
-import { toast } from "react-toastify";
-import { setItem } from "../LocalStorageSlice/LocalStorageSlice";
+import {toast} from "react-toastify";
+import {setItem} from "../LocalStorageSlice/LocalStorageSlice";
 
 export const startTest = createAsyncThunk(
   "pastTest/startTestPost",
@@ -54,7 +54,7 @@ export const submitTheAnswer = createAsyncThunk(
         `/test/test_result/${payload.id}/test_check/`,
         payload
       );
-      setItem({ key: "testID", value: res.data.id });
+      setItem({key: "testID", value: res.data.id});
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -95,6 +95,22 @@ export const submitSelectQuestion = createAsyncThunk(
   }
 );
 
+export const patchLineOption = createAsyncThunk(
+  'pastTest/line',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(
+        `/test/test_result/strike_effect/`,
+        payload
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 const pastTestSlice = createSlice({
   name: "pastTest",
   initialState: {
@@ -109,19 +125,19 @@ const pastTestSlice = createSlice({
       isFilled: false,
     },
   },
-
+  
   reducers: {
     clearAnswer: (state) => {
       state.answer = null;
     },
   },
-
+  
   extraReducers: (builder) => {
     // get test
-    builder.addCase(getTestsById.pending, (state, { payload }) => {
+    builder.addCase(getTestsById.pending, (state, {payload}) => {
       state.loading = true;
     });
-    builder.addCase(getTestsById.fulfilled, (state, { payload }) => {
+    builder.addCase(getTestsById.fulfilled, (state, {payload}) => {
       state.loading = false;
       state.testList = payload;
       state.testList.isFilled = true;
@@ -130,13 +146,13 @@ const pastTestSlice = createSlice({
       state.testList.isFilled = false;
       state.loading = false;
     });
-
+    
     // get exact test
     builder.addCase(getExactTest.pending, (state) => {
       state.loading = true;
       state.exactTest.isFilled = false;
     });
-    builder.addCase(getExactTest.fulfilled, (state, { payload }) => {
+    builder.addCase(getExactTest.fulfilled, (state, {payload}) => {
       state.loading = false;
       state.exactTest.isFilled = true;
       state.question = payload;
@@ -145,21 +161,32 @@ const pastTestSlice = createSlice({
       state.loading = false;
       state.exactTest.isFilled = false;
     });
-
+    
     // submitTheAnswer
-    builder.addCase(submitTheAnswer.pending, (state, { payload }) => {
+    builder.addCase(submitTheAnswer.pending, (state, {payload}) => {
       state.loading = true;
     });
-    builder.addCase(submitTheAnswer.fulfilled, (state, { payload }) => {
+    builder.addCase(submitTheAnswer.fulfilled, (state, {payload}) => {
       state.loading = false;
       state.answer = payload;
     });
-    builder.addCase(submitTheAnswer.rejected, (state, { payload }) => {
+    builder.addCase(submitTheAnswer.rejected, (state, {payload}) => {
       state.loading = false;
       state.error = payload;
       state.answer = null;
     });
+    
+    // patch for line-through
+    builder.addCase(patchLineOption.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(patchLineOption.fulfilled, (state) => {
+      state.loading = false
+    })
+    builder.addCase(patchLineOption.rejected, (state) => {
+      state.loading = false
+    })
   },
 });
-export const { clearAnswer } = pastTestSlice.actions;
+export const {clearAnswer} = pastTestSlice.actions;
 export default pastTestSlice.reducer;
