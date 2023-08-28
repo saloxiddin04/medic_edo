@@ -24,6 +24,8 @@ export const patchUserDetail = createAsyncThunk(
       const res = await $axios.patch(`/users/register/${payload.id}/`, payload)
       return res.data
     } catch (err) {
+      console.log(err)
+      alert(err.response.data)
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }

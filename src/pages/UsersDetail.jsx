@@ -146,7 +146,8 @@ const UsersDetail = () => {
                   id: id.id,
                   username,
                   name,
-                  password
+                  password,
+                  role
                 })).then((res) => {
                   if (res.meta.requestStatus === 'fulfilled') {
                     setPassword('')
