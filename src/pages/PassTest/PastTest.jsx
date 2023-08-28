@@ -217,7 +217,7 @@ const PastTest = () => {
         {exactTest.isFilled && question?.test_question?.image2 && (
           <img
             src={testList && question?.test_question?.image2}
-            className="w-full h-[50vh] object-cover"
+            className="w-full max-h-[500px] object-cover"
             alt=""
           />
         )}
