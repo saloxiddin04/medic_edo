@@ -567,7 +567,7 @@ const Main = () => {
               >
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
                 <XAxis dataKey="interest"/>
-                <Bar dataKey="count" fill="#82ca9d" isAnimationActive={true}>
+                <Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
                   <LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
                 </Bar>
               </BarChart>
