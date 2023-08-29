@@ -6,7 +6,6 @@ import {getUserData} from "../auth/jwtService";
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
-import {toast} from "react-toastify";
 
 const Profile = () => {
 
@@ -17,8 +16,8 @@ const Profile = () => {
 
   const divRef = useRef(null)
 
-  const [username, setUserName] = useState(user.username ? user.username : '')
-  const [name, setName] = useState(user.name ? user.name : '')
+  const [username, setUserName] = useState(user?.username ? user?.username : '')
+  const [name, setName] = useState(user?.name ? user?.name : '')
   const [password, setPassword] = useState(null)
   const [visible, setVisible] = useState(false)
 
@@ -28,11 +27,11 @@ const Profile = () => {
     dispatch(getUserDetail(getUserData()))
     localStorage.setItem('username', username);
     localStorage.setItem('name', name);
-  }, [dispatch])
+  }, [dispatch, name, username])
 
   useEffect(() => {
-    setUserName(user.username ? user.username :  localStorage.getItem('username') || '');
-    setName(user.name ? user.name : localStorage.getItem('name') || '');
+    setUserName(user?.username ? user?.username :  localStorage.getItem('username') || '');
+    setName(user?.name ? user?.name : localStorage.getItem('name') || '');
   }, [user, dispatch]);
 
   const handleDivFocus = (divId) => {
@@ -126,10 +125,9 @@ const Profile = () => {
               username,
               name,
               password
-            })).then((res) => {
+            }, setPassword)).then((res) => {
               if (res.meta.requestStatus === 'fulfilled') {
                 setPassword('')
-                toast.success('Profile updated successfully!')
               }
             })
           }}

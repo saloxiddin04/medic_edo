@@ -22,11 +22,16 @@ export const patchUserDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await $axios.patch(`/users/register/${payload.id}/`, payload)
+      if (res) {
+        toast.success('Profile updated successfully!')
+      }
       return res.data
     } catch (err) {
-      console.log(err)
-      alert(err.response.data)
-      toast.error(err.message);
+      if (err.response.data.name) {
+        toast.error(err.response.data.name[0])
+      } else if (err.response.data.username) {
+        toast.error(err.response.data.username[0])
+      }
       return thunkAPI.rejectWithValue(err);
     }
   }

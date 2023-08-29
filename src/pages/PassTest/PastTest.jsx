@@ -19,7 +19,7 @@ import { VscError } from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
 
 const PastTest = () => {
-  const { testList, exactTest, loading, question } = useSelector(
+  const { testList, exactTest, question } = useSelector(
     ({ pastTest }) => pastTest
   );
   const { testID, exactTestID } = useSelector((state) => state.localStorage);
