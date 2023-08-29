@@ -152,16 +152,16 @@ const PastTest = () => {
     }
   }, [seconds]);
 
-  if (loading) {
-    return (
-      <div className="w-[100wh] h-[100vh] flex justify-center items-center">
-        <span className="relative flex h-16 w-16">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
-        </span>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="w-[100wh] h-[100vh] flex justify-center items-center">
+  //       <span className="relative flex h-16 w-16">
+  //         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+  //         <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
+  //       </span>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
@@ -248,7 +248,7 @@ const PastTest = () => {
                       is_strik: !option.is_strik
                     })
                   ).then(() => {
-                    dispatch(getTestsById(testID));
+                    dispatch(getExactTest({ id: testID, test_id: exactTestID }))
                   })
                 }}
               >
