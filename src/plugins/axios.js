@@ -2,7 +2,7 @@ import { getAccessToken, logout } from "../auth/jwtService.js";
 import axios from "axios";
 
 const axiosIns = axios.create({
-  // baseURL: "http://172.16.0.133:8001", //local
+  // baseURL: "http://192.168.31.94:8001", //local
   baseURL: "http://95.46.96.74:8011", //server
   timeout: 20000,
 

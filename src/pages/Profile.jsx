@@ -6,6 +6,7 @@ import {getUserData} from "../auth/jwtService";
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
+import {toast} from "react-toastify";
 
 const Profile = () => {
 
@@ -128,7 +129,7 @@ const Profile = () => {
             })).then((res) => {
               if (res.meta.requestStatus === 'fulfilled') {
                 setPassword('')
-                alert('Profile updated successfully!')
+                toast.success('Profile updated successfully!')
               }
             })
           }}

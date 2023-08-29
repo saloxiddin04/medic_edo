@@ -7,6 +7,7 @@ import {getUserDetail, patchUserDetail} from "../features/userDetail/userDetailS
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
+import {toast} from "react-toastify";
 
 const UsersDetail = () => {
   const dispatch = useDispatch()
@@ -151,7 +152,7 @@ const UsersDetail = () => {
                 })).then((res) => {
                   if (res.meta.requestStatus === 'fulfilled') {
                     setPassword('')
-                    alert('Profile updated successfully!')
+                    toast.success('Profile updated successfully!')
                   }
                 })
               }}
