@@ -127,6 +127,15 @@ const Explanation = () => {
                 />
               )}
             </div>
+            <div className="max-w-[50vw] max-h-[500px] overflow-hidden mt-3">
+              {explanation?.test_question?.image3 && (
+                <img
+                  src={explanation?.test_question?.image3}
+                  className="w-full h-full"
+                  alt=""
+                />
+              )}
+            </div>
           </div>
         )}
         <Link to={ROUTES.RESULTS}>

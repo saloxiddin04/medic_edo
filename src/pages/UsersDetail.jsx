@@ -7,7 +7,7 @@ import {getUserDetail, patchUserDetail} from "../features/userDetail/userDetailS
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
-import {toast} from "react-toastify";
+import moment from "moment";
 
 const UsersDetail = () => {
   const dispatch = useDispatch()
@@ -152,7 +152,6 @@ const UsersDetail = () => {
                 })).then((res) => {
                   if (res.meta.requestStatus === 'fulfilled') {
                     setPassword('')
-                    toast.success('Profile updated successfully!')
                   }
                 })
               }}
@@ -234,8 +233,8 @@ const UsersDetail = () => {
                   <td>{item.id}</td>
                   <td>{item.correct_answer_count}</td>
                   <td>{item.worning_answer_count}</td>
-                  <td>{item.start_date ? item.start_date?.split("T")[0] : '-'}</td>
-                  <td>{item.end_date ? item.end_date?.split("T")[0] : '-'}</td>
+                  <td>{item.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td>{item.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
                   <td>
                     <button
                       className='mt-2'

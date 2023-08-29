@@ -9,6 +9,7 @@ import { FcBookmark } from "react-icons/fc";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTestResults } from "../../features/testResults/testResultsSlice";
+import moment from 'moment'
 
 const Results = () => {
   const { testResults } = useSelector(({ testResults }) => testResults);
@@ -78,7 +79,7 @@ const Results = () => {
       <section className="card w-8/12 mt-10 mx-auto">
         <div className="mt-10">
           <h1 className="text-xl font-semibold text-gray-600">
-            Date: {testResults.end_date}
+            Date: {moment(testResults?.end_date).format('DD.MM.YYYY, h:mm:ss')}
           </h1>
           <h1 className=" text-gray-500">ID: {testResults.id}</h1>
           <h1 className="text-lg font-medium text-gray-600">

@@ -27,7 +27,7 @@ const Profile = () => {
     dispatch(getUserDetail(getUserData()))
     localStorage.setItem('username', username);
     localStorage.setItem('name', name);
-  }, [dispatch, name, username])
+  }, [dispatch, user?.name, user?.username])
 
   useEffect(() => {
     setUserName(user?.username ? user?.username :  localStorage.getItem('username') || '');
