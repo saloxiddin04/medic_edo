@@ -30,7 +30,7 @@ import {
   allResultModules,
   getModules,
   getTopFiveStudents,
-  getTopModules,
+  getTopModules, getUserResultCompare,
   getUsers,
   getUserStatisticsForAdmin,
   getUserTestHistory
@@ -57,7 +57,8 @@ const Main = () => {
     topModules,
     allTestResultModules,
     users,
-    modules
+    modules,
+    userResultCompare
   } = useSelector(
     ({testResults}) => testResults
   );
@@ -73,16 +74,16 @@ const Main = () => {
     },
   ];
   
-  const studentData = [
+  const userCompareResult = [
     {
-      name: "Count of correct answers",
-      value: userStatisticsForAdmin?.correct_answer_count,
+      name: 'Peers accuracy',
+      value: userResultCompare?.peers_accuracy
     },
     {
-      name: "Count of incorrect answers",
-      value: userStatisticsForAdmin?.worning_count,
-    },
-  ];
+      name: 'Your accuracy',
+      value: userResultCompare?.your_accuracy
+    }
+  ]
   
   let option = useMemo(() => {
     return {
@@ -159,6 +160,7 @@ const Main = () => {
     dispatch(getUsers())
     dispatch(getUserStatisticsForAdmin({id: getUserData()?.id}));
     dispatch(getUserTestHistory({id: getUserData()?.id}));
+    dispatch(getUserResultCompare({id: getUserData()?.id}))
   }, [dispatch]);
   
   useEffect(() => {
@@ -314,22 +316,24 @@ const Main = () => {
                   <Tooltip/>
                 </PieChart>
                 <div>
-                  <h2 className="text-lg mb-5">Your accuracy:</h2>
+                  <h2 className="text-lg mb-5">Peer Comparison:</h2>
                   <ul>
-                    <li className="flex items-center gap-3">
+                    <li className="flex items-center gap-3 ">
                       <GiPlainCircle className="mt-1 text-primary" size="20"/>
                       <span>
-                        Correct answers:{" "}
+                        {" "}
+                        Correct Answer Count:{" "}
                         <b>
-                          {userStatisticsForAdmin?.correct_answer_interest}%
+                          {userStatisticsForAdmin?.correct_answer_count}
                         </b>
                       </span>
                     </li>
                     <li className="flex items-center gap-3 mt-2">
                       <GiPlainCircle className="mt-1 text-yellow" size="20"/>
                       <span>
-                        Incorrect answers:{" "}
-                        <b>{userStatisticsForAdmin?.worning_interest}%</b>
+                        {" "}
+                        Worning Count:{" "}
+                        <b>{userStatisticsForAdmin?.worning_count}</b>
                       </span>
                     </li>
                   </ul>
@@ -435,7 +439,6 @@ const Main = () => {
                   </Bar>
                 </BarChart>
               </div>
-            
             </div>
           </>
         ) : (
@@ -445,35 +448,46 @@ const Main = () => {
                 <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
                 <div className="flex items-center gap-8">
                   <div className="flex items-center gap-10 w-1/2">
-                    <PieChart width={180} height={200}>
-                      <Pie
-                        data={studentData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {studentData.map((entry, index) => (
+                    {/*<PieChart width={180} height={200}>*/}
+                    {/*  <Pie*/}
+                    {/*    data={studentData}*/}
+                    {/*    cx="50%"*/}
+                    {/*    cy="50%"*/}
+                    {/*    labelLine={false}*/}
+                    {/*    outerRadius={80}*/}
+                    {/*    fill="#8884d8"*/}
+                    {/*    dataKey="peers_accuracy"*/}
+                    {/*  >*/}
+                    {/*    {studentData.map((entry, index) => (*/}
+                    {/*      <Cell*/}
+                    {/*        key={`cell-${index}`}*/}
+                    {/*        fill={COLORS[index % COLORS.length]}*/}
+                    {/*      />*/}
+                    {/*    ))}*/}
+                    {/*  </Pie>*/}
+                    {/*  <Tooltip/>*/}
+                    {/*</PieChart>*/}
+                    <BarChart width={150} height={180} data={userCompareResult}>
+                      <Bar dataKey="value">
+                        {userCompareResult.map((entry, index) => (
                           <Cell
                             key={`cell-${index}`}
                             fill={COLORS[index % COLORS.length]}
                           />
                         ))}
-                      </Pie>
-                      <Tooltip/>
-                    </PieChart>
+                      </Bar>
+                      <Tooltip />
+                    </BarChart>
                     <div>
-                      <h2 className="text-lg mb-5">Your accuracy:</h2>
+                      <h2 className="text-lg mb-5">Peer Comparison:</h2>
                       <ul>
                         <li className="flex items-center gap-3 ">
                           <GiPlainCircle className="mt-1 text-primary" size="20"/>
                           <span>
                         {" "}
-                            Correct answers:{" "}
+                            Peers accuracy:{" "}
                             <b>
-                          {userStatisticsForAdmin?.correct_answer_interest}%
+                          {userResultCompare?.peers_accuracy}%
                         </b>
                       </span>
                         </li>
@@ -481,8 +495,8 @@ const Main = () => {
                           <GiPlainCircle className="mt-1 text-yellow" size="20"/>
                           <span>
                         {" "}
-                            Incorrect answers:{" "}
-                            <b>{userStatisticsForAdmin?.worning_interest}%</b>
+                            Your accuracy:{" "}
+                            <b>{userResultCompare?.your_accuracy}%</b>
                       </span>
                         </li>
                       </ul>

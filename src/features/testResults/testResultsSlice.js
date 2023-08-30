@@ -130,6 +130,21 @@ export const allResultModules = createAsyncThunk(
   }
 )
 
+export const getUserResultCompare = createAsyncThunk(
+  'pastTest/getUserResultCompare',
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        `/test/test_result/${payload.id}/user_result_compare/`
+      )
+      return res.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 export const getModules = createAsyncThunk(
   'pastTest/getModules',
   async (payload, thunkAPI) => {
@@ -354,6 +369,18 @@ const testResultsSlice = createSlice({
       state.users = payload
     })
     builder.addCase(searchUser.rejected, (state) => {
+      state.loading = false
+    })
+    
+    // get user result compare
+    builder.addCase(getUserResultCompare.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getUserResultCompare.fulfilled, (state, {payload}) => {
+      state.loading = false
+      state.userResultCompare = payload
+    })
+    builder.addCase(getUserResultCompare.rejected, (state) => {
       state.loading = false
     })
   },

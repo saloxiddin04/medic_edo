@@ -119,18 +119,18 @@ const Explanation = () => {
               }}
             />
             <div className="max-w-[50vw] max-h-[500px] overflow-hidden">
+              <div className="max-w-[50vw] max-h-[500px] overflow-hidden mt-3">
+                {explanation?.test_question?.image3 && (
+                  <img
+                    src={explanation?.test_question?.image3}
+                    className="w-full h-full"
+                    alt=""
+                  />
+                )}
+              </div>
               {explanation?.test_question?.image && (
                 <img
                   src={explanation?.test_question?.image}
-                  className="w-full h-full"
-                  alt=""
-                />
-              )}
-            </div>
-            <div className="max-w-[50vw] max-h-[500px] overflow-hidden mt-3">
-              {explanation?.test_question?.image3 && (
-                <img
-                  src={explanation?.test_question?.image3}
                   className="w-full h-full"
                   alt=""
                 />
