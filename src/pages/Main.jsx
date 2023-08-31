@@ -340,15 +340,6 @@ const Main = () => {
                 </div>
               </div>
               
-              {/*<div className="flex items-center gap-10 w-7/12">*/}
-              {/*  {canShowBar && (*/}
-              {/*    <ReactECharts*/}
-              {/*      option={option}*/}
-              {/*      style={{ height: "300px", width: "100%" }}*/}
-              {/*    />*/}
-              {/*  )}*/}
-              {/*</div>*/}
-              
               <div className='flex flex-col text-center'>
                 <h1>Top 5 students</h1>
                 <BarChart
@@ -448,25 +439,6 @@ const Main = () => {
                 <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
                 <div className="flex items-center gap-8">
                   <div className="flex items-center gap-10 w-1/2">
-                    {/*<PieChart width={180} height={200}>*/}
-                    {/*  <Pie*/}
-                    {/*    data={studentData}*/}
-                    {/*    cx="50%"*/}
-                    {/*    cy="50%"*/}
-                    {/*    labelLine={false}*/}
-                    {/*    outerRadius={80}*/}
-                    {/*    fill="#8884d8"*/}
-                    {/*    dataKey="peers_accuracy"*/}
-                    {/*  >*/}
-                    {/*    {studentData.map((entry, index) => (*/}
-                    {/*      <Cell*/}
-                    {/*        key={`cell-${index}`}*/}
-                    {/*        fill={COLORS[index % COLORS.length]}*/}
-                    {/*      />*/}
-                    {/*    ))}*/}
-                    {/*  </Pie>*/}
-                    {/*  <Tooltip/>*/}
-                    {/*</PieChart>*/}
                     <BarChart width={150} height={180} data={userCompareResult}>
                       <Bar dataKey="value">
                         {userCompareResult.map((entry, index) => (
@@ -504,12 +476,6 @@ const Main = () => {
                   </div>
                   
                   <div className="flex items-center gap-10 w-1/2">
-                    {/*{canShowBar && (*/}
-                    {/*  <ReactECharts*/}
-                    {/*    option={option}*/}
-                    {/*    style={{height: "300px", width: "100%"}}*/}
-                    {/*  />*/}
-                    {/*)}*/}
                     <PieChart width={180} height={200}>
                       <Pie
                         data={adminData}
@@ -538,7 +504,7 @@ const Main = () => {
                         {" "}
                             Correct Answers:{" "}
                             <b>
-                          {userStatisticsForAdmin?.correct_answer_count}
+                          {userStatisticsForAdmin?.correct_answer_interest}%
                         </b>
                       </span>
                         </li>
@@ -547,7 +513,7 @@ const Main = () => {
                           <span>
                         {" "}
                             Incorrect Answers:{" "}
-                            <b>{userStatisticsForAdmin?.worning_count}</b>
+                            <b>{userStatisticsForAdmin?.worning_interest}%</b>
                       </span>
                         </li>
                       </ul>
