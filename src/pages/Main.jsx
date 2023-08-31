@@ -322,9 +322,9 @@ const Main = () => {
                       <GiPlainCircle className="mt-1 text-primary" size="20"/>
                       <span>
                         {" "}
-                        Correct Answer Count:{" "}
+                        Correct Answers:{" "}
                         <b>
-                          {userStatisticsForAdmin?.correct_answer_count}
+                          {userStatisticsForAdmin?.correct_answer_interest}%
                         </b>
                       </span>
                     </li>
@@ -332,8 +332,8 @@ const Main = () => {
                       <GiPlainCircle className="mt-1 text-yellow" size="20"/>
                       <span>
                         {" "}
-                        Worning Count:{" "}
-                        <b>{userStatisticsForAdmin?.worning_count}</b>
+                        Incorrect Answer:{" "}
+                        <b>{userStatisticsForAdmin?.worning_interest}%</b>
                       </span>
                     </li>
                   </ul>
@@ -504,12 +504,54 @@ const Main = () => {
                   </div>
                   
                   <div className="flex items-center gap-10 w-1/2">
-                    {canShowBar && (
-                      <ReactECharts
-                        option={option}
-                        style={{height: "300px", width: "100%"}}
-                      />
-                    )}
+                    {/*{canShowBar && (*/}
+                    {/*  <ReactECharts*/}
+                    {/*    option={option}*/}
+                    {/*    style={{height: "300px", width: "100%"}}*/}
+                    {/*  />*/}
+                    {/*)}*/}
+                    <PieChart width={180} height={200}>
+                      <Pie
+                        data={adminData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {adminData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip/>
+                    </PieChart>
+                    <div>
+                      <h2 className="text-lg mb-5">Your accuracy:</h2>
+                      <ul>
+                        <li className="flex items-center gap-3 ">
+                          <GiPlainCircle className="mt-1 text-primary" size="20"/>
+                          <span>
+                        {" "}
+                            Correct Answers:{" "}
+                            <b>
+                          {userStatisticsForAdmin?.correct_answer_count}
+                        </b>
+                      </span>
+                        </li>
+                        <li className="flex items-center gap-3 mt-2">
+                          <GiPlainCircle className="mt-1 text-yellow" size="20"/>
+                          <span>
+                        {" "}
+                            Incorrect Answers:{" "}
+                            <b>{userStatisticsForAdmin?.worning_count}</b>
+                      </span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </section>
