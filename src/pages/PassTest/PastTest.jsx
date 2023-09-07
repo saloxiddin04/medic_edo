@@ -238,7 +238,7 @@ const PastTest = () => {
               } ${option.is_strik ? 'line-through' : ''}`}
               htmlFor={option.key}
               key={idx}
-              onDoubleClick={() => {
+              onClick={() => {
                 dispatch(
                   patchLineOption({
                     start_test_id: question?.start_test_result,

@@ -20,7 +20,9 @@ const CreateCustomTest = () => {
   const [isSelected, setIsSelected] = useState(false);
 
   const [checkedItems, setCheckedItems] = useState([]);
+  const [all_modules, setAllModules] = useState(null)
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
 
   const handleCheckboxChange = (event) => {
     const name = event.target.name;
@@ -30,6 +32,23 @@ const CreateCustomTest = () => {
       ...checkedItems,
       [name]: isChecked,
     });
+  };
+  
+  const handleAllModulesChange = (e) => {
+    const isChecked = e.target.checked;
+    setAllModules(isChecked);
+    
+    // If "all modules" is checked, set all individual checkboxes to checked
+    if (isChecked) {
+      const updatedCheckedItems = {};
+      moduleListForTest.forEach((item) => {
+        updatedCheckedItems[item.id] = true;
+      });
+      setCheckedItems(updatedCheckedItems);
+    } else {
+      // If "all modules" is unchecked, clear all individual checkboxes
+      setCheckedItems([]);
+    }
   };
 
   const getCookieItem = (name) => {
@@ -122,7 +141,7 @@ const CreateCustomTest = () => {
           </label>
         </div>
         <div className="flex items-center gap-3">
-          <span>Do not show solved tests:</span>
+          <span>Unused:</span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -137,15 +156,26 @@ const CreateCustomTest = () => {
         </div>
       </div>
       <hr />
-
-      <div className="flex flex-wrap mt-10 mb-5">
+      
+      <div className="w-1/3 mt-5">
+        <label className="mb-2 block cursor-pointer">
+          <input
+            type="checkbox"
+            name={'all_modules'}
+            checked={all_modules}
+            onChange={handleAllModulesChange}
+          />
+          <span className="ml-2 font-bold">All Modules</span>
+        </label>
+      </div>
+      <div className="flex flex-wrap mb-5 ml-4">
         {moduleListForTest.map((item) => (
           <div className="w-1/2" key={item.id}>
             <label className="mb-2 block cursor-pointer">
               <input
                 type="checkbox"
                 name={item.id}
-                checked={checkedItems[item.id] || false}
+                checked={all_modules ? true : checkedItems[item.id] || false}
                 onChange={handleCheckboxChange}
               />
               <span className="ml-2">{item.name}</span>
