@@ -238,18 +238,6 @@ const PastTest = () => {
               } ${option.is_strik ? 'line-through' : ''}`}
               htmlFor={option.key}
               key={idx}
-              onClick={() => {
-                dispatch(
-                  patchLineOption({
-                    start_test_id: question?.start_test_result,
-                    test_id: question?.id,
-                    option_id: option?.id,
-                    is_strik: !option.is_strik
-                  })
-                ).then(() => {
-                  dispatch(getExactTest({id: testID, test_id: exactTestID}))
-                })
-              }}
             >
               <input
                 type="radio"
@@ -265,7 +253,22 @@ const PastTest = () => {
                 onChange={() => currentAnswer(option)}
               />
               <span className="uppercase">{option.key}</span>
-              <span>{option.answer}</span>
+              <span
+                onClick={() => {
+                  dispatch(
+                    patchLineOption({
+                      start_test_id: question?.start_test_result,
+                      test_id: question?.id,
+                      option_id: option?.id,
+                      is_strik: !option.is_strik
+                    })
+                  ).then(() => {
+                    dispatch(getExactTest({id: testID, test_id: exactTestID}))
+                  })
+                }}
+              >
+                {option.answer}
+              </span>
             </label>
           ))}
         </div>
