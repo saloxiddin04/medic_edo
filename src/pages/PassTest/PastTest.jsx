@@ -111,10 +111,10 @@ const PastTest = () => {
     dispatch(getItem({key: "exactTestID"}));
   }, [dispatch]);
   
-  useEffect(() => {
-    dispatch(getTestsById(testID));
-    dispatch(getExactTest({id: testID, test_id: exactTestID}));
-  }, [dispatch, exactTestID, testID]);
+  // useEffect(() => {
+  //   // dispatch(getTestsById(testID));
+  //   // dispatch(getExactTest({id: testID, test_id: exactTestID}));
+  // }, [dispatch, exactTestID, testID]);
   
   const handleSelectionChange = () => {
     const selectedText = window.getSelection().toString();
