@@ -175,7 +175,7 @@ const PastTest = () => {
               key={index}
               className={`${index % 2 === 0 && "bg-gray-300"} 
                 h-6 flex items-center justify-center cursor-pointer ${
-                test?.order_number === countIndex + 1
+                test?.order_number === question?.order_number
                   ? "bg-blue-400 text-white"
                   : ""
               }`}
@@ -183,7 +183,7 @@ const PastTest = () => {
               <div className="flex relative justify-center items-center w-full">
                 <span
                   className={`absolute top-2 left-2 ${
-                    test?.order_number === countIndex + 1
+                    test?.order_number === question?.order_number
                       ? "bg-blue-400 text-white"
                       : "text-dark"
                   }`}
