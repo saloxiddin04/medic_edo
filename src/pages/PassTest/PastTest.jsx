@@ -186,13 +186,13 @@ const PastTest = () => {
         dispatch(
           getExactTest({
             id: testList?.id,
-            test_id: testList?.test_ids[index - 1]?.test_question?.id,
+            test_id: testList?.test_ids[countIndex - 1]?.test_question?.id,
           })
         );
         dispatch(
           setItem({
             key: "exactTestID",
-            value: testList?.test_ids[index - 1]?.test_question?.id,
+            value: testList?.test_ids[countIndex - 1]?.test_question?.id,
           })
         );
         dispatch(clearAnswer());
