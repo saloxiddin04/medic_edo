@@ -152,6 +152,54 @@ const PastTest = () => {
     }
   }, [seconds]);
   
+  const handleStep = (direction) => {
+    if (direction === "next") {
+      setSelectedAnswerAnswer({
+        id: null,
+        key: "",
+        test_question: "",
+      })
+      setCountIndex((prev) => prev + 1);
+      if (testList.count > countIndex + 1) {
+        dispatch(
+          getExactTest({
+            id: testList?.id,
+            test_id: testList?.test_ids[countIndex + 1]?.test_question?.id,
+          })
+        );
+        dispatch(
+          setItem({
+            key: "exactTestID",
+            value: testList?.test_ids[countIndex + 1]?.test_question?.id,
+          })
+        );
+      }
+      dispatch(clearAnswer());
+    } else {
+      setCountIndex((prev) => (prev > 0 ? prev - 1 : 0));
+      setSelectedAnswerAnswer({
+        id: null,
+        key: "",
+        test_question: "",
+      })
+      if (countIndex > 0) {
+        dispatch(
+          getExactTest({
+            id: testList?.id,
+            test_id: testList?.test_ids[index - 1]?.test_question?.id,
+          })
+        );
+        dispatch(
+          setItem({
+            key: "exactTestID",
+            value: testList?.test_ids[index - 1]?.test_question?.id,
+          })
+        );
+        dispatch(clearAnswer());
+      }
+    }
+  };
+  
   // if (loading) {
   //   return (
   //     <div className="w-[100wh] h-[100vh] flex justify-center items-center">
@@ -224,36 +272,39 @@ const PastTest = () => {
         
         <div className="border-primary border-2 mt-10 px-5 w-full">
           {question?.test_question?.options?.map((option, idx) => (
-            <label
-              className={`flex items-center gap-2 cursor-pointer my-5 ${
-                question.is_tutor
-                  ? (option.key === question.wrong_key && `text-danger`) ||
-                  (option.key === question.right_key && `text-success`)
-                  : `${
-                    question?.is_check
-                      ? option?.key === question?.answer && `text-gray-400`
-                      : option?.key === selectedAnswer.key &&
-                      `text-gray-400`
-                  }`
-              } ${option.is_strik ? 'line-through' : ''}`}
-              htmlFor={option.key}
-              key={idx}
-            >
-              <input
-                type="radio"
-                name="keys"
-                id={option.key}
-                value={option.key}
-                disabled={question?.is_check}
-                checked={
-                  question.answer
-                    ? option?.key === question?.answer
-                    : option.id === selectedAnswer.id
-                }
-                onChange={() => currentAnswer(option)}
-              />
-              <span className="uppercase">{option.key}</span>
+            <div key={idx} className='flex items-center gap-2'>
+              <label
+                className={`flex items-center gap-2 cursor-pointer my-5 ${
+                  question.is_tutor
+                    ? (option.key === question.wrong_key && `text-danger`) ||
+                    (option.key === question.right_key && `text-success`)
+                    : `${
+                      question?.is_check
+                        ? option?.key === question?.answer && `text-gray-400`
+                        : option?.key === selectedAnswer.key &&
+                        `text-gray-400`
+                    }`
+                } ${option.is_strik ? 'line-through' : ''}`}
+                htmlFor={option.key}
+                key={idx}
+              >
+                <input
+                  type="radio"
+                  name="keys"
+                  id={option.key}
+                  value={option.key}
+                  disabled={question?.is_check}
+                  checked={
+                    question.answer
+                      ? option?.key === question?.answer
+                      : option.id === selectedAnswer.id
+                  }
+                  onChange={() => currentAnswer(option)}
+                />
+                <span className="uppercase">{option.key}</span>
+              </label>
               <span
+                className={option.is_strik ? 'line-through cursor-pointer' : 'cursor-pointer'}
                 onClick={() => {
                   dispatch(
                     patchLineOption({
@@ -269,16 +320,25 @@ const PastTest = () => {
               >
                 {option.answer}
               </span>
-            </label>
+            </div>
           ))}
         </div>
-        <button
-          className="btn-primary mt-10 inline-block"
-          onClick={() => submitOnClick()}
-          disabled={selectedAnswer?.key === "" || question?.is_check}
-        >
-          Submit the Answer
-        </button>
+        <div className='flex items-center gap-5'>
+          <button
+            className="btn-primary mt-10 inline-block"
+            onClick={() => submitOnClick()}
+            disabled={selectedAnswer?.key === "" || question?.is_check}
+          >
+            Submit the Answer
+          </button>
+          <button
+            className="btn-primary mt-10 inline-block"
+            onClick={() => handleStep('next')}
+            disabled={countIndex + 1 === testList.count}
+          >
+            {loading ? 'Processing...' : 'Next'}
+          </button>
+        </div>
         {question?.is_tutor && question?.is_check && (
           <div className="p-2 mt-4 rounded shadow-lg shadow-blue-400 border border-blue-400">
             {selectedAnswerInput?.value === question?.right_key ? (
