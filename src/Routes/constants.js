@@ -14,4 +14,6 @@ export const ROUTES = {
   PROFILE: '/profile',
   USERS: '/users',
   USERS_DETAIL: '/users/:id',
+  SYSTEM: '/system',
+  CREATE_SYSTEM: '/create-system/:id',
 };

@@ -15,6 +15,8 @@ import { getUserData } from "../auth/jwtService";
 import Profile from "../pages/Profile";
 import Users from "../pages/Users";
 import UsersDetail from "../pages/UsersDetail";
+import System from "../pages/System/System";
+import CreateSystem from "../pages/System/CreateSystem";
 
 const AppRoutes = () => {
   return (
@@ -28,12 +30,14 @@ const AppRoutes = () => {
           <Route path={ROUTES.MODULE} element={<Module />} />
           <Route path={ROUTES.CREATEMODULE} element={<CreateModule />} />
           <Route path={ROUTES.MODULETEST} element={<ModuleTest />} />
+          <Route path={ROUTES.CREATE_SYSTEM} element={<CreateSystem />} />
           <Route
             path={ROUTES.CREATEMODULETEST}
             element={<CreateModuleTest />}
           />
           <Route path={ROUTES.USERS} element={<Users/>} />
           <Route path={ROUTES.USERS_DETAIL} element={<UsersDetail/>} />
+          <Route path={ROUTES.SYSTEM} element={<System/>} />
         </>
       )}
 

@@ -16,6 +16,20 @@ export const createModule = createAsyncThunk(
   }
 );
 
+export const createSystem = createAsyncThunk(
+  "modules/createModule",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.post(`/test/sistema/`, payload);
+      toast.success("successfully created");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const updateModule = createAsyncThunk(
   "modules/updateModule",
   async (payload, thunkAPI) => {
@@ -30,11 +44,38 @@ export const updateModule = createAsyncThunk(
   }
 );
 
+export const updateSystem = createAsyncThunk(
+  "modules/updateModule",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(`/test/sistema/${payload.id}/`, payload);
+      toast.success("successfully updated");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getModules = createAsyncThunk(
   "modules/getModules",
   async (params, thunkAPI) => {
     try {
       const res = await $axios.get(`test/modul/`, { params });
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const getSystems = createAsyncThunk(
+  "modules/getModules",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get(`test/sistema/`, { params });
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -69,11 +110,38 @@ export const getModuleById = createAsyncThunk(
   }
 );
 
+export const getSystemById = createAsyncThunk(
+  "modules/getModuleById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/test/sistema/${id}`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const deleteModul = createAsyncThunk(
   "modules/deleteModul",
   async (id, thunkAPI) => {
     try {
       const res = await $axios.delete(`/test/modul/${id}`);
+      toast.success("successfully deleted");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteSystem = createAsyncThunk(
+  "modules/deleteModul",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.delete(`/test/sistema/${id}`);
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
