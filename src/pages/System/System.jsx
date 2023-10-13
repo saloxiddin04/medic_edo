@@ -9,7 +9,7 @@ import DeleteSystem from "./DeleteSystem";
 
 const System = () => {
   const dispatch = useDispatch();
-  const {moduleList} = useSelector(({module}) => module);
+  const {systemList} = useSelector(({module}) => module);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ModulToDelete, setModulToDelete] = useState(null);
@@ -40,7 +40,7 @@ const System = () => {
         </Link>
         
         <Pagination
-          totalItems={moduleList.count} // Replace with the total number of items you have
+          totalItems={systemList.count} // Replace with the total number of items you have
           itemsPerPage={10} // Replace with the number of items to display per page
           onPageChange={handlePageChange} // Pass the handlePageChange function
         />
@@ -80,7 +80,7 @@ const System = () => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {moduleList?.results?.map((item) => (
+                {systemList?.results?.map((item) => (
                   <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}

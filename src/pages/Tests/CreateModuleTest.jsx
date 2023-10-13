@@ -9,7 +9,7 @@ import {
 } from "react-icons/io";
 import {
   createTest,
-  getModules,
+  getModules, getSystems,
   getTestById,
   updateTest,
 } from "../../features/modules/moduleSlice";
@@ -22,7 +22,7 @@ const CreateModuleTest = () => {
   const { id } = useParams();
 
   // store
-  const { moduleList } = useSelector(({ module }) => module);
+  const { moduleList, systemList } = useSelector(({ module }) => module);
   const dispatch = useDispatch();
 
   // joditEditor
@@ -219,6 +219,7 @@ const CreateModuleTest = () => {
       });
     }
     dispatch(getModules({ page_size: 1000 }));
+    dispatch(getSystems({ page_size: 1000 }));
   }, [dispatch, id]);
 
   return (
@@ -229,6 +230,19 @@ const CreateModuleTest = () => {
             <label htmlFor="moduleName">Select Modul</label>
             <Select
               options={moduleList?.results}
+              getOptionLabel={(modul) => modul.name}
+              getOptionValue={(modul) => modul.id}
+              onChange={(e) => setData({ ...data, modul_id: e.id })}
+              placeholder={data.modul_name}
+            />
+            <p className="text-danger">
+              {showRequired && !data.modul_id && "required"}
+            </p>
+          </div>
+          <div>
+            <label htmlFor="moduleName">Select System</label>
+            <Select
+              options={systemList?.results}
               getOptionLabel={(modul) => modul.name}
               getOptionValue={(modul) => modul.id}
               onChange={(e) => setData({ ...data, modul_id: e.id })}

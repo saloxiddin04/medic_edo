@@ -72,7 +72,7 @@ export const getModules = createAsyncThunk(
 );
 
 export const getSystems = createAsyncThunk(
-  "modules/getModules",
+  "modules/getSystems",
   async (params, thunkAPI) => {
     try {
       const res = await $axios.get(`test/sistema/`, { params });
@@ -226,6 +226,7 @@ const moduleSlice = createSlice({
   name: "module",
   initialState: {
     moduleList: [],
+    systemList: [],
     moduleListForTest: [],
     modul: {},
     testList: [],
@@ -244,6 +245,18 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getModules.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // get systems
+    builder.addCase(getSystems.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSystems.fulfilled, (state, { payload }) => {
+      state.systemList = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getSystems.rejected, (state) => {
       state.isLoading = false;
     });
 
