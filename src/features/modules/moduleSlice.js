@@ -17,7 +17,7 @@ export const createModule = createAsyncThunk(
 );
 
 export const createSystem = createAsyncThunk(
-  "modules/createModule",
+  "modules/createSystem",
   async (payload, thunkAPI) => {
     try {
       const res = await $axios.post(`/test/sistema/`, payload);
@@ -45,7 +45,7 @@ export const updateModule = createAsyncThunk(
 );
 
 export const updateSystem = createAsyncThunk(
-  "modules/updateModule",
+  "modules/updateSystem",
   async (payload, thunkAPI) => {
     try {
       const res = await $axios.patch(`/test/sistema/${payload.id}/`, payload);
@@ -111,7 +111,7 @@ export const getModuleById = createAsyncThunk(
 );
 
 export const getSystemById = createAsyncThunk(
-  "modules/getModuleById",
+  "modules/getSystemById",
   async (id, thunkAPI) => {
     try {
       const res = await $axios.get(`/test/sistema/${id}`);
@@ -138,7 +138,7 @@ export const deleteModul = createAsyncThunk(
 );
 
 export const deleteSystem = createAsyncThunk(
-  "modules/deleteModul",
+  "modules/deleteSystem",
   async (id, thunkAPI) => {
     try {
       const res = await $axios.delete(`/test/sistema/${id}`);
@@ -229,6 +229,7 @@ const moduleSlice = createSlice({
     systemList: [],
     moduleListForTest: [],
     modul: {},
+    system: {},
     testList: [],
     test: {},
     isLoading: false,
@@ -293,6 +294,18 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getModuleById.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // get system by id
+    builder.addCase(getSystemById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSystemById.fulfilled, (state, { payload }) => {
+      state.system = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getSystemById.rejected, (state) => {
       state.isLoading = false;
     });
 
