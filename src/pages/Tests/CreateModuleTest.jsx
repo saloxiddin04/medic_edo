@@ -226,31 +226,33 @@ const CreateModuleTest = () => {
     <form onSubmit={saveDatas} className="card">
       <div className="my-5 flex items-start gap-5">
         <div className="w-1/2">
-          <div>
-            <label htmlFor="moduleName">Select Modul</label>
-            <Select
-              options={moduleList?.results}
-              getOptionLabel={(modul) => modul.name}
-              getOptionValue={(modul) => modul.id}
-              onChange={(e) => setData({ ...data, modul_id: e.id })}
-              placeholder={data.modul_name}
-            />
-            <p className="text-danger">
-              {showRequired && !data.modul_id && "required"}
-            </p>
-          </div>
-          <div>
-            <label htmlFor="moduleName">Select System</label>
-            <Select
-              options={systemList?.results}
-              getOptionLabel={(modul) => modul.name}
-              getOptionValue={(modul) => modul.id}
-              onChange={(e) => setData({ ...data, modul_id: e.id })}
-              placeholder={data.modul_name}
-            />
-            <p className="text-danger">
-              {showRequired && !data.modul_id && "required"}
-            </p>
+          <div className='flex items-center gap-5'>
+            <div className='w-1/2'>
+              <label htmlFor="moduleName">Select Modul</label>
+              <Select
+                options={moduleList?.results}
+                getOptionLabel={(modul) => modul.name}
+                getOptionValue={(modul) => modul.id}
+                onChange={(e) => setData({ ...data, modul_id: e.id })}
+                placeholder={data.modul_name}
+              />
+              <p className="text-danger">
+                {showRequired && !data.modul_id && "required"}
+              </p>
+            </div>
+            <div className='w-1/2'>
+              <label htmlFor="moduleName">Select System</label>
+              <Select
+                options={systemList?.results}
+                getOptionLabel={(modul) => modul.name}
+                getOptionValue={(modul) => modul.id}
+                onChange={(e) => setData({ ...data, modul_id: e.id })}
+                placeholder={data.modul_name}
+              />
+              <p className="text-danger">
+                {showRequired && !data.modul_id && "required"}
+              </p>
+            </div>
           </div>
           {data.options &&
             data.options.map((section, index) => (

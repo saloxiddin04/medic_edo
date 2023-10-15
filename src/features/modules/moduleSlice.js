@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, prepareAutoBatched} from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
 import { toast } from "react-toastify";
 
@@ -86,9 +86,37 @@ export const getSystems = createAsyncThunk(
 
 export const getModulesForTest = createAsyncThunk(
   "modules/getModulesForTest",
-  async (_, thunkAPI) => {
+  async (boolean, thunkAPI) => {
     try {
-      const res = await $axios.get(`test/modul/get_modules_used/`);
+      const res = await $axios.get(`test/modul/get_modules_used/?unused=${boolean}`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const getSystemsForTest = createAsyncThunk(
+  "modules/getSystemsForTest",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        `test/sistema/get_sistems_used/?unused=${params.unused}?modul_ides=${params.modul_ides.length > 0 ? [params.modul_ides] : null}`);
+      console.log('params', params)
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const getQuestionModeForTest = createAsyncThunk(
+  "modules/getQuestionModeForTest",
+  async (boolean, thunkAPI) => {
+    try {
+      const res = await $axios.get(`test/test_result/question_mode_get/?unused=${boolean}`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -228,6 +256,8 @@ const moduleSlice = createSlice({
     moduleList: [],
     systemList: [],
     moduleListForTest: [],
+    systemListForTest: [],
+    questionModeList: [],
     modul: {},
     system: {},
     testList: [],
@@ -318,6 +348,30 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getModulesForTest.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // system for test
+    builder.addCase(getSystemsForTest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSystemsForTest.fulfilled, (state, { payload }) => {
+      state.systemListForTest = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getSystemsForTest.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // question mode for test
+    builder.addCase(getQuestionModeForTest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getQuestionModeForTest.fulfilled, (state, { payload }) => {
+      state.questionModeList = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getQuestionModeForTest.rejected, (state) => {
       state.isLoading = false;
     });
   },

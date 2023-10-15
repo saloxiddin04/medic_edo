@@ -48,7 +48,7 @@
 	vertical-align: middle;
 }
 
-.modal-overflow-scroll th, td {
+.question th, .question td {
 	padding: 5px;
 	border: 1px solid #000000 !important;
 }

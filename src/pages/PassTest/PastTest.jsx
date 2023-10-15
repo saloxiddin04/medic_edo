@@ -255,7 +255,7 @@ const PastTest = () => {
         setSelectedAnswerAnswer={setSelectedAnswerAnswer}
       />
       
-      <div className="mt-20 p-5 overflow-y-auto w-[94%]">
+      <div className="mt-20 p-5 overflow-y-auto w-[94%] question">
         <div
           dangerouslySetInnerHTML={{
             __html: question?.test_question?.question,
@@ -336,7 +336,7 @@ const PastTest = () => {
             onClick={() => handleStep('next')}
             disabled={countIndex + 1 === testList.count}
           >
-            {loading ? 'Processing...' : 'Next'}
+            {'Next'}
           </button>
         </div>
         {question?.is_tutor && question?.is_check && (
