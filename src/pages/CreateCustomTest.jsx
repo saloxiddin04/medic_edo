@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {useDispatch, useSelector} from "react-redux";
@@ -27,10 +27,29 @@ const CreateCustomTest = () => {
   const [all_systems, setAllSystems] = useState(null)
   const [isSubmitted, setIsSubmitted] = useState(false);
   
-  
-  const [checkedItems, setCheckedItems] = useState([]);
-  const [systemItems, setSystemItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([])
+  const [systemItems, setSystemItems] = useState([])
   const [questionMode, setQuestionMode] = useState([])
+  
+  const getAll = useMemo(() => {
+    const selectedModules = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+    const selectedSystems = Object.keys(systemItems).filter(
+      (key) => systemItems[key]
+    );
+    dispatch(getModulesForTest(isSelected));
+    dispatch(getSystemsForTest({
+        unused: isSelected,
+        modul_ides: selectedModules
+      }
+    ));
+    dispatch(getQuestionModeForTest({
+      unused: isSelected,
+      modul_ides: selectedModules,
+      sistema_ides: selectedSystems
+    }));
+  }, [checkedItems, systemItems, questionMode])
   
   const handleCheckboxChange = (event) => {
     const name = event.target.name;
@@ -40,12 +59,12 @@ const CreateCustomTest = () => {
       ...checkedItems,
       [name]: isChecked,
     });
+    setSystemItems([])
   };
   
   const handleSystemChange = (event) => {
     const name = event.target.name;
     const isChecked = event.target.checked;
-    
     
     setSystemItems({
       ...systemItems,
@@ -62,26 +81,45 @@ const CreateCustomTest = () => {
       [name]: isChecked,
     });
   };
-  
-  const result = Object.keys(checkedItems).map((key) => ({
-    [key]: Object.keys(systemItems).filter((sysKey) => systemItems[sysKey]).map(Number),
-  }));
-  
-  // console.log('result', result)
+
+  const handleUnusedChange = (e) => {
+    setIsSelected(e.target.checked)
+    const selectedModules = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+    const selectedSystems = Object.keys(systemItems).filter(
+      (key) => systemItems[key]
+    );
+    dispatch(getModulesForTest(e.target.checked));
+    dispatch(getSystemsForTest({
+        unused: e.target.checked,
+        modul_ides: selectedModules
+      }
+    ));
+    dispatch(getQuestionModeForTest({
+      unused: e.target.checked,
+      modul_ides: selectedModules,
+      sistema_ides: selectedSystems
+    }));
+  }
   
   const handleAllModulesChange = (e) => {
     const isChecked = e.target.checked;
     setAllModules(isChecked);
+    setAllSystems(isChecked);
     
-    // If "all modules" is checked, set all individual checkboxes to checked
     if (isChecked) {
       const updatedCheckedItems = {};
       moduleListForTest.forEach((item) => {
         updatedCheckedItems[item.id] = true;
       });
+      const updatedCheckedSystems = {};
+      systemListForTest?.forEach((item) => {
+        updatedCheckedSystems[item.id] = true;
+      });
+      setSystemItems(updatedCheckedSystems);
       setCheckedItems(updatedCheckedItems);
     } else {
-      // If "all modules" is unchecked, clear all individual checkboxes
       setCheckedItems([]);
     }
   };
@@ -90,7 +128,6 @@ const CreateCustomTest = () => {
     const isChecked = e.target.checked;
     setAllSystems(isChecked);
     
-    // If "all modules" is checked, set all individual checkboxes to checked
     if (isChecked) {
       const updatedCheckedItems = {};
       systemListForTest?.forEach((item) => {
@@ -98,7 +135,6 @@ const CreateCustomTest = () => {
       });
       setSystemItems(updatedCheckedItems);
     } else {
-      // If "all modules" is unchecked, clear all individual checkboxes
       setSystemItems([]);
     }
   };
@@ -126,12 +162,19 @@ const CreateCustomTest = () => {
     const selectedModules = Object.keys(checkedItems).filter(
       (key) => checkedItems[key]
     );
+    const questionModeFilter = Object.keys(questionMode).filter(
+      (key) => questionMode[key].map(Number)
+    );
+    const result = Object.keys(checkedItems).map((key) => ({
+      [key]: Object.keys(systemItems).filter((sysKey) => systemItems[sysKey]).map(Number),
+    }));
     handleReset();
     
     if (selectedModules.length > 0) {
       dispatch(
         startTest({
-          modul_ids: selectedModules,
+          user_selected: result,
+          question_mode: questionModeFilter,
           timer: isTimer,
           tutor: isTutor,
           is_selected: isSelected,
@@ -154,29 +197,29 @@ const CreateCustomTest = () => {
     setIsSubmitted(true);
   };
   
-  useEffect(() => {
-    const selectedModules = Object.keys(checkedItems).filter(
-      (key) => checkedItems[key]
-    );
-    dispatch(getSystemsForTest({
-        unused: isSelected,
-        modul_ides: selectedModules
-      }
-    ));
-  }, [checkedItems])
   
-  useEffect(() => {
-    // const selectedModules = Object.keys(checkedItems).filter(
-    //   (key) => checkedItems[key]
-    // );
-    dispatch(getModulesForTest(isSelected));
-    // dispatch(getSystemsForTest({
-    //     unused: isSelected,
-    //     modul_ides: selectedModules
-    //   }
-    // ));
-    dispatch(getQuestionModeForTest(isSelected))
-  }, [dispatch, isSelected]);
+  
+  // --------------------------------
+  const [selectedText, setSelectedText] = useState("");
+  
+  // const handleSelectionChange = () => {
+  //   const selectedTextWindow = window.getSelection().toString();
+  //   const selection = window.getSelection();
+  //   const firstIndex = selection.anchorOffset;
+  //   const lastIndex = selection.focusOffset;
+  //
+  //   console.log("Selected Text:", selectedTextWindow);
+  //   console.log("First Index:", firstIndex);
+  //   console.log("Last Index:", lastIndex);
+  // };
+  //
+  // useEffect(() => {
+  //   window.addEventListener("mousemove", handleSelectionChange);
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleSelectionChange);
+  //   };
+  // }, []);
+  // --------------------------------
   
   return (
     <>
@@ -218,7 +261,7 @@ const CreateCustomTest = () => {
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                onChange={() => setIsSelected(!isSelected)}
+                onChange={handleUnusedChange}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none
@@ -230,7 +273,7 @@ const CreateCustomTest = () => {
         <hr/>
         
         <div className="w-1/3 mt-5">
-          <label className="mb-2 block cursor-pointer">
+          <label className="mb-2 inline-block cursor-pointer">
             <input
               type="checkbox"
               name={'all_modules'}
@@ -243,12 +286,12 @@ const CreateCustomTest = () => {
         <div className="flex flex-wrap mb-5 ml-4">
           {moduleListForTest.map((item) => (
             <div className="w-1/2" key={item.id}>
-              <label className="mb-2 block cursor-pointer">
+              <label className="mb-2 inline-block cursor-pointer">
                 <input
                   type="checkbox"
                   name={item.id}
                   disabled={item.count === 0}
-                  checked={all_modules ? true : checkedItems[item.id] || false}
+                  checked={item.count === 0 ? false : checkedItems[item.id] || false}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-2">{item.name}
@@ -265,7 +308,7 @@ const CreateCustomTest = () => {
         <hr/>
         
         <div className="w-1/3 mt-5">
-          <label className="mb-2 block cursor-pointer">
+          <label className="mb-2 inline-block cursor-pointer">
             <input
               type="checkbox"
               name={'all_systems'}
@@ -278,16 +321,17 @@ const CreateCustomTest = () => {
         <div className="flex flex-wrap mb-5 ml-4">
           {systemListForTest?.length > 0 && systemListForTest?.map((item) => (
             <div className="w-1/2" key={item.id}>
-              <label className="mb-2 block cursor-pointer">
+              <label className="mb-2 inline-block cursor-pointer">
                 <input
                   type="checkbox"
                   name={item.id}
-                  checked={all_systems ? true : systemItems[item.id] || false}
+                  checked={item.count === 0 ? false : systemItems[item.id] || false}
                   onChange={handleSystemChange}
                   disabled={item.count === 0}
                 />
-                <span className="ml-2">{item.name} <span
-                  className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span></span>
+                <span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>{item.name}
+                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                </span>
               </label>
             </div>
           ))}
@@ -301,16 +345,18 @@ const CreateCustomTest = () => {
         <div className="flex flex-wrap mb-5 ml-4 mt-2">
           {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
             <div className="w-1/2" key={item.name}>
-              <label className="mb-2 block cursor-pointer">
+              <label className="mb-2 inline-block cursor-pointer">
                 <input
                   type="checkbox"
-                  name={item.name}
+                  name={item.id}
                   disabled={item.count === 0}
-                  checked={questionMode[item.name] || false}
+                  checked={item.count === 0 ? false : questionMode[item.id] || false}
                   onChange={handleQuestionModeChange}
                 />
-                <span className="ml-2">{item.name} <span
-                  className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span></span>
+                <span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>
+                  {item.name}
+                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                </span>
               </label>
             </div>
           ))}
@@ -330,7 +376,11 @@ const CreateCustomTest = () => {
             className="btn-primary mt-10"
             onClick={pastTest}
             disabled={
-              !Object.values(checkedItems).some((value) => value === true)
+              (
+                !Object.values(checkedItems).some((key) => key === true) ||
+                !Object.values(systemItems).some((key) => key === true)
+              )
+              // !Object.values(checkedItems).some((value) => value === true)
             }
           >
             Start Test

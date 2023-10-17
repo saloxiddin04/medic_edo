@@ -131,6 +131,9 @@ const PastTest = () => {
   const timeoutId = useRef(null);
   const selectedQuestion = () => {
     if (selectedText) {
+      const str = selectedText
+      const indexOfE = str.indexOf(str);
+      console.log(indexOfE)
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => {
         dispatch(

@@ -44,6 +44,7 @@ const CreateModuleTest = () => {
   const [data, setData] = useState({
     id: null,
     modul_id: null,
+    sistema_id: null,
     image: null,
     image2: null,
     image3: null,
@@ -131,6 +132,7 @@ const CreateModuleTest = () => {
       const formData = new FormData();
       formData.append("id", data.id);
       formData.append("modul_id", data.modul_id);
+      formData.append("sistema_id", data.sistema_id);
       formData.append("question", data.question);
       formData.append("correct_answer", data.correct_answer);
       formData.append("correct_answer_key", data.correct_answer_key);
@@ -177,7 +179,9 @@ const CreateModuleTest = () => {
     modul_id,
     question,
     modul_name,
-    modul_unique_name
+    modul_unique_name,
+    sistema_id,
+    sistema_name,
   ) => {
     setData({
       id,
@@ -191,6 +195,8 @@ const CreateModuleTest = () => {
       question,
       modul_name,
       modul_unique_name,
+      sistema_id,
+      sistema_name,
     });
   };
 
@@ -210,7 +216,9 @@ const CreateModuleTest = () => {
             payload.modul,
             payload.question,
             payload.modul_name,
-            payload.modul_unique_name
+            payload.modul_unique_name,
+            payload.sistema,
+            payload.sistema_name
           );
           setImageName(payload.image_name);
           setImageName2(payload.image2_name);
@@ -221,6 +229,8 @@ const CreateModuleTest = () => {
     dispatch(getModules({ page_size: 1000 }));
     dispatch(getSystems({ page_size: 1000 }));
   }, [dispatch, id]);
+  
+  console.log(data)
 
   return (
     <form onSubmit={saveDatas} className="card">
@@ -246,8 +256,8 @@ const CreateModuleTest = () => {
                 options={systemList?.results}
                 getOptionLabel={(modul) => modul.name}
                 getOptionValue={(modul) => modul.id}
-                onChange={(e) => setData({ ...data, modul_id: e.id })}
-                placeholder={data.modul_name}
+                onChange={(e) => setData({ ...data, sistema_id: e.id })}
+                placeholder={data.sistema_name}
               />
               <p className="text-danger">
                 {showRequired && !data.modul_id && "required"}
