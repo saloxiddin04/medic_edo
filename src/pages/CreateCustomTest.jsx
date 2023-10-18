@@ -59,7 +59,6 @@ const CreateCustomTest = () => {
       ...checkedItems,
       [name]: isChecked,
     });
-    setSystemItems([])
   };
   
   const handleSystemChange = (event) => {
@@ -163,7 +162,7 @@ const CreateCustomTest = () => {
       (key) => checkedItems[key]
     );
     const questionModeFilter = Object.keys(questionMode).filter(
-      (key) => questionMode[key].map(Number)
+      (key) => questionMode[key]
     );
     const result = Object.keys(checkedItems).map((key) => ({
       [key]: Object.keys(systemItems).filter((sysKey) => systemItems[sysKey]).map(Number),
