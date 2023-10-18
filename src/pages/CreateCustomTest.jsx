@@ -196,30 +196,6 @@ const CreateCustomTest = () => {
     setIsSubmitted(true);
   };
   
-  
-  
-  // --------------------------------
-  const [selectedText, setSelectedText] = useState("");
-  
-  // const handleSelectionChange = () => {
-  //   const selectedTextWindow = window.getSelection().toString();
-  //   const selection = window.getSelection();
-  //   const firstIndex = selection.anchorOffset;
-  //   const lastIndex = selection.focusOffset;
-  //
-  //   console.log("Selected Text:", selectedTextWindow);
-  //   console.log("First Index:", firstIndex);
-  //   console.log("Last Index:", lastIndex);
-  // };
-  //
-  // useEffect(() => {
-  //   window.addEventListener("mousemove", handleSelectionChange);
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleSelectionChange);
-  //   };
-  // }, []);
-  // --------------------------------
-  
   return (
     <>
       <div className="card">

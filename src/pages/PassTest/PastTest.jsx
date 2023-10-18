@@ -119,6 +119,9 @@ const PastTest = () => {
   const handleSelectionChange = () => {
     const selectedText = window.getSelection().toString();
     setSelectedText(selectedText);
+    const selection = window.getSelection();
+    const firstIndex = selection.anchorOffset;
+    const lastIndex = selection.focusOffset;
   };
   
   useEffect(() => {
@@ -131,15 +134,17 @@ const PastTest = () => {
   const timeoutId = useRef(null);
   const selectedQuestion = () => {
     if (selectedText) {
-      const str = selectedText
-      const indexOfE = str.indexOf(str);
-      console.log(indexOfE)
+      const selection = window.getSelection();
+      const firstIndex = selection.anchorOffset;
+      const lastIndex = selection.focusOffset;
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => {
         dispatch(
           submitSelectQuestion({
             id: question?.id,
             text: selectedText,
+            first_index: firstIndex,
+            last_index: lastIndex
           })
         ).then(() => {
           dispatch(getExactTest({id: testID, test_id: exactTestID}));
