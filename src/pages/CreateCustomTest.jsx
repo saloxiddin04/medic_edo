@@ -164,9 +164,11 @@ const CreateCustomTest = () => {
     const questionModeFilter = Object.keys(questionMode).filter(
       (key) => questionMode[key]
     );
-    const result = Object.keys(checkedItems).map((key) => ({
-      [key]: Object.keys(systemItems).filter((sysKey) => systemItems[sysKey]).map(Number),
-    }));
+    const result = Object.keys(checkedItems)
+      .filter(key => checkedItems[key] === true)
+      .map(key => ({
+        [key]: Object.keys(systemItems).filter(sysKey => systemItems[sysKey]).map(Number),
+      }));
     handleReset();
     
     if (selectedModules.length > 0) {
@@ -317,18 +319,18 @@ const CreateCustomTest = () => {
         <h1 className="text-xl">Question Mode</h1>
         <hr/>
         
-        <div className="flex flex-wrap mb-5 ml-4 mt-2">
+        <div className="mb-5 ml-4 mt-2">
           {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
             <div className="w-1/2" key={item.name}>
               <label className="mb-2 inline-block cursor-pointer">
                 <input
                   type="checkbox"
                   name={item.id}
-                  disabled={item.count === 0}
+                  disabled={item.count === 0 || item.name === 'Unused'}
                   checked={item.count === 0 ? false : questionMode[item.id] || false}
                   onChange={handleQuestionModeChange}
                 />
-                <span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>
+                <span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
                   {item.name}
                   <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
                 </span>

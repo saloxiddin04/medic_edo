@@ -119,9 +119,6 @@ const PastTest = () => {
   const handleSelectionChange = () => {
     const selectedText = window.getSelection().toString();
     setSelectedText(selectedText);
-    const selection = window.getSelection();
-    const firstIndex = selection.anchorOffset;
-    const lastIndex = selection.focusOffset;
   };
   
   useEffect(() => {
@@ -312,7 +309,12 @@ const PastTest = () => {
                 <span className="uppercase">{option.key}</span>
               </label>
               <span
-                className={option.is_strik ? 'line-through cursor-pointer' : 'cursor-pointer'}
+                className={option.is_strik ?
+                  `line-through cursor-pointer ${
+                    question.is_tutor
+                      && (option.key === question.wrong_key && `text-danger`)}` : `cursor-pointer ${
+                    question.is_tutor
+                    && (option.key === question.right_key && `text-success`)}`}
                 onClick={() => {
                   dispatch(
                     patchLineOption({
@@ -348,7 +350,7 @@ const PastTest = () => {
           </button>
         </div>
         {question?.is_tutor && question?.is_check && (
-          <div className="p-2 mt-4 rounded shadow-lg shadow-blue-400 border border-blue-400">
+          <div className="p-2 my-4 rounded shadow-lg shadow-blue-400 border border-blue-400">
             {selectedAnswerInput?.value === question?.right_key ? (
               <FaCheck
                 className="text-4xl m-auto"
@@ -363,6 +365,12 @@ const PastTest = () => {
               />
             )}
           </div>
+        )}
+        {question?.test_question.image3 && (
+          <img src={question?.test_question.image3} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
+        )}
+        {question?.test_question.image && (
+          <img src={question?.test_question.image} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
         )}
         {question?.is_tutor && (
           <div className="py-10 overflow-y-auto">
@@ -380,12 +388,6 @@ const PastTest = () => {
                     }}
                   />
                 </div>
-                {question?.test_question.image3 && (
-                  <img src={question?.test_question.image3} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
-                )}
-                {question?.test_question.image && (
-                  <img src={question?.test_question.image} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
-                )}
               </div>
             )}
           </div>
