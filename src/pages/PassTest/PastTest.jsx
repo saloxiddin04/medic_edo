@@ -309,12 +309,17 @@ const PastTest = () => {
                 <span className="uppercase">{option.key}</span>
               </label>
               <span
-                className={option.is_strik ?
-                  `line-through cursor-pointer ${
-                    question.is_tutor
-                    && (option.key === question.wrong_key && `text-danger`)}` : `cursor-pointer ${
-                    question.is_tutor
-                    && (option.key === question.right_key && `text-success`)}`}
+                className={`cursor-pointer ${
+                  question.is_tutor
+                    ? (option.key === question.wrong_key && `text-danger`) ||
+                    (option.key === question.right_key && `text-success`)
+                    : `${
+                      question?.is_check
+                        ? option?.key === question?.answer && `text-gray-400`
+                        : option?.key === selectedAnswer.key &&
+                        `text-gray-400`
+                    }`
+                } ${option.is_strik ? 'line-through' : ''}`}
                 onClick={() => {
                   dispatch(
                     patchLineOption({
