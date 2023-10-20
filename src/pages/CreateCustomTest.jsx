@@ -316,7 +316,13 @@ const CreateCustomTest = () => {
         <hr/>
       </div>
       <div className="card">
-        <h1 className="text-xl">Question Mode</h1>
+        <h1 className="text-xl">
+          Question Mode
+          <span className={'ml-3 italic'}>
+            Total Available
+            <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
+          </span>
+        </h1>
         <hr/>
         
         <div className="mb-5 ml-4 mt-2">

@@ -12,6 +12,7 @@ import App from "./App";
 import "./styles/tailwind.css";
 import "./styles/components.scss";
 import "react-toastify/dist/ReactToastify.css";
+import 'react-quill/dist/quill.snow.css';
 
 const container = document.getElementById("root");
 const root = createRoot(container);

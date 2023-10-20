@@ -230,8 +230,6 @@ const CreateModuleTest = () => {
     dispatch(getSystems({ page_size: 1000 }));
   }, [dispatch, id]);
   
-  console.log(data)
-
   return (
     <form onSubmit={saveDatas} className="card">
       <div className="my-5 flex items-start gap-5">
