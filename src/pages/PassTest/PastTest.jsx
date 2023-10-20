@@ -312,7 +312,7 @@ const PastTest = () => {
                 className={option.is_strik ?
                   `line-through cursor-pointer ${
                     question.is_tutor
-                      && (option.key === question.wrong_key && `text-danger`)}` : `cursor-pointer ${
+                    && (option.key === question.wrong_key && `text-danger`)}` : `cursor-pointer ${
                     question.is_tutor
                     && (option.key === question.right_key && `text-success`)}`}
                 onClick={() => {
@@ -366,11 +366,15 @@ const PastTest = () => {
             )}
           </div>
         )}
-        {question?.test_question.image3 && (
-          <img src={question?.test_question.image3} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
-        )}
-        {question?.test_question.image && (
-          <img src={question?.test_question.image} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
+        {question?.is_tutor && question?.is_check && (
+          <>
+            {question?.test_question.image3 && (
+              <img src={question?.test_question.image3} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
+            )}
+            {question?.test_question.image && (
+              <img src={question?.test_question.image} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
+            )}
+          </>
         )}
         {question?.is_tutor && (
           <div className="py-10 overflow-y-auto">
@@ -397,7 +401,8 @@ const PastTest = () => {
       <Footer/>
       <TimeUpModal isModalOpen={isTimeUp}/>
     </div>
-  );
+  )
+    ;
 };
 
 export default PastTest;
