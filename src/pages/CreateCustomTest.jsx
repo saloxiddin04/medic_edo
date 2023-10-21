@@ -120,6 +120,7 @@ const CreateCustomTest = () => {
       setCheckedItems(updatedCheckedItems);
     } else {
       setCheckedItems([]);
+      setSystemItems([])
     }
   };
   
