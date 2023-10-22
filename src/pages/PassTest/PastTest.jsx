@@ -2,13 +2,13 @@ import React, {useState, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
 import {FaCheck, FaCircle} from "react-icons/fa";
+import {AiOutlineClear} from 'react-icons/ai'
 import Footer from "./Footer";
 import Header from "./Header";
 import {
   clearAnswer,
   getExactTest,
   getTestsById, patchLineOption,
-  submitSelectQuestion,
   submitTheAnswer,
 } from "../../features/pastTest/pastTestSlice";
 import {
@@ -17,9 +17,6 @@ import {
 } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
-import parse from 'html-react-parser'
-import ReactQuill, {Quill} from 'react-quill';
-import JoditEditor from "jodit-react";
 
 const PastTest = () => {
   const {testList, exactTest, question, loading} = useSelector(
@@ -27,6 +24,8 @@ const PastTest = () => {
   );
   const {testID, exactTestID, highlight} = useSelector((state) => state.localStorage);
   const {seconds} = useSelector(({timer}) => timer);
+  
+  const existingEntry = highlight?.find((item) => item.id === question?.id);
   
   const dispatch = useDispatch();
   
@@ -125,21 +124,8 @@ const PastTest = () => {
     dispatch(getExactTest({id: testID, test_id: exactTestID}));
   }, [dispatch, exactTestID, testID]);
   
-  const handleSelectionChange = () => {
-    const selectedText = window.getSelection().toString();
-    setSelectedText(selectedText);
-  };
-  
   useEffect(() => {
-    // const existingEntry = highlight?.find((item) => item.id === exactTestID);
-    // if ((highlight !== null && highlight !== undefined)) {
-    //   setQuestionHtml(existingEntry?.text);
-    // } else {
-    //   setQuestionHtml(question?.test_question?.question)
-    //   highlight?.splice(exactTest, 1)
-    // }
-    
-    const existingEntryIndex = highlight?.findIndex((item) => item.id === exactTestID);
+    const existingEntryIndex = highlight?.findIndex((item) => item.id === question?.id);
     if ((highlight !== null && highlight !== undefined)) {
       if (existingEntryIndex !== -1) {
         const newHighlight = [...highlight];
@@ -150,11 +136,6 @@ const PastTest = () => {
         setQuestionHtml(question?.test_question?.question);
       }
     }
-    
-    // window.addEventListener("mousemove", handleSelectionChange);
-    // return () => {
-    //   window.removeEventListener("mousemove", handleSelectionChange);
-    // };
   }, []);
   
   useEffect(() => {
@@ -229,17 +210,16 @@ const PastTest = () => {
         const range = selectionWindow.getRangeAt(i);
         const selectedText = range.toString();
         if (selectedText) {
-          const classedText = `<span class="underline">${selectedText}</span>`;
+          const classedText = `<span class="highlight">${selectedText}</span>`;
           modifiedHtml = modifiedHtml.replace(selectedText, classedText);
-          const existingEntry = storageText.find((item) => item.id === exactTestID);
-          const existingEntryIndex = storageText.findIndex((item) => item.id === exactTestID);
-          console.log('hi')
+          const existingEntry = storageText.find((item) => item.id === question?.id);
+          const existingEntryIndex = storageText.findIndex((item) => item.id === question?.id);
           if (existingEntry) {
             const updatedEntry = {...storageText[existingEntryIndex], text: modifiedHtml};
             storageText[existingEntryIndex] = updatedEntry;
             setQuestionHtml(updatedEntry.text)
           } else {
-            storageText.push({id: exactTestID, text: modifiedHtml});
+            storageText.push({id: question?.id, text: modifiedHtml});
           }
         }
       }
@@ -248,63 +228,10 @@ const PastTest = () => {
     }
   }
   
-  const existingEntry = highlight?.find((item) => item.id === exactTestID);
-  
-  // if (loading) {
-  //   return (
-  //     <div className="w-[100wh] h-[100vh] flex justify-center items-center">
-  //       <span className="relative flex h-16 w-16">
-  //         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-  //         <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
-  //       </span>
-  //     </div>
-  //   );
-  // }
-  
-  const formats = [
-    "background",
-  ];
-  
-  const modules = {
-    toolbar: [
-      [{ color: ["red", "#785412"] }],
-      [{ background: ["red", "#785412"] }]
-    ]
-  };
-  
-  const quillRef = useRef(null);
-  const timeoutId = useRef(null);
-  const change = (e) => {
-    clearTimeout(timeoutId.current);
-    
-    timeoutId.current = setTimeout(() => {
-      // dispatch(
-      //   submitSelectQuestion({
-      //     id: question?.id,
-      //     change_yellow_text: e,
-      //     // first_index: firstIndex,
-      //     // last_index: lastIndex
-      //   })
-      // ).then(() => {
-      //   dispatch(getExactTest({id: testID, test_id: exactTestID})).then(() => {
-      //     setSelectedText("");
-      //   })
-      // });
-    }, 200);
+  const clearSelection = () => {
+    const updatedData = highlight.filter(item => item.id !== question.id);
+    dispatch(setItem({key: 'highlight', value: updatedData}))
   }
-  
-  const editorRef = useRef(null);
-  
-  const handleEditorBlur = () => {
-    const text = window.getSelection().toString();
-    setSelectedText(text);
-    console.log(text)
-  };
-  
-  const editorConfig = {
-    // ... other editor configuration options
-    readonly: true, // Ensure it's not set to read-only
-  };
   
   return (
     <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
@@ -351,15 +278,14 @@ const PastTest = () => {
       />
       
       <div className="mt-20 p-5 overflow-y-auto w-[94%] question">
-        {/*<ReactQuill*/}
-        {/*  ref={quillRef}*/}
-        {/*  theme="snow"*/}
-        {/*  modules={modules}*/}
-        {/*  formats={formats}*/}
-        {/*  value={question?.test_question?.question}*/}
-        {/*  // readOnly={true}*/}
-        {/*  onChange={change}*/}
-        {/*/>*/}
+        <button
+          onClick={clearSelection}
+          title={'Tozalash'}
+          disabled={!existingEntry}
+          className={`mb-4 flex ml-auto ${!existingEntry ? 'opacity-50' : 'opacity-100'}`}
+        >
+          <AiOutlineClear size={'25'}/>
+        </button>
         {existingEntry ? (
           <div
             dangerouslySetInnerHTML={{

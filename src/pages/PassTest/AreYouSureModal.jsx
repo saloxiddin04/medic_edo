@@ -20,6 +20,7 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
       })
     ).then(() => {
       navigate(ROUTES.RESULTS);
+      localStorage.removeItem('highlight')
     })
   };
   return (
