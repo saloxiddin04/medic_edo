@@ -8,7 +8,7 @@ import Header from "./Header";
 import {
   clearAnswer,
   getExactTest,
-  getTestsById, patchLineOption,
+  getTestsById, patchLineOption, submitSelectQuestion,
   submitTheAnswer,
 } from "../../features/pastTest/pastTestSlice";
 import {
@@ -39,11 +39,9 @@ const PastTest = () => {
     test_question: "",
   });
   
-  const [questionHtml, setQuestionHtml] = useState(question?.test_question?.question);
-  
   const [countIndex, setCountIndex] = useState(0);
-  const [selectedText, setSelectedText] = useState("");
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [is_clear, setClear] = useState(false)
   
   const changeTest = (id, test_id, idx) => {
     dispatch(setItem({key: "exactTestID", value: test_id}));
@@ -113,36 +111,12 @@ const PastTest = () => {
   useEffect(() => {
     dispatch(getItem({key: "testID"}));
     dispatch(getItem({key: "exactTestID"}));
-    dispatch(getItem({key: "highlight"}));
-    if (question?.test_question?.question) {
-      setQuestionHtml(question?.test_question?.question);
-    }
   }, [dispatch]);
   
   useEffect(() => {
     dispatch(getTestsById(testID));
     dispatch(getExactTest({id: testID, test_id: exactTestID}));
   }, [dispatch, exactTestID, testID]);
-  
-  useEffect(() => {
-    const existingEntryIndex = highlight?.findIndex((item) => item.id === question?.id);
-    if ((highlight !== null && highlight !== undefined)) {
-      if (existingEntryIndex !== -1) {
-        const newHighlight = [...highlight];
-        newHighlight.splice(existingEntryIndex, 1);
-        dispatch(setItem({key: 'highlight', value: newHighlight}));
-        setQuestionHtml(existingEntryIndex >= 0 ? highlight[existingEntryIndex]?.text : question?.test_question?.question);
-      } else {
-        setQuestionHtml(question?.test_question?.question);
-      }
-    }
-  }, []);
-  
-  useEffect(() => {
-    if (question?.test_question?.question) {
-      setQuestionHtml(question?.test_question?.question);
-    }
-  }, [question]);
   
   useEffect(() => {
     if (seconds <= 0) {
@@ -198,35 +172,78 @@ const PastTest = () => {
     }
   };
   
-  const selection = () => {
-    const selectionWindow = window.getSelection();
-    const rangeCount = selectionWindow.rangeCount;
-    let modifiedHtml = questionHtml;
+  const timeoutId = useRef(null);
+  const highlightSelectedText = () => {
+    const selection = window.getSelection();
+    const selectedText = selection.toString();
     
-    if (rangeCount > 0) {
-      dispatch(getItem({key: "highlight"}))
-      const storageText = (highlight !== null && highlight !== undefined) ? [...highlight] : []
-      for (let i = 0; i < rangeCount; i++) {
-        const range = selectionWindow.getRangeAt(i);
-        const selectedText = range.toString();
-        if (selectedText) {
-          const classedText = `<span class="highlight">${selectedText}</span>`;
-          modifiedHtml = modifiedHtml.replace(selectedText, classedText);
-          const existingEntry = storageText.find((item) => item.id === question?.id);
-          const existingEntryIndex = storageText.findIndex((item) => item.id === question?.id);
-          if (existingEntry) {
-            const updatedEntry = {...storageText[existingEntryIndex], text: modifiedHtml};
-            storageText[existingEntryIndex] = updatedEntry;
-            setQuestionHtml(updatedEntry.text)
-          } else {
-            storageText.push({id: question?.id, text: modifiedHtml});
-          }
-        }
-      }
+    if (selectedText !== '') {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.className = 'highlight';
+      range.surroundContents(span);
       
-      dispatch(setItem({key: 'highlight', value: storageText}))
+      if (paragraphRef.current.outerHTML) {
+        clearTimeout(timeoutId.current);
+        timeoutId.current = setTimeout(() => {
+          dispatch(
+            submitSelectQuestion({
+              id: question?.id,
+              change_yellow_text: paragraphRef.current.outerHTML,
+              is_clear
+            })
+          ).then(() => {
+            dispatch(getExactTest({id: testID, test_id: exactTestID}))
+          });
+        }, 200);
+      }
+      console.log(paragraphRef.current.outerHTML);
     }
-  }
+  };
+  
+  const paragraphRef = useRef(null);
+  
+  useEffect(() => {
+    if (paragraphRef.current) {
+      paragraphRef.current.addEventListener('mouseup', highlightSelectedText);
+    }
+    
+    return () => {
+      if (paragraphRef.current) {
+        paragraphRef.current.removeEventListener('mouseup', highlightSelectedText);
+      }
+    };
+  }, []);
+  
+  // const selection = () => {
+  //   const selectionWindow = window.getSelection();
+  //   const rangeCount = selectionWindow.rangeCount;
+  //   let modifiedHtml = questionHtml;
+  //
+  //   if (rangeCount > 0) {
+  //     dispatch(getItem({key: "highlight"}))
+  //     const storageText = (highlight !== null && highlight !== undefined) ? [...highlight] : []
+  //     for (let i = 0; i < rangeCount; i++) {
+  //       const range = selectionWindow.getRangeAt(i);
+  //       const selectedText = range.toString();
+  //       if (selectedText) {
+  //         const classedText = `<span class="highlight">${selectedText}</span>`;
+  //         modifiedHtml = modifiedHtml.replace(selectedText, classedText);
+  //         const existingEntry = storageText.find((item) => item.id === question?.id);
+  //         const existingEntryIndex = storageText.findIndex((item) => item.id === question?.id);
+  //         if (existingEntry) {
+  //           const updatedEntry = {...storageText[existingEntryIndex], text: modifiedHtml};
+  //           storageText[existingEntryIndex] = updatedEntry;
+  //           setQuestionHtml(updatedEntry.text)
+  //         } else {
+  //           storageText.push({id: question?.id, text: modifiedHtml});
+  //         }
+  //       }
+  //     }
+  //
+  //     dispatch(setItem({key: 'highlight', value: storageText}))
+  //   }
+  // }
   
   const clearSelection = () => {
     const updatedData = highlight.filter(item => item.id !== question.id);
@@ -279,34 +296,32 @@ const PastTest = () => {
       
       <div className="mt-20 p-5 overflow-y-auto w-[94%] question">
         <button
-          onClick={clearSelection}
+          onClick={() => {
+            dispatch(
+              submitSelectQuestion({
+                id: question?.id,
+                change_yellow_text: paragraphRef.current.outerHTML,
+                is_clear: !is_clear
+              })
+            ).then(() => {
+              dispatch(getExactTest({id: testID, test_id: exactTestID}))
+            });
+          }}
           title={'Tozalash'}
-          disabled={!existingEntry}
-          className={`mb-4 flex ml-auto ${!existingEntry ? 'opacity-50' : 'opacity-100'}`}
+          className={`mb-4 flex ml-auto`}
         >
           <AiOutlineClear size={'25'}/>
         </button>
-        {existingEntry ? (
-          <div
-            dangerouslySetInnerHTML={{
-              __html: existingEntry?.text,
-            }}
-            onMouseUp={selection}
-            onMouseDown={selection}
-            onMouseEnter={selection}
-            onBlur={selection}
-          />
-        ) : (
           <div
             dangerouslySetInnerHTML={{
               __html: question?.test_question?.question,
             }}
-            onMouseUp={selection}
-            onMouseDown={selection}
-            onMouseEnter={selection}
-            onBlur={selection}
+            ref={paragraphRef}
+            onMouseUp={highlightSelectedText}
+            // onMouseDown={selection}
+            // onMouseEnter={selection}
+            // onBlur={selection}
           />
-        )}
         {question?.test_question?.image2 && (
           <img
             src={question?.test_question?.image2}
