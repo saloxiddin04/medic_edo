@@ -282,10 +282,10 @@ const Main = () => {
             self-assessments created by teaching experts.
           </p>
           <Link
-            to={ROUTES.CUSTOMTEST}
-            className="btn-primary font-semibold btn-small block w-fit"
+            to={'/main'}
+            className="btn-primary font-semibold btn-small block w-fit opacity-50"
           >
-            PREPARE FOR YOUR EXAM
+            SOON
           </Link>
         </div>
       </div>
@@ -405,7 +405,7 @@ const Main = () => {
                   <YAxis
                     height={10}
                     type="category"
-                    dataKey="modul__name"
+                    dataKey="modul_name"
                     axisLine={true}
                     tickLine={false}
                   />

@@ -42,7 +42,7 @@ const AppRoutes = () => {
       )}
 
       {/* not found */}
-      <Route path={ROUTES.NOTFOUND} element={<NotFound />} />
+      <Route path={'*'} element={<NotFound />} />
     </Routes>
   );
 };
