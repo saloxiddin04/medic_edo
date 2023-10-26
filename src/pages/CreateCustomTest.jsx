@@ -250,7 +250,37 @@ const CreateCustomTest = () => {
         </div>
         <hr/>
         
-        <div className="w-1/3 mt-5">
+        <h1 className="text-xl mt-2">
+          Question Mode
+          <span className={'ml-3 italic'}>
+            Total Available
+            <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
+          </span>
+        </h1>
+        <div className="mb-5 ml-4 mt-2">
+          {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
+            <div className="w-1/2" key={item.name}>
+              <label className="mb-2 inline-block cursor-pointer">
+                <input
+                  type="checkbox"
+                  name={item.id}
+                  disabled={item.count === 0 || item.name === 'Unused'}
+                  checked={item.count === 0 ? false : questionMode[item.id] || false}
+                  onChange={handleQuestionModeChange}
+                />
+                <span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
+                  {item.name}
+                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                </span>
+              </label>
+            </div>
+          ))}
+        </div>
+        <h1 className="text-xl my-2">
+          Test Modules
+        </h1>
+        <hr/>
+        <div className="w-1/3">
           <label className="mb-2 inline-block cursor-pointer">
             <input
               type="checkbox"
@@ -261,7 +291,7 @@ const CreateCustomTest = () => {
             <span className="ml-2 font-bold">All Modules</span>
           </label>
         </div>
-        <div className="flex flex-wrap mb-5 ml-4">
+        <div className="flex flex-wrap mb-5 mt-2 ml-4">
           {moduleListForTest.map((item) => (
             <div className="w-1/2" key={item.id}>
               <label className="mb-2 inline-block cursor-pointer">
@@ -279,7 +309,6 @@ const CreateCustomTest = () => {
             </div>
           ))}
         </div>
-        <hr/>
       </div>
       <div className="card">
         <h1 className="text-xl">System Mode</h1>
@@ -317,34 +346,6 @@ const CreateCustomTest = () => {
         <hr/>
       </div>
       <div className="card">
-        <h1 className="text-xl">
-          Question Mode
-          <span className={'ml-3 italic'}>
-            Total Available
-            <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
-          </span>
-        </h1>
-        <hr/>
-        
-        <div className="mb-5 ml-4 mt-2">
-          {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
-            <div className="w-1/2" key={item.name}>
-              <label className="mb-2 inline-block cursor-pointer">
-                <input
-                  type="checkbox"
-                  name={item.id}
-                  disabled={item.count === 0 || item.name === 'Unused'}
-                  checked={item.count === 0 ? false : questionMode[item.id] || false}
-                  onChange={handleQuestionModeChange}
-                />
-                <span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
-                  {item.name}
-                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
-                </span>
-              </label>
-            </div>
-          ))}
-        </div>
         <hr/>
         {isSubmitted ? (
           <button
