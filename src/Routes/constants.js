@@ -16,5 +16,8 @@ export const ROUTES = {
   USERS_DETAIL: '/users/:id',
   SYSTEM: '/system',
   CREATE_SYSTEM: '/create-system/:id',
-  TEST_REVIEW: '/test-review'
+  TEST_REVIEW: '/test-review',
+  GROUP: '/group',
+  CREATE_GROUP: '/create-group/:id',
+  GROUP_BINDING: '/binding'
 };

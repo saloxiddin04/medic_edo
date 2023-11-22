@@ -18,6 +18,9 @@ import UsersDetail from "../pages/UsersDetail";
 import System from "../pages/System/System";
 import CreateSystem from "../pages/System/CreateSystem";
 import TestReview from "../pages/TestReview/TestReview";
+import Group from "../pages/Group/Group";
+import CreateGroup from "../pages/Group/CreateGroup";
+import GroupBinding from "../pages/Group/GroupBinding";
 
 const AppRoutes = () => {
   return (
@@ -40,6 +43,9 @@ const AppRoutes = () => {
           <Route path={ROUTES.USERS} element={<Users/>} />
           <Route path={ROUTES.USERS_DETAIL} element={<UsersDetail/>} />
           <Route path={ROUTES.SYSTEM} element={<System/>} />
+          <Route path={ROUTES.GROUP} element={<Group/>} />
+          <Route path={ROUTES.CREATE_GROUP} element={<CreateGroup/>} />
+          <Route path={ROUTES.GROUP_BINDING} element={<GroupBinding/>} />
         </>
       )}
 
