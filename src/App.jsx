@@ -21,6 +21,7 @@ import PastTest from "./pages/PassTest/PastTest";
 import Results from "./pages/PassTest/Results.jsx";
 import Explanation from "./pages/Explanations/Explanation.jsx";
 import LoadingPage from "./pages/LoadingPage.jsx";
+import TestReview from "./pages/TestReview/TestReview";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -39,6 +40,7 @@ const App = () => {
       pathname === "/sign-in" ||
       pathname === "/test" ||
       pathname === "/test-results" ||
+      pathname === "/test-review" ||
       pathname.includes("explanation")
     ) {
       return false;
@@ -72,6 +74,7 @@ const App = () => {
           <Route path={ROUTES.TEST} element={<PastTest />} />
           <Route path={ROUTES.RESULTS} element={<Results />} />
           <Route path={ROUTES.EXPLANATION} element={<Explanation />} />
+          <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
         </Routes>
       )}
 

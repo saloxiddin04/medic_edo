@@ -16,4 +16,5 @@ export const ROUTES = {
   USERS_DETAIL: '/users/:id',
   SYSTEM: '/system',
   CREATE_SYSTEM: '/create-system/:id',
+  TEST_REVIEW: '/test-review'
 };

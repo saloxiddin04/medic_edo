@@ -17,6 +17,7 @@ import Users from "../pages/Users";
 import UsersDetail from "../pages/UsersDetail";
 import System from "../pages/System/System";
 import CreateSystem from "../pages/System/CreateSystem";
+import TestReview from "../pages/TestReview/TestReview";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes = () => {
       <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />
+      <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
       {getUserData() && getUserData().role === "admin" && (
         <>
           {" "}

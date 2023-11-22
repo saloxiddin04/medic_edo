@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
-import { AiOutlineHome } from "react-icons/ai";
+import {AiOutlineHome} from "react-icons/ai";
 import ProgressBar from "../../components/ProgressBar";
 import { Bar, BarChart, Cell, Pie, PieChart, Tooltip } from "recharts";
 import { GiPlainCircle, GiCancel } from "react-icons/gi";
@@ -14,6 +14,7 @@ import moment from 'moment'
 const Results = () => {
   const { testResults } = useSelector(({ testResults }) => testResults);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const data = [
     { name: "Correct", value: testResults.correct_answer_interest },
@@ -78,16 +79,29 @@ const Results = () => {
 
       <section className="card w-8/12 mt-10 mx-auto">
         <div className="mt-10">
-          <h1 className="text-xl font-semibold text-gray-600">
-            Date: {moment(testResults?.end_date).format('DD.MM.YYYY, h:mm:ss')}
-          </h1>
-          <h1 className=" text-gray-500">ID: {testResults.id}</h1>
-          <h1 className="text-lg font-medium text-gray-600">
-            {testResults.correct_answer_count +
-              testResults.worning_answer_count}
-            /{testResults.test_count} answered,{" "}
-            {testResults.correct_answer_count} correct
-          </h1>
+          <div className={'flex justify-between items-center'}>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-600">
+                Date: {moment(testResults?.end_date).format('DD.MM.YYYY, h:mm:ss')}
+              </h1>
+              <h1 className=" text-gray-500">ID: {testResults.id}</h1>
+              <h1 className="text-lg font-medium text-gray-600">
+                {testResults.correct_answer_count +
+                  testResults.worning_answer_count}
+                /{testResults.test_count} answered,{" "}
+                {testResults.correct_answer_count} correct
+              </h1>
+            </div>
+            <div>
+              <button
+                type="button"
+                className="btn-primary flex gap-3 items-center justify-between"
+                onClick={() => navigate('/test-review')}
+              >
+                All test review
+              </button>
+            </div>
+          </div>
           <ProgressBar />
         </div>
 

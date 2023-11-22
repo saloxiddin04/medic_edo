@@ -2,30 +2,25 @@ import React, {useState, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
 import {FaCheck, FaCircle} from "react-icons/fa";
-import {AiOutlineClear} from 'react-icons/ai'
-import Footer from "./Footer";
-import Header from "./Header";
+import Footer from "../PassTest/Footer";
+import Header from "../PassTest/Header";
 import {
   clearAnswer,
   getExactTest,
-  getTestsById, patchLineOption, submitSelectQuestion,
-  submitTheAnswer,
+  getTestsById
 } from "../../features/pastTest/pastTestSlice";
 import {
   setItem,
   getItem,
 } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {VscError} from "react-icons/vsc";
-import TimeUpModal from "./TimeUpModal";
 
-const PastTest = () => {
-  const {testList, exactTest, question, loading} = useSelector(
+const TestReview = () => {
+  const {testList, question} = useSelector(
     ({pastTest}) => pastTest
   );
   const {testID, exactTestID, highlight} = useSelector((state) => state.localStorage);
   const {seconds} = useSelector(({timer}) => timer);
-  
-  const existingEntry = highlight?.find((item) => item.id === question?.id);
   
   const dispatch = useDispatch();
   
@@ -62,50 +57,6 @@ const PastTest = () => {
       key: option.key,
       test_question: option.test_question,
     });
-  };
-  
-  const submitOnClick = () => {
-    if (!question.is_tutor) {
-      setCountIndex((prevState) =>
-        testList?.count > prevState ? prevState + 1 : prevState
-      );
-      dispatch(
-        submitTheAnswer({
-          id: selectedAnswer.id,
-          answer: selectedAnswer.key,
-          test_question_id: selectedAnswer.test_question,
-          start_test_id: testList.id,
-        })
-      ).then(() => {
-        dispatch(getTestsById(testID));
-        testList.count === countIndex + 1 &&
-        dispatch(getExactTest({id: testID, test_id: exactTestID}));
-        testList.count > countIndex + 1 &&
-        dispatch(
-          getExactTest({
-            id: testList?.id,
-            test_id: testList?.test_ids[countIndex + 1]?.test_question?.id,
-          })
-        );
-        setSelectedAnswerAnswer({
-          test_question: "",
-          key: "",
-          id: null,
-        });
-      });
-    } else {
-      dispatch(
-        submitTheAnswer({
-          id: selectedAnswer.id,
-          answer: selectedAnswer.key,
-          test_question_id: selectedAnswer.test_question,
-          start_test_id: testList.id,
-        })
-      ).then(() => {
-        dispatch(getTestsById(testID));
-        dispatch(getExactTest({id: testID, test_id: exactTestID}));
-      });
-    }
   };
   
   useEffect(() => {
@@ -173,84 +124,11 @@ const PastTest = () => {
   };
   
   const timeoutId = useRef(null);
-  const highlightSelectedText = () => {
-    const selection = window.getSelection();
-    const selectedText = selection.toString();
-    
-    if (selectedText !== '') {
-      const range = selection.getRangeAt(0);
-      const span = document.createElement('span');
-      span.className = 'highlight';
-      range.surroundContents(span);
-      
-      if (paragraphRef.current.outerHTML) {
-        clearTimeout(timeoutId.current);
-        timeoutId.current = setTimeout(() => {
-          dispatch(
-            submitSelectQuestion({
-              id: question?.id,
-              change_yellow_text: paragraphRef.current.outerHTML,
-              is_clear
-            })
-          ).then(() => {
-            dispatch(getExactTest({id: testID, test_id: exactTestID}))
-          });
-        }, 200);
-      }
-    }
-  };
   
   const paragraphRef = useRef(null);
   
-  useEffect(() => {
-    if (paragraphRef.current) {
-      paragraphRef.current.addEventListener('mouseup', highlightSelectedText);
-    }
-    
-    return () => {
-      if (paragraphRef.current) {
-        paragraphRef.current.removeEventListener('mouseup', highlightSelectedText);
-      }
-    };
-  }, []);
-  
-  // const selection = () => {
-  //   const selectionWindow = window.getSelection();
-  //   const rangeCount = selectionWindow.rangeCount;
-  //   let modifiedHtml = questionHtml;
-  //
-  //   if (rangeCount > 0) {
-  //     dispatch(getItem({key: "highlight"}))
-  //     const storageText = (highlight !== null && highlight !== undefined) ? [...highlight] : []
-  //     for (let i = 0; i < rangeCount; i++) {
-  //       const range = selectionWindow.getRangeAt(i);
-  //       const selectedText = range.toString();
-  //       if (selectedText) {
-  //         const classedText = `<span class="highlight">${selectedText}</span>`;
-  //         modifiedHtml = modifiedHtml.replace(selectedText, classedText);
-  //         const existingEntry = storageText.find((item) => item.id === question?.id);
-  //         const existingEntryIndex = storageText.findIndex((item) => item.id === question?.id);
-  //         if (existingEntry) {
-  //           const updatedEntry = {...storageText[existingEntryIndex], text: modifiedHtml};
-  //           storageText[existingEntryIndex] = updatedEntry;
-  //           setQuestionHtml(updatedEntry.text)
-  //         } else {
-  //           storageText.push({id: question?.id, text: modifiedHtml});
-  //         }
-  //       }
-  //     }
-  //
-  //     dispatch(setItem({key: 'highlight', value: storageText}))
-  //   }
-  // }
-  
-  const clearSelection = () => {
-    const updatedData = highlight.filter(item => item.id !== question.id);
-    dispatch(setItem({key: 'highlight', value: updatedData}))
-  }
-  
   return (
-    <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
+    <div className="min-h-screen min-w-screen bg-darkLayoutStrm flex flex-wrap pb-20">
       <ul className="w-[6%] h-full overflow-y-auto bg-white border-r-2">
         {testList &&
           testList?.test_ids?.map((test, index) => (
@@ -259,7 +137,7 @@ const PastTest = () => {
                 changeTest(testList.id, test.test_question.id, index)
               }
               key={index}
-              className={`${index % 2 === 0 && "bg-gray-300"} 
+              className={`${index % 2 === 0 && "bg-gray-300"}
                 h-6 flex items-center justify-center cursor-pointer ${
                 test?.order_number === question?.order_number
                   ? "bg-blue-400 text-white"
@@ -296,33 +174,12 @@ const PastTest = () => {
       />
       
       <div className="mt-[3rem] p-5 overflow-y-auto w-[94%] question">
-        {/*<button*/}
-        {/*  onClick={() => {*/}
-        {/*    dispatch(*/}
-        {/*      submitSelectQuestion({*/}
-        {/*        id: question?.id,*/}
-        {/*        change_yellow_text: paragraphRef.current.outerHTML,*/}
-        {/*        is_clear: !is_clear*/}
-        {/*      })*/}
-        {/*    ).then(() => {*/}
-        {/*      dispatch(getExactTest({id: testID, test_id: exactTestID}))*/}
-        {/*    });*/}
-        {/*  }}*/}
-        {/*  title={'Tozalash'}*/}
-        {/*  className={`mb-4 flex ml-auto`}*/}
-        {/*>*/}
-        {/*  <AiOutlineClear size={'25'}/>*/}
-        {/*</button>*/}
-          <div
-            dangerouslySetInnerHTML={{
-              __html: question?.test_question?.question,
-            }}
-            ref={paragraphRef}
-            onMouseUp={highlightSelectedText}
-            // onMouseDown={selection}
-            // onMouseEnter={selection}
-            // onBlur={selection}
-          />
+        <div
+          dangerouslySetInnerHTML={{
+            __html: question?.test_question?.question,
+          }}
+          ref={paragraphRef}
+        />
         {question?.test_question?.image2 && (
           <img
             src={question?.test_question?.image2}
@@ -354,7 +211,7 @@ const PastTest = () => {
                   name="keys"
                   id={option.key}
                   value={option.key}
-                  disabled={question?.is_check}
+                  disabled={true}
                   checked={
                     question.answer
                       ? option?.key === question?.answer
@@ -376,18 +233,6 @@ const PastTest = () => {
                         `text-gray-400`
                     }`
                 } ${option.is_strik ? 'line-through' : ''}`}
-                onClick={() => {
-                  dispatch(
-                    patchLineOption({
-                      start_test_id: question?.start_test_result,
-                      test_id: question?.id,
-                      option_id: option?.id,
-                      is_strik: !option.is_strik
-                    })
-                  ).then(() => {
-                    dispatch(getExactTest({id: testID, test_id: exactTestID}))
-                  })
-                }}
               >
                 {option.answer}
               </span>
@@ -397,8 +242,7 @@ const PastTest = () => {
         <div className='flex items-center gap-5'>
           <button
             className="btn-primary mt-10 inline-block"
-            onClick={() => submitOnClick()}
-            disabled={selectedAnswer?.key === "" || question?.is_check}
+            disabled={true}
           >
             Submit the Answer
           </button>
@@ -460,9 +304,8 @@ const PastTest = () => {
       </div>
       
       <Footer/>
-      <TimeUpModal isModalOpen={isTimeUp}/>
     </div>
   );
 };
 
-export default PastTest;
+export default TestReview;

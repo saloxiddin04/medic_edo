@@ -2,9 +2,12 @@ import React from "react";
 import LOGO from "../../images/logo-white.png";
 import AreYouSure from "./AreYouSureModal";
 import { useState } from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -18,12 +21,21 @@ const Footer = () => {
           <div></div>
         </div>
         <div className="flex items-center gap-7 -mt-2">
-          <button
-            className="btn-danger btn-xs"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <span className="text-sm mx-5">End The Test</span>
-          </button>
+          {location?.pathname === '/test-review' ? (
+            <button
+              className="btn-danger btn-xs"
+              onClick={() => navigate('/test-results')}
+            >
+              <span className="text-sm mx-5">Back</span>
+            </button>
+          ) : (
+            <button
+              className="btn-danger btn-xs"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <span className="text-sm mx-5">End The Test</span>
+            </button>
+          )}
         </div>
       </div>
 

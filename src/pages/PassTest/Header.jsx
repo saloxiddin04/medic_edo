@@ -5,16 +5,19 @@ import {
   clearAnswer,
   getExactTest,
   getTestsById,
-  submitMarked,
+  submitMarked, submitSelectQuestion,
 } from "../../features/pastTest/pastTestSlice";
 import { setItem } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import Timer from "../../components/Timer";
+import {AiOutlineClear} from "react-icons/ai";
+import {useLocation, useParams} from "react-router-dom";
 
-const Header = ({ index, setIndex, setSelectedAnswerAnswer }) => {
+const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }) => {
   const dispatch = useDispatch();
   const { testList, question } = useSelector(({ pastTest }) => pastTest);
-  const { testID } = useSelector((state) => state.localStorage);
-
+  const { testID,exactTestID } = useSelector((state) => state.localStorage);
+  const location = useLocation()
+  
   // const [hour, setHour] = useState(localStorage.getItem("hour") || "01");
   // const [minutes, setMinutes] = useState(
   //   localStorage.getItem("minutes") || "00"
@@ -171,6 +174,27 @@ const Header = ({ index, setIndex, setSelectedAnswerAnswer }) => {
         <div className="flex items-center gap-7">
           {testList?.is_time && <Timer />}
         </div>
+        {location?.pathname === '/test' && (
+          <div className={'flex items-center'}>
+            <button
+              onClick={() => {
+                dispatch(
+                  submitSelectQuestion({
+                    id: question?.id,
+                    change_yellow_text: paragref?.current?.outerHTML,
+                    is_clear: !is_clear
+                  })
+                ).then(() => {
+                  dispatch(getExactTest({id: testID, test_id: exactTestID}))
+                });
+              }}
+              title={'Tozalash'}
+              className={`flex ml-auto`}
+            >
+              <AiOutlineClear size={'25'} color={'#fff'}/>
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

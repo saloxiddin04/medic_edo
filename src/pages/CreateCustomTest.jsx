@@ -257,9 +257,9 @@ const CreateCustomTest = () => {
             <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
           </span>
         </h1>
-        <div className="mb-5 ml-4 mt-2">
+        <div className="mb-5 ml-4 mt-2 flex justify-between items-center">
           {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
-            <div className="w-1/2" key={item.name}>
+            <div key={item.name}>
               <label className="mb-2 inline-block cursor-pointer">
                 <input
                   type="checkbox"
@@ -270,7 +270,7 @@ const CreateCustomTest = () => {
                 />
                 <span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
                   {item.name}
-                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                  <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{item.count}</span>
                 </span>
               </label>
             </div>
