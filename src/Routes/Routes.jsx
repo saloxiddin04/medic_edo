@@ -21,6 +21,7 @@ import TestReview from "../pages/TestReview/TestReview";
 import Group from "../pages/Group/Group";
 import CreateGroup from "../pages/Group/CreateGroup";
 import GroupBinding from "../pages/Group/GroupBinding";
+import CreateGroupBinding from "../pages/Group/CreateGroupBinding";
 
 const AppRoutes = () => {
   return (
@@ -46,6 +47,7 @@ const AppRoutes = () => {
           <Route path={ROUTES.GROUP} element={<Group/>} />
           <Route path={ROUTES.CREATE_GROUP} element={<CreateGroup/>} />
           <Route path={ROUTES.GROUP_BINDING} element={<GroupBinding/>} />
+          <Route path={ROUTES.GROUP_BINDING_BINDING} element={<CreateGroupBinding/>} />
         </>
       )}
 

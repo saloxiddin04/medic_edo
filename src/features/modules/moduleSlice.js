@@ -326,6 +326,32 @@ export const deleteGroup = createAsyncThunk(
 );
 
 // ------------------------------------------------- //
+export const getGroupBinding = createAsyncThunk(
+  "modules/getGroupBinding",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get('/group/group_binding_user/', {params})
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const getGroupBindingById = createAsyncThunk(
+  "modules/getGroupBindingById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/group/group_binding_user/${id}/`)
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 export const postGroupBinding = createAsyncThunk(
   "modules/postGroup",
   async (params, thunkAPI) => {
@@ -346,6 +372,7 @@ const moduleSlice = createSlice({
     moduleList: [],
     systemList: [],
     groupList: [],
+    groupBindingList: [],
     moduleListForTest: [],
     systemListForTest: [],
     questionModeList: [],
@@ -354,6 +381,7 @@ const moduleSlice = createSlice({
     testList: [],
     test: {},
     group: {},
+    groupBinding: {},
     isLoading: false,
   },
 
@@ -491,14 +519,27 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     
-    // group by id
-    builder.addCase(postGroup.pending, (state) => {
+    // group binding by id
+    builder.addCase(getGroupBindingById.pending, (state) => {
       state.isLoading = true
     })
-    builder.addCase(postGroup.fulfilled, (state, {payload}) => {
+    builder.addCase(getGroupBindingById.fulfilled, (state, {payload}) => {
+      state.groupBinding = payload
       state.isLoading = false
     })
-    builder.addCase(postGroup.rejected, (state) => {
+    builder.addCase(getGroupBindingById.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group
+    builder.addCase(getGroupBinding.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getGroupBinding.fulfilled, (state, {payload}) => {
+      state.groupBindingList = payload
+      state.isLoading = false
+    })
+    builder.addCase(getGroupBinding.rejected, (state) => {
       state.isLoading = false;
     });
   },

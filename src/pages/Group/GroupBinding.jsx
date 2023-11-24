@@ -1,71 +1,136 @@
-import React, {useEffect, useState} from 'react';
-import Select from "react-select";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers} from "../../features/testResults/testResultsSlice";
-import {getGroup, postGroupBinding} from "../../features/modules/moduleSlice";
+import {getGroupBinding} from "../../features/modules/moduleSlice";
+import {Link} from "react-router-dom";
+import {ROUTES} from "../../Routes/constants";
+import Pagination from "../../components/Pagination";
+import {AiFillDelete, AiFillEdit} from "react-icons/ai";
+import DeleteGroup from "./DeleteGroup";
+import { FaUsers } from "react-icons/fa";
+
 
 const GroupBinding = () => {
-  const dispatch = useDispatch()
-  const {users} = useSelector(({testResults}) => testResults)
-  const {groupList} = useSelector(({module}) => module);
+  const dispatch = useDispatch();
+  const {groupBindingList} = useSelector(({module}) => module);
   
-  const [data, setData] = useState({
-    users: [],
-    group: null,
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ModulToDelete, setModulToDelete] = useState(null);
+  
+  const handlePageChange = (page) => {
+    dispatch(getGroupBinding({page_size: 10, page}));
+  };
+  
+  const handleDeleteModal = (id) => {
+    setIsModalOpen(true);
+    setModulToDelete(id);
+  };
+  
+  const closeModal = () => setIsModalOpen(false);
   
   useEffect(() => {
-    dispatch(getUsers())
-    dispatch(getGroup())
+    dispatch(getGroupBinding({page_size: 10, page: 1}));
   }, [dispatch]);
   
   return (
-    <div>
-      <div className={'flex items-center justify-between'}>
-        <div className='w-[45%]'>
-          <label htmlFor="moduleName">Select Users</label>
-          <Select
-            options={users?.results}
-            getOptionLabel={(modul) => modul.name}
-            getOptionValue={(modul) => modul.id}
-            isMulti
-            onChange={(selectedOption) => {
-              setData((prevData) => ({
-                ...prevData,
-                users: selectedOption?.map((option) => option.id),
-              }));
-            }}
-            placeholder={'Select Users'}
-          />
-        </div>
-        <div className='w-[45%]'>
-          <label htmlFor="moduleName">Select Group</label>
-          <Select
-            options={groupList?.results}
-            getOptionLabel={(modul) => modul.name}
-            getOptionValue={(modul) => modul.id}
-            onChange={(selectedOption) => {
-              setData((prevData) => ({
-                ...prevData,
-                group: selectedOption?.id,
-              }));
-            }}
-            placeholder={'Select Group'}
-          />
-        </div>
-      </div>
-      <div className='flex items-center justify-end mt-5 gap-3'>
-        {/*<button className='py-2 px-4 bg-red-400 text-white rounded text-lg' onClick={() => navigate('/users')}>Back</button>*/}
-        <button
-          className='py-2 px-4 bg-green-400 text-white rounded text-lg'
-          disabled={data?.users.length === 0 || data?.group === null}
-          onClick={() => dispatch(postGroupBinding(data))}
+    <div className="card">
+      <div className="flex justify-between">
+        <Link
+          to={ROUTES.GROUP_BINDING_BINDING}
+          className="btn-primary mt-3 inline-block"
         >
-          Save
-        </button>
+          Group Binding
+        </Link>
+        
+        <Pagination
+          totalItems={groupBindingList.count} // Replace with the total number of items you have
+          itemsPerPage={10} // Replace with the number of items to display per page
+          onPageChange={handlePageChange} // Pass the handlePageChange function
+        />
       </div>
+      <div className="flex flex-col mt-3">
+        <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    ID
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Group Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Users length
+                  </th>
+                  
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Action
+                  </th>
+                </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                {groupBindingList?.results?.map((item) => (
+                  <tr key={item.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item.id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item?.group?.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      <div className='flex gap-2 items-center justify-center'>
+                        <FaUsers size={'22'}/>
+                        {item.users.length}
+                      </div>
+                    </td>
+                    
+                    <td
+                      className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                      <Link
+                        className="btn-warning btn-sm inline-block"
+                        to={`/create-group-binding/${item.id}`}
+                      >
+                        <span>
+                          <AiFillEdit/>
+                        </span>
+                      </Link>
+                      
+                      <button
+                        className="btn-danger btn-sm ml-3"
+                        onClick={() => handleDeleteModal(item.id)}
+                      >
+                        <AiFillDelete/>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <DeleteGroup
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        modulId={ModulToDelete}
+      />
     </div>
   );
-};
+}
 
-export default GroupBinding;
+export default GroupBinding
