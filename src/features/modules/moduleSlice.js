@@ -325,6 +325,21 @@ export const deleteGroup = createAsyncThunk(
   }
 );
 
+// ------------------------------------------------- //
+export const postGroupBinding = createAsyncThunk(
+  "modules/postGroup",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.post(`/group/group_binding_user/`, params)
+      toast.success("successfully created");
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {

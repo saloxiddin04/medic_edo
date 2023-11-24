@@ -2,18 +2,21 @@ import React, {useEffect, useState} from 'react';
 import Select from "react-select";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../../features/testResults/testResultsSlice";
+import {getGroup, postGroupBinding} from "../../features/modules/moduleSlice";
 
 const GroupBinding = () => {
   const dispatch = useDispatch()
   const {users} = useSelector(({testResults}) => testResults)
+  const {groupList} = useSelector(({module}) => module);
   
   const [data, setData] = useState({
-    user_id: null,
-    group_id: null,
+    users: [],
+    group: null,
   });
   
   useEffect(() => {
     dispatch(getUsers())
+    dispatch(getGroup())
   }, [dispatch]);
   
   return (
@@ -29,7 +32,7 @@ const GroupBinding = () => {
             onChange={(selectedOption) => {
               setData((prevData) => ({
                 ...prevData,
-                user_id: selectedOption?.map((option) => option.id),
+                users: selectedOption?.map((option) => option.id),
               }));
             }}
             placeholder={'Select Users'}
@@ -38,13 +41,13 @@ const GroupBinding = () => {
         <div className='w-[45%]'>
           <label htmlFor="moduleName">Select Group</label>
           <Select
-            options={users?.results}
+            options={groupList?.results}
             getOptionLabel={(modul) => modul.name}
             getOptionValue={(modul) => modul.id}
             onChange={(selectedOption) => {
               setData((prevData) => ({
                 ...prevData,
-                group_id: selectedOption?.id,
+                group: selectedOption?.id,
               }));
             }}
             placeholder={'Select Group'}
@@ -55,6 +58,8 @@ const GroupBinding = () => {
         {/*<button className='py-2 px-4 bg-red-400 text-white rounded text-lg' onClick={() => navigate('/users')}>Back</button>*/}
         <button
           className='py-2 px-4 bg-green-400 text-white rounded text-lg'
+          disabled={data?.users.length === 0 || data?.group === null}
+          onClick={() => dispatch(postGroupBinding(data))}
         >
           Save
         </button>
