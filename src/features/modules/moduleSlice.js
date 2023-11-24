@@ -366,6 +366,20 @@ export const postGroupBinding = createAsyncThunk(
   }
 )
 
+export const updateGroupBinding = createAsyncThunk(
+  "modules/updateGroupBinding",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(`/group/group_binding_user/${payload.id}/`, payload?.data)
+      toast.success("successfully updated");
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {

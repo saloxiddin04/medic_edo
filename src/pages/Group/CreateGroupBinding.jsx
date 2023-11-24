@@ -7,7 +7,7 @@ import {
   getGroupBinding, getGroupBindingById,
   getGroupById,
   postGroupBinding,
-  updateGroup
+  updateGroup, updateGroupBinding
 } from "../../features/modules/moduleSlice";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -17,7 +17,7 @@ const CreateGroupBinding = () => {
   const {users} = useSelector(({testResults}) => testResults)
   const {groupList, groupBinding} = useSelector(({module}) => module);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { id } = useParams();
+  const {id} = useParams();
   
   const [data, setData] = useState({
     users: [],
@@ -28,20 +28,17 @@ const CreateGroupBinding = () => {
     // e.preventDefault();
     if (isSubmitted) return;
     if (Number(id)) {
-      // dispatch(
-      //   updateGroup({
-      //     id: Number(id),
-      //     name: moduleName,
-      //     unique_name: moduleUniqueName,
-      //   })
-      // ).then(() => {
-      //   navigate("/group");
-      // });
+      dispatch(updateGroupBinding({
+        id: Number(id),
+        data
+      })).then(() => {
+        navigate("/binding");
+      });
     } else {
       dispatch(
         postGroupBinding(data)
       ).then(() => {
-        navigate("/group");
+        navigate("/binding");
       });
     }
     setIsSubmitted(true);
@@ -58,7 +55,7 @@ const CreateGroupBinding = () => {
   
   useEffect(() => {
     if (Number(id)) {
-      dispatch(getGroupBindingById(Number(id))).then(({ payload }) => {
+      dispatch(getGroupBindingById(Number(id))).then(({payload}) => {
         const userIds = payload?.users.map(user => user.id);
         bindItems(userIds, payload?.group?.id);
       });
@@ -102,6 +99,7 @@ const CreateGroupBinding = () => {
                 group: selectedOption?.id,
               }));
             }}
+            value={groupList?.results?.find(item => item?.id === data.group)}
             placeholder={'Select Group'}
           />
         </div>
