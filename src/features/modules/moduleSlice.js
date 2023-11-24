@@ -252,11 +252,85 @@ export const deleteTest = createAsyncThunk(
   }
 );
 
+export const getGroup = createAsyncThunk(
+  "modules/getTest",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get('/group/groups/', {params})
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const getGroupById = createAsyncThunk(
+  "modules/getGroupById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/group/groups/${id}`)
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const postGroup = createAsyncThunk(
+  "modules/postGroup",
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.post(`/group/groups/`, params)
+      toast.success("successfully created");
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const updateGroup = createAsyncThunk(
+  "modules/updateGroup",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(
+        `/group/groups/${payload.id}/`,
+        payload
+      );
+      toast.success("successfully updated");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteGroup = createAsyncThunk(
+  "modules/deleteGroup",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.delete(
+        `/group/groups/${id}`
+      );
+      toast.success("successfully deleted");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {
     moduleList: [],
     systemList: [],
+    groupList: [],
     moduleListForTest: [],
     systemListForTest: [],
     questionModeList: [],
@@ -264,6 +338,7 @@ const moduleSlice = createSlice({
     system: {},
     testList: [],
     test: {},
+    group: {},
     isLoading: false,
   },
 
@@ -374,6 +449,41 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getQuestionModeForTest.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group
+    builder.addCase(getGroup.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getGroup.fulfilled, (state, {payload}) => {
+      state.groupList = payload
+      state.isLoading = false
+    })
+    builder.addCase(getGroup.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group by id
+    builder.addCase(getGroupById.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getGroupById.fulfilled, (state, {payload}) => {
+      state.group = payload
+      state.isLoading = false
+    })
+    builder.addCase(getGroupById.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group by id
+    builder.addCase(postGroup.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(postGroup.fulfilled, (state, {payload}) => {
+      state.isLoading = false
+    })
+    builder.addCase(postGroup.rejected, (state) => {
       state.isLoading = false;
     });
   },

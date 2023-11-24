@@ -1,5 +1,5 @@
 import React from "react";
-import {deleteModul, deleteSystem, getModules, getSystems} from "../../features/modules/moduleSlice";
+import {getGroup, deleteGroup} from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -10,8 +10,8 @@ const DeleteGroup = ({ isModalOpen, modulId, closeModal }) => {
   
   const deleteTestAction = () => {
     if (isSubmitted) return;
-    dispatch(deleteSystem(modulId)).then(() => {
-      dispatch(getSystems());
+    dispatch(deleteGroup(modulId)).then(() => {
+      dispatch(getGroup());
       closeModal();
       setIsSubmitted(false);
     });
@@ -36,7 +36,7 @@ const DeleteGroup = ({ isModalOpen, modulId, closeModal }) => {
         <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
         <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
           <div className="bg-gray-100 p-4">
-            <h3 className="text-lg font-medium text-gray-900">Delete Test</h3>
+            <h3 className="text-lg font-medium text-gray-900">Delete Group</h3>
           </div>
           <div className="p-4">
             <p className="text-gray-700">

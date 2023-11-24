@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getSystems} from "../../features/modules/moduleSlice";
+import {getGroup} from "../../features/modules/moduleSlice";
 import {Link} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
 import {AiFillDelete, AiFillEdit} from "react-icons/ai";
-import DeleteSystem from "./DeleteGroup";
+import DeleteGroup from "./DeleteGroup";
 
 const Group = () => {
   const dispatch = useDispatch();
-  const {systemList} = useSelector(({module}) => module);
+  const {groupList} = useSelector(({module}) => module);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ModulToDelete, setModulToDelete] = useState(null);
   
   const handlePageChange = (page) => {
-    dispatch(getSystems({page_size: 10, page}));
+    dispatch(getGroup({page_size: 10, page}));
   };
   
   const handleDeleteModal = (id) => {
@@ -26,21 +26,21 @@ const Group = () => {
   const closeModal = () => setIsModalOpen(false);
   
   useEffect(() => {
-    dispatch(getSystems({page_size: 10, page: 1}));
+    dispatch(getGroup({page_size: 10, page: 1}));
   }, [dispatch]);
   
   return (
     <div className="card">
       <div className="flex justify-between">
         <Link
-          to={ROUTES.CREATE_SYSTEM}
+          to={ROUTES.CREATE_GROUP}
           className="btn-primary mt-3 inline-block"
         >
-          Create System
+          Create Group
         </Link>
         
         <Pagination
-          totalItems={systemList.count} // Replace with the total number of items you have
+          totalItems={groupList.count} // Replace with the total number of items you have
           itemsPerPage={10} // Replace with the number of items to display per page
           onPageChange={handlePageChange} // Pass the handlePageChange function
         />
@@ -80,7 +80,7 @@ const Group = () => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {systemList?.results?.map((item) => (
+                {groupList?.results?.map((item) => (
                   <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}
@@ -96,7 +96,7 @@ const Group = () => {
                       className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       <Link
                         className="btn-warning btn-sm inline-block"
-                        to={`/create-system/${item.id}`}
+                        to={`/create-group/${item.id}`}
                       >
                         <span>
                           <AiFillEdit/>
@@ -119,7 +119,7 @@ const Group = () => {
         </div>
       </div>
       
-      <DeleteSystem
+      <DeleteGroup
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         modulId={ModulToDelete}

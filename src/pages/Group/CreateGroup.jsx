@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  createModule, createSystem,
-  getModuleById, getSystemById,
+  createModule, createSystem, getGroupById,
+  getModuleById, getSystemById, postGroup, updateGroup,
   updateModule, updateSystem,
 } from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
@@ -23,19 +23,19 @@ const CreateGroup = () => {
     if (isSubmitted) return;
     if (Number(id)) {
       dispatch(
-        updateSystem({
+        updateGroup({
           id: Number(id),
           name: moduleName,
           unique_name: moduleUniqueName,
         })
       ).then(() => {
-        navigate("/system");
+        navigate("/group");
       });
     } else {
       dispatch(
-        createSystem({ name: moduleName, unique_name: moduleUniqueName })
+        postGroup({ name: moduleName, unique_name: moduleUniqueName })
       ).then(() => {
-        navigate("/system");
+        navigate("/group");
       });
     }
     setIsSubmitted(true);
@@ -48,7 +48,7 @@ const CreateGroup = () => {
   
   useEffect(() => {
     if (Number(id)) {
-      dispatch(getSystemById(Number(id))).then(({ payload }) => {
+      dispatch(getGroupById(Number(id))).then(({ payload }) => {
         bindItems(payload.name, payload.unique_name);
       });
     }
@@ -58,7 +58,7 @@ const CreateGroup = () => {
     <form className="card" onSubmit={saveData}>
       <div className="my-5 flex items-center gap-10">
         <div className="w-1/2">
-          <label htmlFor="moduleName">System name</label>
+          <label htmlFor="moduleName">Group name</label>
           <input
             required
             id="moduleName"
@@ -70,7 +70,7 @@ const CreateGroup = () => {
           />
         </div>
         <div className="w-1/2">
-          <label htmlFor="modulUniqueName">System unique name</label>
+          <label htmlFor="modulUniqueName">Group unique name</label>
           <input
             required
             id="modulUniqueName"
