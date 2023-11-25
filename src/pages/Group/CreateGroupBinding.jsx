@@ -5,7 +5,7 @@ import {getUsers} from "../../features/testResults/testResultsSlice";
 import {
   getGroup,
   getGroupBinding, getGroupBindingById,
-  getGroupById,
+  getGroupById, getUsersGroupBinding,
   postGroupBinding,
   updateGroup, updateGroupBinding
 } from "../../features/modules/moduleSlice";
@@ -15,7 +15,7 @@ const CreateGroupBinding = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {users} = useSelector(({testResults}) => testResults)
-  const {groupList, groupBinding} = useSelector(({module}) => module);
+  const {groupList, groupBinding, groupBindingUsers} = useSelector(({module}) => module);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const {id} = useParams();
   
@@ -63,6 +63,7 @@ const CreateGroupBinding = () => {
   }, [dispatch, id]);
   
   useEffect(() => {
+    dispatch(getUsersGroupBinding())
     dispatch(getUsers())
     dispatch(getGroup())
   }, [dispatch]);
@@ -73,10 +74,10 @@ const CreateGroupBinding = () => {
         <div className='w-[45%]'>
           <label htmlFor="moduleName">Select Users</label>
           <Select
-            options={users?.results}
+            options={groupBindingUsers?.results}
             getOptionLabel={(modul) => modul.name}
             getOptionValue={(modul) => modul.id}
-            value={data.users.map(userId => users?.results.find(user => user.id === userId))}
+            value={data.users.map(userId => users?.results?.find(user => user.id === userId))}
             isMulti
             onChange={(selectedOption) => {
               setData((prevData) => ({

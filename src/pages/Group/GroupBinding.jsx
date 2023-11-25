@@ -5,8 +5,10 @@ import {Link} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
 import {AiFillDelete, AiFillEdit} from "react-icons/ai";
-import DeleteGroup from "./DeleteGroup";
 import { FaUsers } from "react-icons/fa";
+import DeleteGroupBinding from "./DeleteGroupBinding";
+import { FaChevronCircleRight } from "react-icons/fa";
+import DetailGroupBinding from "./DetailGroupBinding";
 
 
 const GroupBinding = () => {
@@ -14,6 +16,8 @@ const GroupBinding = () => {
   const {groupBindingList} = useSelector(({module}) => module);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [ModulToDetail, setModulToDetail] = useState(null);
   const [ModulToDelete, setModulToDelete] = useState(null);
   
   const handlePageChange = (page) => {
@@ -24,6 +28,13 @@ const GroupBinding = () => {
     setIsModalOpen(true);
     setModulToDelete(id);
   };
+  
+  const handleDetailModal = (id) => {
+    setIsDetailModalOpen(true)
+    setModulToDetail(id)
+  }
+  
+  const closeModalDetail = () => setIsDetailModalOpen(false)
   
   const closeModal = () => setIsModalOpen(false);
   
@@ -114,6 +125,12 @@ const GroupBinding = () => {
                       >
                         <AiFillDelete/>
                       </button>
+                      <button
+                        className={'btn-success btn-sm ml-3'}
+                        onClick={() => handleDetailModal(item.id)}
+                      >
+                        <FaChevronCircleRight />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -124,10 +141,16 @@ const GroupBinding = () => {
         </div>
       </div>
       
-      <DeleteGroup
+      <DeleteGroupBinding
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         modulId={ModulToDelete}
+      />
+      
+      <DetailGroupBinding
+        isModalOpen={isDetailModalOpen}
+        closeModal={closeModalDetail}
+        modulId={ModulToDetail}
       />
     </div>
   );

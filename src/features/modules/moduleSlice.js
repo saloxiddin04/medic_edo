@@ -380,6 +380,33 @@ export const updateGroupBinding = createAsyncThunk(
   }
 )
 
+export const deleteGroupBinding = createAsyncThunk(
+  "modules/deleteGroupBinding",
+  async (id, thunkAPI) => {
+    try {
+      const res = await $axios.delete(`/group/group_binding_user/${id}`)
+      toast.success("successfully deleted");
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const getUsersGroupBinding = createAsyncThunk(
+  "modules/getUsersGroupBinding",
+  async (_, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/group/group_binding_user/get_group_not_joined_users/`)
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {
@@ -396,6 +423,7 @@ const moduleSlice = createSlice({
     test: {},
     group: {},
     groupBinding: {},
+    groupBindingUsers: [],
     isLoading: false,
   },
 
@@ -554,6 +582,18 @@ const moduleSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getGroupBinding.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group binding users
+    builder.addCase(getUsersGroupBinding.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getUsersGroupBinding.fulfilled, (state, {payload}) => {
+      state.groupBindingUsers = payload
+      state.isLoading = false
+    })
+    builder.addCase(getUsersGroupBinding.rejected, (state) => {
       state.isLoading = false;
     });
   },
