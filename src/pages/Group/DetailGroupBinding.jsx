@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getGroupBindingUsersDetail} from "../../features/modules/moduleSlice";
 import Pagination from "../../components/Pagination";
@@ -7,6 +7,18 @@ import { IoClose } from "react-icons/io5";
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
   const {bindingUsers} = useSelector(({module}) => module);
+  
+  const [searchUserState, setSearchUser] = useState('')
+  
+  const timeoutId = useRef()
+  
+  const searchUserFunc = (value) => {
+    setSearchUser(value)
+    clearTimeout(timeoutId.current)
+    timeoutId.current = setTimeout(() => {
+      dispatch(getGroupBindingUsersDetail({id: modulId, text: value}))
+    }, 500)
+  }
   
   useEffect(() => {
     if (isModalOpen) {
@@ -37,8 +49,13 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
           <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
           <div className='bg-white w-full rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full'>
             <div className='w-full p-4 flex items-center justify-between'>
-              <input type="text" placeholder={'Search'} className={'w-1/4 border py-2 px-1 divide-y divide-gray-200' +
-                ' rounded'}/>
+              <input
+                type="text"
+                placeholder={'Search'}
+                className={'w-1/4 border py-2 px-1 divide-y divide-gray-200 rounded'}
+                value={searchUserState}
+                onChange={(e) => searchUserFunc(e.target.value)}
+              />
               <button className={'btn-danger btn-sm'} onClick={closeModal}>
                 <IoClose/>
               </button>
