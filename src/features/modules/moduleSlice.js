@@ -407,6 +407,32 @@ export const getUsersGroupBinding = createAsyncThunk(
   }
 )
 
+export const getGroupBindingUsersDetail = createAsyncThunk(
+  'modules/getGroupBindingUsersDetailGet',
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/group/group_binding_user/${params?.id}/get_group_users/`, {params})
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
+export const getGroupUnused = createAsyncThunk(
+  'modules/getGroupUnused',
+  async (params, thunkAPI) => {
+    try {
+      const res = await $axios.get(`/group/groups/get_unused_groups/`, {params})
+      return res.data
+    }catch (err) {
+      toast.error(err.message)
+      return thunkAPI.rejectWithValue(err)
+    }
+  }
+)
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {
@@ -424,6 +450,8 @@ const moduleSlice = createSlice({
     group: {},
     groupBinding: {},
     groupBindingUsers: [],
+    bindingUsers: [],
+    groupUnused: [],
     isLoading: false,
   },
 
@@ -594,6 +622,30 @@ const moduleSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getUsersGroupBinding.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // binding users
+    builder.addCase(getGroupBindingUsersDetail.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getGroupBindingUsersDetail.fulfilled, (state, {payload}) => {
+      state.bindingUsers = payload
+      state.isLoading = false
+    })
+    builder.addCase(getGroupBindingUsersDetail.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // group unused
+    builder.addCase(getGroupUnused.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getGroupUnused.fulfilled, (state, {payload}) => {
+      state.groupUnused = payload
+      state.isLoading = false
+    })
+    builder.addCase(getGroupUnused.rejected, (state) => {
       state.isLoading = false;
     });
   },

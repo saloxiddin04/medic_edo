@@ -4,10 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../../features/testResults/testResultsSlice";
 import {
   getGroup,
-  getGroupBinding, getGroupBindingById,
-  getGroupById, getUsersGroupBinding,
+  getGroupBindingById, getGroupUnused,
+  getUsersGroupBinding,
   postGroupBinding,
-  updateGroup, updateGroupBinding
+  updateGroupBinding
 } from "../../features/modules/moduleSlice";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -15,7 +15,7 @@ const CreateGroupBinding = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {users} = useSelector(({testResults}) => testResults)
-  const {groupList, groupBinding, groupBindingUsers} = useSelector(({module}) => module);
+  const {groupList, groupBinding, groupBindingUsers, groupUnused} = useSelector(({module}) => module);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const {id} = useParams();
   
@@ -25,7 +25,6 @@ const CreateGroupBinding = () => {
   });
   
   const saveData = () => {
-    // e.preventDefault();
     if (isSubmitted) return;
     if (Number(id)) {
       dispatch(updateGroupBinding({
@@ -65,7 +64,7 @@ const CreateGroupBinding = () => {
   useEffect(() => {
     dispatch(getUsersGroupBinding())
     dispatch(getUsers())
-    dispatch(getGroup())
+    dispatch(getGroupUnused())
   }, [dispatch]);
   
   return (
@@ -91,7 +90,7 @@ const CreateGroupBinding = () => {
         <div className='w-[45%]'>
           <label htmlFor="moduleName">Select Group</label>
           <Select
-            options={groupList?.results}
+            options={groupUnused?.results}
             getOptionLabel={(modul) => modul.name}
             getOptionValue={(modul) => modul.id}
             onChange={(selectedOption) => {
@@ -106,7 +105,7 @@ const CreateGroupBinding = () => {
         </div>
       </div>
       <div className='flex items-center justify-end mt-5 gap-3'>
-        {/*<button className='py-2 px-4 bg-red-400 text-white rounded text-lg' onClick={() => navigate('/users')}>Back</button>*/}
+        <button className='py-2 px-4 bg-red-400 text-white rounded text-lg' onClick={() => navigate('/binding')}>Back</button>
         <button
           className='py-2 px-4 bg-green-400 text-white rounded text-lg'
           disabled={data?.users?.length === 0 || data?.group === null}

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getGroupBinding} from "../../features/modules/moduleSlice";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
 import {AiFillDelete, AiFillEdit} from "react-icons/ai";
@@ -13,6 +13,7 @@ import DetailGroupBinding from "./DetailGroupBinding";
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const {groupBindingList} = useSelector(({module}) => module);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,18 +46,14 @@ const GroupBinding = () => {
   return (
     <div className="card">
       <div className="flex justify-between">
+        <input type="text" placeholder={'Search'} className={'w-1/4 border py-1 px-1 divide-y divide-gray-200' +
+          ' rounded'}/>
         <Link
           to={ROUTES.GROUP_BINDING_BINDING}
           className="btn-primary mt-3 inline-block"
         >
           Group Binding
         </Link>
-        
-        <Pagination
-          totalItems={groupBindingList.count} // Replace with the total number of items you have
-          itemsPerPage={10} // Replace with the number of items to display per page
-          onPageChange={handlePageChange} // Pass the handlePageChange function
-        />
       </div>
       <div className="flex flex-col mt-3">
         <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -102,7 +99,7 @@ const GroupBinding = () => {
                       {item?.group?.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      <div className='flex gap-2 items-center justify-center'>
+                      <div className='flex gap-2 items-center justify-center cursor-pointer' onClick={() => handleDetailModal(item.id)}>
                         <FaUsers size={'22'}/>
                         {item.users.length}
                       </div>
@@ -127,7 +124,7 @@ const GroupBinding = () => {
                       </button>
                       <button
                         className={'btn-success btn-sm ml-3'}
-                        onClick={() => handleDetailModal(item.id)}
+                        onClick={() => navigate(`/create-group-binding/${item.id}`)}
                       >
                         <FaChevronCircleRight />
                       </button>
@@ -136,6 +133,13 @@ const GroupBinding = () => {
                 ))}
                 </tbody>
               </table>
+            </div>
+            <div className={'w-full flex items-center justify-end'}>
+              <Pagination
+                totalItems={groupBindingList.count} // Replace with the total number of items you have
+                itemsPerPage={10} // Replace with the number of items to display per page
+                onPageChange={handlePageChange} // Pass the handlePageChange function
+              />
             </div>
           </div>
         </div>

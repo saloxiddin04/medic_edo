@@ -1,21 +1,21 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getGroupBindingById} from "../../features/modules/moduleSlice";
+import {getGroupBindingUsersDetail} from "../../features/modules/moduleSlice";
 import Pagination from "../../components/Pagination";
 import { IoClose } from "react-icons/io5";
 
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
-  const {groupBinding} = useSelector(({module}) => module);
+  const {bindingUsers} = useSelector(({module}) => module);
   
   useEffect(() => {
     if (isModalOpen) {
-      dispatch(getGroupBindingById(modulId))
+      dispatch(getGroupBindingUsersDetail({id: modulId}))
     }
   }, [isModalOpen, modulId]);
   
   const handlePageChange = (page) => {
-    dispatch(getGroupBindingById({modulId, page_size: 10, page}));
+    dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
   
   return (
@@ -62,7 +62,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {groupBinding?.users?.map((item) => (
+                {bindingUsers?.results?.map((item) => (
                   <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}
@@ -77,7 +77,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
             </div>
             <div className='flex justify-end p-2'>
               <Pagination
-                totalItems={groupBinding?.users?.length} // Replace with the total number of items you have
+                totalItems={bindingUsers?.count} // Replace with the total number of items you have
                 itemsPerPage={10} // Replace with the number of items to display per page
                 onPageChange={handlePageChange}// Pass the handlePageChange function
               />
