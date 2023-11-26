@@ -5,7 +5,7 @@ import {
   refreshTokenKeyName,
   registerEndpoint,
   tokenKeyName,
-  userKeyName,
+  userKeyName, verifyEndpoint,
 } from "./jwt.config";
 
 export function login(...args) {
@@ -25,6 +25,10 @@ export function logout() {
 
 export function register(...args) {
   return $axios.post(registerEndpoint, ...args);
+}
+
+export function verify(...args) {
+  return $axios.post(verifyEndpoint, ...args)
 }
 
 export function setAccessToken(value) {

@@ -21,4 +21,5 @@ export const ROUTES = {
   CREATE_GROUP: '/create-group/:id',
   GROUP_BINDING: '/binding',
   GROUP_BINDING_BINDING: '/create-group-binding/:id',
+  VERIFY: '/verify'
 };

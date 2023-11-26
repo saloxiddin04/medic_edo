@@ -9,7 +9,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const loginUser = (e) => {
@@ -55,7 +55,7 @@ const SignIn = () => {
                 placeholder="Username"
                 className="form-input"
                 value={user.username}
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
             </div>
 

@@ -22,6 +22,7 @@ import Results from "./pages/PassTest/Results.jsx";
 import Explanation from "./pages/Explanations/Explanation.jsx";
 import LoadingPage from "./pages/LoadingPage.jsx";
 import TestReview from "./pages/TestReview/TestReview";
+import Verify from "./pages/Auth/Verify";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -38,6 +39,7 @@ const App = () => {
     if (
       pathname === "/sign-up" ||
       pathname === "/sign-in" ||
+      pathname === "/verify" ||
       pathname === "/test" ||
       pathname === "/test-results" ||
       pathname === "/test-review" ||
@@ -51,7 +53,7 @@ const App = () => {
 
   useEffect(() => {
     if (!getUserData() && pathname !== "/sign-up") {
-      navigate(ROUTES.SINGIN);
+      // navigate(ROUTES.SINGIN);
     }
   }, [navigate, pathname]);
 
@@ -75,6 +77,7 @@ const App = () => {
           <Route path={ROUTES.RESULTS} element={<Results />} />
           <Route path={ROUTES.EXPLANATION} element={<Explanation />} />
           <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
+          <Route path={ROUTES.VERIFY} element={<Verify />} />
         </Routes>
       )}
 

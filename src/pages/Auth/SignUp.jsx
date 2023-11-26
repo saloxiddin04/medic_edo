@@ -4,15 +4,20 @@ import { ROUTES } from "../../Routes/constants";
 import { register } from "../../auth/jwtService";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {useDispatch} from "react-redux";
+import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  
+  const dispatch = useDispatch()
 
   const [isAgree, setIsAgree] = useState(false);
 
   const [user, setUser] = useState({
     username: "",
     name: "",
+    email: '',
     password: "",
   });
 
@@ -20,11 +25,12 @@ const SignUp = () => {
     e.preventDefault();
     register(user)
       .then(() => {
-        navigate("/sign-in");
-        toast.success("Successfully registered");
+        navigate("/verify");
+        dispatch(setItem({key: 'email', value: JSON.stringify(user.email)}))
+        // toast.success("Successfully registered");
       })
       .catch((err) => {
-        toast.error(err.response.data.username[0] || err.message);
+        toast.error(err.response.data.error || err.message);
       });
   };
 
@@ -80,6 +86,28 @@ const SignUp = () => {
                 className="form-input"
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
+              />
+            </div>
+            
+            <div className="my-4">
+              <div className="flex justify-between">
+                <label
+                  htmlFor="name"
+                  className="text-sm text-gray-600 dark:text-gray-200"
+                >
+                  Your email
+                </label>
+              </div>
+              
+              <input
+                id="name"
+                required
+                type="email"
+                name="name"
+                placeholder="Email"
+                className="form-input"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
             </div>
 
