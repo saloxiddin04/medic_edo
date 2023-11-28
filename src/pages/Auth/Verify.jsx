@@ -11,17 +11,27 @@ const Verify = () => {
   const navigate = useNavigate();
   
   const dispatch = useDispatch()
-  const {email} = useSelector((state) => state.localStorage);
+  const {email, forgot} = useSelector((state) => state.localStorage);
   
   const [otp, setOtp] = useState("")
+  
+  const [time, setTime] = useState(180); // 3 minutes in seconds
+  const [minutes, setMinutes] = useState(3);
+  const [seconds, setSeconds] = useState(0);
   
   const registerUser = (e) => {
     e.preventDefault();
     const emailState = JSON.parse(email)
+    const forgotState = JSON.parse(forgot)
     verify({otp, email: emailState})
       .then(() => {
-        navigate("/sign-in");
-        toast.success("Successfully verified");
+        if (forgotState === 1) {
+          navigate("/new-password");
+          toast.success("Successfully verified");
+        } else {
+          navigate("/sign-in");
+          toast.success("Successfully verified");
+        }
       })
       .catch((err) => {
         toast.error(err.response.data.error  || err.message);
@@ -29,7 +39,27 @@ const Verify = () => {
   };
   
   useEffect(() => {
+    const timer = setInterval(() => {
+      // Update seconds and minutes
+      setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 59));
+      setMinutes((prevMinutes) => (seconds === 0 ? prevMinutes - 1 : prevMinutes));
+      
+      // Update total time
+      setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      
+      if (time === 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+    
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timer);
+  }, [seconds]);
+  
+  
+  useEffect(() => {
     dispatch(getItem('email'))
+    dispatch(getItem('forgot'))
   }, []);
   
   return (
@@ -63,6 +93,14 @@ const Verify = () => {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
               />
+              
+              <div className={'flex justify-end mt-2'}>
+                {time === 0 || time < 0 ? (
+                  <h1>Resend</h1>
+                ) : (
+                  <h1>{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</h1>
+                )}
+              </div>
             </div>
             
             

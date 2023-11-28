@@ -1,20 +1,23 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
-import { login } from "../../auth/jwtService";
+import {changePassword, login} from "../../auth/jwtService";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {useSelector} from "react-redux";
 
-const SignIn = () => {
+const NewPassword = () => {
   const navigate = useNavigate();
-
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  
+  const {email} = useSelector((state) => state.localStorage);
+  
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  
   const loginUser = (e) => {
     e.preventDefault();
-    login(user)
+    const emailState = JSON.parse(email)
+    changePassword({email: emailState, password})
       .then(() => {
         navigate("/main");
         setTimeout(() => {
@@ -22,19 +25,19 @@ const SignIn = () => {
         }, 200);
       })
       .catch((err) => {
-        toast.error(err.response.data.detail || err.message);
+        toast.error(err.response.data.error || err.message);
       });
   };
-
+  
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
         <div className="text-center">
           <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
-            Login
+            New Password
           </h2>
         </div>
-
+        
         <div className="mt-8">
           <form onSubmit={loginUser}>
             <div>
@@ -43,68 +46,53 @@ const SignIn = () => {
                   htmlFor="username"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Your username
+                  New password
                 </label>
               </div>
-
+              
               <input
                 id="username"
                 required
                 type="text"
                 name="username"
-                placeholder="Username"
+                placeholder="New password"
                 className="form-input"
-                value={user.username}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
+            
             <div>
               <div className="flex justify-between mt-4">
                 <label
                   htmlFor="password"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Your Password
+                  Confirm Password
                 </label>
               </div>
-
+              
               <input
                 id="password"
                 required
                 type="password"
                 name="password"
-                placeholder="Your Password"
+                placeholder="Confirm Password"
                 className="form-input"
-                value={user.password}
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
-            </div>
-            <div className={'flex justify-end mt-2'}>
-              <Link to={ROUTES.FORGOT} className={'text-blue-500'}>
-                Forgot your password?
-              </Link>
             </div>
             <div className="mt-8">
               <button type="submit" className="btn-primary text-center w-full">
-                Login
+                Change Password
               </button>
             </div>
           </form>
-
-          <p className="mt-6 text-center text-sm text-gray-400">
-            You are not registered yet?
-            <Link
-              className="ml-1 text-primary hover:underline"
-              to={ROUTES.SINGUP}
-            >
-              Register
-            </Link>
-          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default NewPassword;

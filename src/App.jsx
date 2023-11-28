@@ -23,6 +23,7 @@ import Explanation from "./pages/Explanations/Explanation.jsx";
 import LoadingPage from "./pages/LoadingPage.jsx";
 import TestReview from "./pages/TestReview/TestReview";
 import Verify from "./pages/Auth/Verify";
+import Forgot from "./pages/Auth/Forgot";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -43,6 +44,8 @@ const App = () => {
       pathname === "/test" ||
       pathname === "/test-results" ||
       pathname === "/test-review" ||
+      pathname === "/forgot" ||
+      pathname === "/new-password" ||
       pathname.includes("explanation")
     ) {
       return false;
@@ -78,6 +81,7 @@ const App = () => {
           <Route path={ROUTES.EXPLANATION} element={<Explanation />} />
           <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
           <Route path={ROUTES.VERIFY} element={<Verify />} />
+          <Route path={ROUTES.FORGOT} element={<Forgot />} />
         </Routes>
       )}
 

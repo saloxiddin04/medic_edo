@@ -1,6 +1,7 @@
 import $axios from "../plugins/axios";
 import {
-  loginEndpoint,
+  forgotPasswordEndpoint,
+  loginEndpoint, passwordChangeEndpoint,
   refreshEndpoint,
   refreshTokenKeyName,
   registerEndpoint,
@@ -29,6 +30,14 @@ export function register(...args) {
 
 export function verify(...args) {
   return $axios.post(verifyEndpoint, ...args)
+}
+
+export function forgotPasswordJwt(...args) {
+  return $axios.post(forgotPasswordEndpoint, ...args)
+}
+
+export function changePassword(...args) {
+  return $axios.post(passwordChangeEndpoint, ...args)
 }
 
 export function setAccessToken(value) {
