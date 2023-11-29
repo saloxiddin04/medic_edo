@@ -37,7 +37,7 @@ export function forgotPasswordJwt(...args) {
 }
 
 export function changePassword(...args) {
-  return $axios.post(passwordChangeEndpoint, ...args)
+  return $axios.patch(passwordChangeEndpoint, ...args)
 }
 
 export function setAccessToken(value) {

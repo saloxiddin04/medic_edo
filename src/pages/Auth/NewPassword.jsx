@@ -16,12 +16,14 @@ const NewPassword = () => {
   
   const loginUser = (e) => {
     e.preventDefault();
-    const emailState = JSON.parse(email)
-    changePassword({email: emailState, password})
+    const emailStorage = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
+    changePassword({email: JSON.parse(emailStorage), password})
       .then(() => {
-        navigate("/main");
+        navigate("/sign-in");
         setTimeout(() => {
-          toast.success("You have successfully logged in");
+          toast.success("You have successfully change password");
+          localStorage.removeItem('email')
+          localStorage.removeItem('forgot')
         }, 200);
       })
       .catch((err) => {
@@ -53,7 +55,7 @@ const NewPassword = () => {
               <input
                 id="username"
                 required
-                type="text"
+                type="password"
                 name="username"
                 placeholder="New password"
                 className="form-input"
@@ -84,7 +86,7 @@ const NewPassword = () => {
               />
             </div>
             <div className="mt-8">
-              <button type="submit" className="btn-primary text-center w-full">
+              <button disabled={password !== confirmPassword || password === '' || confirmPassword === ''} type="submit" className="btn-primary text-center w-full">
                 Change Password
               </button>
             </div>

@@ -39,6 +39,7 @@ import {
 import ReactECharts from "echarts-for-react";
 import Select from "react-select";
 import {AiOutlineClose} from "react-icons/ai";
+import NotGroupModal from "../components/NotGroup";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
@@ -251,6 +252,8 @@ const Main = () => {
       </text>
     );
   }
+  
+  if (getUserData().role !== "admin" && !getUserData()?.is_group) return <NotGroupModal isModalOpen={!getUserData()?.is_group}/>
   
   return (
     <section>

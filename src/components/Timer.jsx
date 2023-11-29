@@ -38,7 +38,7 @@ const Timer = () => {
     <div>
       <h2 className="text-lg text-white flex items-center gap-3">
         Timer:{" "}
-        <span class="rounded-full font-bold bg-white/20 text-white w-[100px] text-center inline-block  ">
+        <span className="rounded-full font-bold bg-white/20 text-white w-[100px] text-center inline-block">
           {formatTime(seconds)}
         </span>
       </h2>

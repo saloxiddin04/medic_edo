@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../Routes/constants";
-import {register, verify} from "../../auth/jwtService";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import {Link, useNavigate} from "react-router-dom";
+import {ROUTES} from "../../Routes/constants";
+import {forgotPasswordJwt, register, verify} from "../../auth/jwtService";
+import {useState} from "react";
+import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {getItem, setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
@@ -11,9 +11,10 @@ const Verify = () => {
   const navigate = useNavigate();
   
   const dispatch = useDispatch()
-  const {email, forgot} = useSelector((state) => state.localStorage);
   
   const [otp, setOtp] = useState("")
+  
+  const [loading, setLoading] = useState(false)
   
   const [time, setTime] = useState(180); // 3 minutes in seconds
   const [minutes, setMinutes] = useState(3);
@@ -21,11 +22,12 @@ const Verify = () => {
   
   const registerUser = (e) => {
     e.preventDefault();
-    const emailState = JSON.parse(email)
-    const forgotState = JSON.parse(forgot)
-    verify({otp, email: emailState})
+    const emailStorage = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
+    const forgotStorage = localStorage.getItem('forgot') ? JSON.parse(localStorage.getItem('forgot')) : ''
+    
+    verify({otp, email: JSON.parse(emailStorage)})
       .then(() => {
-        if (forgotState === 1) {
+        if (JSON.parse(forgotStorage) === 1) {
           navigate("/new-password");
           toast.success("Successfully verified");
         } else {
@@ -34,7 +36,7 @@ const Verify = () => {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.error  || err.message);
+        toast.error(err.response.data.error || err.message);
       });
   };
   
@@ -48,6 +50,9 @@ const Verify = () => {
       setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       
       if (time === 0) {
+        setTime(0)
+        setMinutes(0)
+        setSeconds(0)
         clearInterval(timer);
       }
     }, 1000);
@@ -60,7 +65,7 @@ const Verify = () => {
   useEffect(() => {
     dispatch(getItem('email'))
     dispatch(getItem('forgot'))
-  }, []);
+  }, [dispatch]);
   
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
@@ -95,8 +100,31 @@ const Verify = () => {
               />
               
               <div className={'flex justify-end mt-2'}>
-                {time === 0 || time < 0 ? (
-                  <h1>Resend</h1>
+                {time === 0 ? (
+                  <h1
+                    className={'cursor-pointer'}
+                    onClick={() => {
+                      const emailState = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
+                      setLoading(true)
+                      forgotPasswordJwt({email: JSON.parse(emailState)}).then((r) => {
+                        setTime(180)
+                        setMinutes(3)
+                        setSeconds(0)
+                        setLoading(false)
+                        toast.success('successfully resend');
+                        setTimeout(() => {
+                          window.location.reload()
+                        }, 2000)
+                      }).catch((err) => {
+                        toast.error(err.response.data.error || err.message);
+                        setTimeout(() => {
+                          window.location.reload()
+                        }, 2000)
+                      });
+                    }}
+                  >
+                    {!loading ? 'Resend' : 'Loading...'}
+                  </h1>
                 ) : (
                   <h1>{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</h1>
                 )}
@@ -109,7 +137,7 @@ const Verify = () => {
                 type="submit"
                 className="btn-primary text-center w-full"
               >
-                Verify
+                {!loading ? 'Verify' : 'Loading...'}
               </button>
               
               <p className="mt-6 text-center text-sm text-gray-400">

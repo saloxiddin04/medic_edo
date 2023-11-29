@@ -24,6 +24,8 @@ import LoadingPage from "./pages/LoadingPage.jsx";
 import TestReview from "./pages/TestReview/TestReview";
 import Verify from "./pages/Auth/Verify";
 import Forgot from "./pages/Auth/Forgot";
+import NewPassword from "./pages/Auth/NewPassword";
+import NotGroupModal from "./components/NotGroup";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -55,13 +57,13 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (!getUserData() && pathname !== "/sign-up") {
-      // navigate(ROUTES.SINGIN);
+    if (!getUserData()?.is_group && pathname !== "/sign-up") {
+      // navigate(ROUTES.MAIN);
     }
   }, [navigate, pathname]);
 
   if (isLoading) return <LoadingPage />;
-
+  
   return (
     <div>
       {checkRoute() ? (
@@ -82,6 +84,7 @@ const App = () => {
           <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
           <Route path={ROUTES.VERIFY} element={<Verify />} />
           <Route path={ROUTES.FORGOT} element={<Forgot />} />
+          <Route path={ROUTES.NEW_PASSWORD} element={<NewPassword />} />
         </Routes>
       )}
 

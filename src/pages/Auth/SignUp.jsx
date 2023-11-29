@@ -26,8 +26,10 @@ const SignUp = () => {
     register(user)
       .then(() => {
         navigate("/verify");
-        dispatch(setItem({key: 'email', value: JSON.stringify(user.email)}))
-        // toast.success("Successfully registered");
+        dispatch(setItem({key: 'email', value: user.email}))
+        dispatch(setItem({key: 'forgot', value: 2}))
+        dispatch(setItem({key: 'user', value: user}))
+        toast.success("Successfully registered");
       })
       .catch((err) => {
         toast.error(err.response.data.error || err.message);
