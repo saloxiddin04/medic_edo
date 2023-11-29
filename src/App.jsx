@@ -55,10 +55,16 @@ const App = () => {
       return true;
     }
   };
-
+  
   useEffect(() => {
-    if (!getUserData()?.is_group && pathname !== "/sign-up") {
-      // navigate(ROUTES.MAIN);
+    if (!getUserData() &&
+      pathname !== "/sign-up" &&
+      pathname !== "/sign-in" &&
+      pathname !== "/new-password" &&
+      pathname !== "/verify" &&
+      pathname !== "/forgot"
+    ) {
+      navigate(ROUTES.SINGIN);
     }
   }, [navigate, pathname]);
 
