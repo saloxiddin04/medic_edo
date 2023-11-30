@@ -19,6 +19,7 @@ const ModuleTest = () => {
   const [testToDelete, setTestToDelete] = useState(null);
 
   const handlePageChange = (page) => {
+    localStorage.setItem("currentPage", page.toString());
     dispatch(getTests({ page_size: 10, page }));
   };
 
@@ -30,7 +31,8 @@ const ModuleTest = () => {
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
-    dispatch(getTests({ page_size: 10, page: 1 }));
+    const page = localStorage.getItem("currentPage");
+    dispatch(getTests({ page_size: 10, page }));
   }, [dispatch]);
 
   return (

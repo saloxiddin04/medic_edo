@@ -15,7 +15,7 @@ const CreateGroupBinding = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {users} = useSelector(({testResults}) => testResults)
-  const {groupList, groupBinding, groupBindingUsers, groupUnused} = useSelector(({module}) => module);
+  const {groupList, groupBindingUsers, groupUnused} = useSelector(({module}) => module);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const {id} = useParams();
   

@@ -22,6 +22,7 @@ const GroupBinding = () => {
   const [ModulToDelete, setModulToDelete] = useState(null);
   
   const handlePageChange = (page) => {
+    localStorage.setItem("currentPage", page.toString());
     dispatch(getGroupBinding({page_size: 10, page}));
   };
   
@@ -40,7 +41,8 @@ const GroupBinding = () => {
   const closeModal = () => setIsModalOpen(false);
   
   useEffect(() => {
-    dispatch(getGroupBinding({page_size: 10, page: 1}));
+    const page = localStorage.getItem("currentPage");
+    dispatch(getGroupBinding({page_size: 10, page}));
   }, [dispatch]);
   
   return (

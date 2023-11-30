@@ -25,7 +25,6 @@ import TestReview from "./pages/TestReview/TestReview";
 import Verify from "./pages/Auth/Verify";
 import Forgot from "./pages/Auth/Forgot";
 import NewPassword from "./pages/Auth/NewPassword";
-import NotGroupModal from "./components/NotGroup";
 
 const App = () => {
   const { pathname } = useLocation();

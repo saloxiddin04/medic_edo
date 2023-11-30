@@ -30,11 +30,13 @@ const Users = () => {
   const {users, loading} = useSelector(({testResults}) => testResults)
   
   const handlePageChange = (page) => {
+    localStorage.setItem("currentPage", page.toString());
     dispatch(getUsers({ page_size: 10, page }));
   };
   
   useEffect(() => {
-    dispatch(getUsers({page_size: 10, page: 1}))
+    const page = localStorage.getItem("currentPage");
+    dispatch(getUsers({page_size: 10, page}))
   }, [dispatch]);
   
   const timeoutId = useRef()
@@ -59,7 +61,8 @@ const Users = () => {
           />
           <div onClick={() => {
             setSearchUser('')
-            dispatch(getUsers({page_size: 10, page: 1}))
+            const page = localStorage.getItem("currentPage");
+            dispatch(getUsers({page_size: 10, page}))
           }}>
             <AiOutlineClose size={20}/>
           </div>
@@ -98,6 +101,12 @@ const Users = () => {
               scope={'row'}
               className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
             >
+              Group Name
+            </th>
+            <th
+              scope={'row'}
+              className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+            >
               Role
             </th>
             <th
@@ -115,6 +124,7 @@ const Users = () => {
                 <td>{item.id}</td>
                 <td>{item.username}</td>
                 <td>{item.name}</td>
+                <td>{item.group_name === null ? "-" : item.group_name}</td>
                 <td>{item.role}</td>
                 <td>
                   <button

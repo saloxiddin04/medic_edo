@@ -43,7 +43,7 @@ const SignIn = () => {
                   htmlFor="username"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Your username
+                  Your username or email
                 </label>
               </div>
 
@@ -52,7 +52,7 @@ const SignIn = () => {
                 required
                 type="text"
                 name="username"
-                placeholder="Username"
+                placeholder="Username or email"
                 className="form-input"
                 value={user.username}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}

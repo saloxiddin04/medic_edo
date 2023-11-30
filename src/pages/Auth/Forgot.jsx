@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import {useDispatch} from "react-redux";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {forgotPasswordJwt} from "../../auth/jwtService";
+import LoadingPage from "../LoadingPage";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -13,16 +14,20 @@ const ForgotPassword = () => {
   const dispatch = useDispatch()
   
   const [email, setEmail] = useState("")
+  const [loading, setLoading] = useState(false)
   
   const forgotPassword = (e) => {
     e.preventDefault();
+    setLoading(true)
     forgotPasswordJwt({email})
       .then(() => {
         navigate("/verify");
         dispatch(setItem({key: 'email', value: JSON.stringify(email)}))
         dispatch(setItem({key: 'forgot', value: JSON.stringify(1)}))
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         toast.error(err.response.data.error  || err.message);
       });
   };
@@ -63,10 +68,11 @@ const ForgotPassword = () => {
             
             <div className="mt-12">
               <button
+                disabled={loading}
                 type="submit"
-                className="btn-primary text-center w-full"
+                className="btn-primary text-center w-full flex justify-center"
               >
-                Send
+                {!loading ? 'Send' : <div className="loading-spinner"></div>}
               </button>
               
               <p className="mt-6 text-center text-sm text-gray-400">

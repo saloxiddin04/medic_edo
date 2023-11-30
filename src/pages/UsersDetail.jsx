@@ -21,6 +21,7 @@ const UsersDetail = () => {
   const [username, setUserName] = useState(user.username ? user.username : '')
   const [name, setName] = useState(user.name ? user.name : '')
   const [role, setRole] = useState(user.role ? user.role : '')
+  const [email, setEmail] = useState(user.email ? user.email : '')
   const [password, setPassword] = useState(null)
   const [visible, setVisible] = useState(false)
   
@@ -35,6 +36,7 @@ const UsersDetail = () => {
     setUserName(user.username || localStorage.getItem('username') || '');
     setName(user.name || localStorage.getItem('name') || '');
     setRole(user.role || localStorage.getItem('role') || '');
+    setEmail(user.email || localStorage.getItem('email') || '');
   }, [user]);
   
   const handleDivFocus = (divId) => {
@@ -119,6 +121,22 @@ const UsersDetail = () => {
                 />
               </div>
               <div
+                className='input flex flex-col w-full'
+                onFocus={() => handleDivFocus(5)}
+                onBlur={handleDivBlur}
+              >
+                <label htmlFor="name">Email</label>
+                <input
+                  type="email"
+                  id={'name'}
+                  onFocus={() => handleDivFocus(5)}
+                  onBlur={handleDivBlur}
+                  className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(5) ? 'border-blue-400' : ''}`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div
                 className='input flex flex-col w-full mt-1'
                 onFocus={() => handleDivFocus(3)}
                 onBlur={handleDivBlur}
@@ -148,7 +166,8 @@ const UsersDetail = () => {
                   username,
                   name,
                   password,
-                  role
+                  role,
+                  email
                 })).then((res) => {
                   if (res.meta.requestStatus === 'fulfilled') {
                     setPassword('')

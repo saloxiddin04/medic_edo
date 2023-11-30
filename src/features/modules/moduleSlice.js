@@ -398,7 +398,7 @@ export const getUsersGroupBinding = createAsyncThunk(
   "modules/getUsersGroupBinding",
   async (_, thunkAPI) => {
     try {
-      const res = await $axios.get(`/group/group_binding_user/get_group_not_joined_users/`)
+      const res = await $axios.get(`/group/group_binding_user/get_group_not_joined_users/?page_size=1000000`)
       return res.data
     }catch (err) {
       toast.error(err.message)

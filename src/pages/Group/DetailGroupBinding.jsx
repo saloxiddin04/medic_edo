@@ -27,6 +27,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   }, [isModalOpen, modulId]);
   
   const handlePageChange = (page) => {
+    localStorage.setItem("currentPage", page.toString());
     dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
   

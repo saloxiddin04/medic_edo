@@ -8,6 +8,11 @@ import {FaUserAlt, FaUserFriends} from "react-icons/fa";
 import { MdGroupAdd } from "react-icons/md";
 
 const Sidebar = () => {
+  
+  const handleCleanCurrentPage = () => {
+    localStorage.removeItem('currentPage')
+  }
+  
   return (
     <div className="fixed top-16 bg-white text-gray-700 h-screen w-56 py-8">
       <nav>
@@ -24,6 +29,7 @@ const Sidebar = () => {
             {getUserData() && getUserData().role === "admin" && (
               <>
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.MODULE}
                   className="flex my-2 w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
@@ -32,6 +38,7 @@ const Sidebar = () => {
                   <span>Modul</span>
                 </NavLink>
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.SYSTEM}
                   className="flex my-2 w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
@@ -40,6 +47,7 @@ const Sidebar = () => {
                   <span>System</span>
                 </NavLink>
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.MODULETEST}
                   className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
@@ -48,6 +56,7 @@ const Sidebar = () => {
                   <span>Test</span>
                 </NavLink>
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.USERS}
                   className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
@@ -58,6 +67,7 @@ const Sidebar = () => {
                 </NavLink>
                 
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.GROUP}
                   className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
@@ -66,6 +76,7 @@ const Sidebar = () => {
                   <span>Group</span>
                 </NavLink>
                 <NavLink
+                  onClick={handleCleanCurrentPage}
                   activeclassname="active"
                   to={ROUTES.GROUP_BINDING}
                   className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
