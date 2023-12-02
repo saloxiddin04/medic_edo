@@ -66,19 +66,43 @@ const ModuleTest = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Image 1
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-7 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Modul
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-7 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Quetion
+                      System
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Question
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Image 2
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Image 3
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Correct Answer Key
                     </th>
@@ -98,7 +122,13 @@ const ModuleTest = () => {
                         {item.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <img src={item?.image} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                      </td>
+                      <td className="px-1 py-4 whitespace-nowrap text-center">
                         {item.modul_name}
+                      </td>
+                      <td className="px-1 py-4 whitespace-nowrap text-center">
+                        {item.sistema_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                         <span
@@ -106,7 +136,13 @@ const ModuleTest = () => {
                           dangerouslySetInnerHTML={{ __html: item.question }}
                         ></span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <img src={item?.image2} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <img src={item?.image3} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                         {item.correct_answer_key}
                       </td>
 

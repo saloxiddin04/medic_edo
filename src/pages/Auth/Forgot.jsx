@@ -22,8 +22,8 @@ const ForgotPassword = () => {
     forgotPasswordJwt({email})
       .then(() => {
         navigate("/verify");
-        dispatch(setItem({key: 'email', value: JSON.stringify(email)}))
-        dispatch(setItem({key: 'forgot', value: JSON.stringify(1)}))
+        localStorage.setItem('email', JSON.stringify(email))
+        localStorage.setItem('forgot', JSON.stringify(1))
         setLoading(false)
       })
       .catch((err) => {

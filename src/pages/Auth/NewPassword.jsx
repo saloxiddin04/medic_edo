@@ -17,7 +17,7 @@ const NewPassword = () => {
   const loginUser = (e) => {
     e.preventDefault();
     const emailStorage = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
-    changePassword({email: JSON.parse(emailStorage), password})
+    changePassword({email: emailStorage, password})
       .then(() => {
         navigate("/sign-in");
         setTimeout(() => {

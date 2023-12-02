@@ -24,10 +24,9 @@ const Verify = () => {
     e.preventDefault();
     const emailStorage = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
     const forgotStorage = localStorage.getItem('forgot') ? JSON.parse(localStorage.getItem('forgot')) : ''
-    
-    verify({otp, email: JSON.parse(emailStorage)})
+    verify({otp, email: emailStorage})
       .then(() => {
-        if (JSON.parse(forgotStorage) === 1) {
+        if (forgotStorage === 1) {
           navigate("/new-password");
           toast.success("Successfully verified");
         } else {
@@ -106,7 +105,7 @@ const Verify = () => {
                     onClick={() => {
                       const emailState = localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) : ''
                       setLoading(true)
-                      forgotPasswordJwt({email: JSON.parse(emailState)}).then((r) => {
+                      forgotPasswordJwt({email: emailState}).then((r) => {
                         setTime(180)
                         setMinutes(3)
                         setSeconds(0)
