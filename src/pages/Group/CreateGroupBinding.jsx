@@ -74,7 +74,7 @@ const CreateGroupBinding = () => {
           <label htmlFor="moduleName">Select Users</label>
           <Select
             options={groupBindingUsers?.results}
-            getOptionLabel={(modul) => modul.name}
+            getOptionLabel={(modul) => (`${modul.name} ${`(${modul.id})`}`)}
             getOptionValue={(modul) => modul.id}
             value={data.users.map(userId => users?.results?.find(user => user.id === userId))}
             isMulti

@@ -31,6 +31,8 @@ export const patchUserDetail = createAsyncThunk(
         toast.error(err.response.data.name[0])
       } else if (err.response.data.username) {
         toast.error(err.response.data.username[0])
+      } else if (err.response.data.email) {
+        toast.error(err.response.data.email[0])
       } else {
         toast.error(err.message)
       }
