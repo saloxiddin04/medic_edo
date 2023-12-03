@@ -18,6 +18,7 @@ const Profile = () => {
 
   const [username, setUserName] = useState(user?.username ? user?.username : '')
   const [name, setName] = useState(user?.name ? user?.name : '')
+  const [email, setEmail] = useState(user?.email ? user?.email : '')
   const [password, setPassword] = useState(null)
   const [visible, setVisible] = useState(false)
 
@@ -27,11 +28,13 @@ const Profile = () => {
     dispatch(getUserDetail(getUserData()))
     localStorage.setItem('username', username);
     localStorage.setItem('name', name);
-  }, [dispatch, user?.name, user?.username])
+    localStorage.setItem('email', email);
+  }, [dispatch, user?.name, user?.username, user?.email])
 
   useEffect(() => {
     setUserName(user?.username ? user?.username :  localStorage.getItem('username') || '');
     setName(user?.name ? user?.name : localStorage.getItem('name') || '');
+    setEmail(user?.email ? user?.email : localStorage.getItem('email') || '');
   }, [user, dispatch]);
 
   const handleDivFocus = (divId) => {
@@ -56,7 +59,7 @@ const Profile = () => {
             <FaUserAlt size="200"/>
           </div>
         </div>
-        <div className='card flex items-center justify-between flex-wrap w-11/12'>
+        <div className='card flex items-center justify-between flex-wrap gap-2 w-11/12'>
           <div
             className='input flex flex-col w-[48%]'
             onFocus={() => handleDivFocus(1)}
@@ -73,7 +76,39 @@ const Profile = () => {
               onChange={(e) => setUserName(e.target.value)}
             />
           </div>
-          <div className='input flex flex-col w-[48%]'>
+          <div
+            className='input flex flex-col w-[48%]'
+            onFocus={() => handleDivFocus(4)}
+            onBlur={handleDivBlur}
+          >
+            <label htmlFor="username">Email</label>
+            <input
+              type="email"
+              id={'username'}
+              onFocus={() => handleDivFocus(4)}
+              onBlur={handleDivBlur}
+              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(4) ? 'border-blue-400' : ''}`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div
+            className='input flex flex-col w-full'
+            onFocus={() => handleDivFocus(3)}
+            onBlur={handleDivBlur}
+          >
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id={'name'}
+              onFocus={() => handleDivFocus(3)}
+              onBlur={handleDivBlur}
+              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(3) ? 'border-blue-400' : ''}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className='input flex flex-col w-full'>
             <label htmlFor="password">Password</label>
             <div
               ref={divRef}
@@ -97,22 +132,6 @@ const Profile = () => {
               }
             </div>
           </div>
-          <div
-            className='input flex flex-col w-full'
-            onFocus={() => handleDivFocus(3)}
-            onBlur={handleDivBlur}
-          >
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id={'name'}
-              onFocus={() => handleDivFocus(3)}
-              onBlur={handleDivBlur}
-              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(3) ? 'border-blue-400' : ''}`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
         </div>
       </div>
       <div className='flex items-center justify-end mt-5 gap-3'>
@@ -124,7 +143,8 @@ const Profile = () => {
               id: getUserData()?.id,
               username,
               name,
-              password
+              password,
+              email
             }, setPassword)).then((res) => {
               if (res.meta.requestStatus === 'fulfilled') {
                 setPassword('')

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import {useDispatch} from "react-redux";
 import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
+import LOGO from '../../images/logo.png'
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ const SignUp = () => {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
         <div className="text-center">
-          <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+          <img src={LOGO} alt="logo" className={'w-[200px] h-[100px] object-cover m-auto'}/>
+          <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
             Register
           </h2>
         </div>

@@ -42,9 +42,9 @@ const NotGroupModal = ({isModalOpen}) => {
               <FaPhoneAlt />
               +998948880800
             </a>
-            <a className={'flex items-center gap-1 mt-2'} href={'https://t.me/Asilkhon'}>
+            <a className={'flex items-center gap-1 mt-2'} href={'https://t.me/indoc_support'}>
               <FaTelegram />
-              @Asilkhon
+              @indoc_support
             </a>
           </div>
           <div className="bg-gray-100 p-4 flex gap-5 justify-end">

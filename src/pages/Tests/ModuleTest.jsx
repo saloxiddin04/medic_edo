@@ -122,7 +122,7 @@ const ModuleTest = () => {
                         {item.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <img src={item?.image} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                        <img src={item?.image3} alt="" className={'w-[100px] h-[40px] object-cover'}/>
                       </td>
                       <td className="px-1 py-4 whitespace-nowrap text-center">
                         {item.modul_name}
@@ -137,10 +137,10 @@ const ModuleTest = () => {
                         ></span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <img src={item?.image2} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                        <img src={item?.image} alt="" className={'w-[100px] h-[40px] object-cover'}/>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <img src={item?.image3} alt="" className={'w-[100px] h-[40px] object-cover'}/>
+                        <img src={item?.image2} alt="" className={'w-[100px] h-[40px] object-cover'}/>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                         {item.correct_answer_key}

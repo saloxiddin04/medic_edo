@@ -4,6 +4,7 @@ import { ROUTES } from "../../Routes/constants";
 import { login } from "../../auth/jwtService";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import LOGO from '../../images/logo.png'
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ const SignIn = () => {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
         <div className="text-center">
-          <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+          <img src={LOGO} alt="logo" className={'w-[200px] h-[100px] object-cover m-auto'}/>
+          <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
             Login
           </h2>
         </div>

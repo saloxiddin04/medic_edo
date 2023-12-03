@@ -3,15 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {useDispatch} from "react-redux";
-import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {forgotPasswordJwt} from "../../auth/jwtService";
-import LoadingPage from "../LoadingPage";
+import LOGO from "../../images/logo.png";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  
-  const dispatch = useDispatch()
   
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
@@ -36,7 +32,8 @@ const ForgotPassword = () => {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
         <div className="text-center">
-          <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+          <img src={LOGO} alt="logo" className={'w-[200px] h-[100px] object-cover m-auto'}/>
+          <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
             Send your email
           </h2>
         </div>
