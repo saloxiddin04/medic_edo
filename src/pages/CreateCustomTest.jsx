@@ -257,7 +257,7 @@ const CreateCustomTest = () => {
             <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
           </span>
         </h1>
-        <div className="mb-5 ml-4 mt-2 flex justify-between items-center">
+        <div className="mb-5 ml-4 mt-2 flex gap-10 items-center">
           {questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
             <div key={item.name}>
               <label className="mb-2 inline-block cursor-pointer">
