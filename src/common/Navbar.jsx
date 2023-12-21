@@ -2,25 +2,25 @@ import React from "react";
 import LOGO from "../images/logo.png";
 
 // icons
-import { FaUserAlt } from "react-icons/fa";
-import { MdOutlineLogout } from "react-icons/md";
+import {FaUserAlt} from "react-icons/fa";
+import {MdOutlineLogout} from "react-icons/md";
 
 // routes
-import { Link, useLocation } from "react-router-dom";
-import { ROUTES } from "../Routes/constants";
-import { getUserData, logout } from "../auth/jwtService";
-import { AiOutlineHome } from "react-icons/ai";
+import {Link, useLocation} from "react-router-dom";
+import {ROUTES} from "../Routes/constants";
+import {getUserData, logout} from "../auth/jwtService";
+import {AiOutlineHome} from "react-icons/ai";
 
 const Navbar = () => {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
         <div>
           {pathname === "/create-custom-test" ? (
             <Link to={ROUTES.MAIN} className=" flex items-center px-5 py-4">
-              <AiOutlineHome size="20" className="mt-0.5" />
-
+              <AiOutlineHome size="20" className="mt-0.5"/>
+              
               <h1 className="ml-5 text-xl">Back Home</h1>
             </Link>
           ) : (
@@ -41,17 +41,24 @@ const Navbar = () => {
         <div className="flex items-center gap-7">
           <div className="user-block flex">
             {getUserData() && (
-              <p className="text-end mr-2">
-                <span className="block text-xs font-medium text-gray-500 -mb-1">
-                  @{getUserData().username}
-                </span>{" "}
-                <span className="block text-sm font-medium">
-                  {getUserData().name}
-                </span>
+              <p className="text-end mr-2 flex items-center gap-3">
+                <div>
+                  <span className="block text-xs font-medium text-gray-500 -mb-1">
+                    {getUserData().group_name}
+                  </span>{" "}
+                </div>
+                <div>
+                  <span className="block text-sm font-medium">
+                    {getUserData().name}
+                  </span>
+                  <span className="block text-xs font-medium text-gray-500 -mb-1">
+                    @{getUserData().username}
+                  </span>{" "}
+                </div>
               </p>
             )}
             <button className="text-primary">
-              <FaUserAlt size="22" />
+              <FaUserAlt size="22"/>
             </button>
             <div className="tooltip">
               <div className="shadow-md bg-white py-2 w-full rounded">
@@ -60,7 +67,7 @@ const Navbar = () => {
                   className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"
                 >
                   <span>Profile</span>
-                  <FaUserAlt size="22" />
+                  <FaUserAlt size="22"/>
                 </Link>
                 <Link
                   to={ROUTES.SINGIN}
@@ -68,7 +75,7 @@ const Navbar = () => {
                   className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"
                 >
                   <span>Logout</span>
-                  <MdOutlineLogout />
+                  <MdOutlineLogout/>
                 </Link>
               </div>
             </div>

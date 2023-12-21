@@ -45,7 +45,7 @@ const SignIn = () => {
                   htmlFor="username"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Your username or email
+                  Email
                 </label>
               </div>
 

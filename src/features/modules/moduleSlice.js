@@ -330,8 +330,13 @@ export const getGroupBinding = createAsyncThunk(
   "modules/getGroupBinding",
   async (params, thunkAPI) => {
     try {
-      const res = await $axios.get('/group/group_binding_user/', {params})
-      return res.data
+      if (params?.text) {
+        const res = await $axios.get(`/group/group_binding_user/?search=${params?.text}`)
+        return res.data
+      } else {
+        const res = await $axios.get('/group/group_binding_user/', {params})
+        return res.data
+      }
     }catch (err) {
       toast.error(err.message)
       return thunkAPI.rejectWithValue(err)

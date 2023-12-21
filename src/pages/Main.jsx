@@ -349,16 +349,16 @@ const Main = () => {
                   margin={{
                     top: 5,
                     right: 50,
-                    left: 20,
+                    left: 70,
                     bottom: 5
                   }}
-                  maxBarsize={100}
-                  width={380}
+                  maxBarsize={10}
+                  width={400}
                   height={250}
                   data={topFiveStudents}
                   layout="vertical"
                 >
-                  <CartesianGrid strokeDasharray="3 3"/>
+                  <CartesianGrid strokeDasharray="4 4"/>
                   <XAxis type="number" hide height={10}/>
                   <YAxis
                     height={10}
@@ -395,10 +395,10 @@ const Main = () => {
                   margin={{
                     top: 5,
                     right: 40,
-                    left: 60,
+                    left: 50,
                     bottom: 5
                   }}
-                  width={380}
+                  width={350}
                   height={250}
                   data={topModules}
                   layout="vertical"

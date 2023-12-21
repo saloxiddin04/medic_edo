@@ -49,27 +49,27 @@ const SignUp = () => {
 
         <div className="mt-8">
           <form onSubmit={registerUser}>
-            <div>
-              <div className="flex justify-between">
-                <label
-                  htmlFor="username"
-                  className="text-sm text-gray-600 dark:text-gray-200"
-                >
-                  Your username
-                </label>
-              </div>
-
-              <input
-                id="username"
-                required
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="form-input"
-                value={user.username}
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-            </div>
+            {/*<div>*/}
+            {/*  <div className="flex justify-between">*/}
+            {/*    <label*/}
+            {/*      htmlFor="username"*/}
+            {/*      className="text-sm text-gray-600 dark:text-gray-200"*/}
+            {/*    >*/}
+            {/*      Your username*/}
+            {/*    </label>*/}
+            {/*  </div>*/}
+            
+            {/*  <input*/}
+            {/*    id="username"*/}
+            {/*    required*/}
+            {/*    type="text"*/}
+            {/*    name="username"*/}
+            {/*    placeholder="Username"*/}
+            {/*    className="form-input"*/}
+            {/*    value={user.username}*/}
+            {/*    onChange={(e) => setUser({ ...user, username: e.target.value })}*/}
+            {/*  />*/}
+            {/*</div>*/}
 
             <div className="my-4">
               <div className="flex justify-between">
@@ -77,7 +77,7 @@ const SignUp = () => {
                   htmlFor="name"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Your name
+                  Full name
                 </label>
               </div>
 

@@ -254,7 +254,7 @@ const CreateCustomTest = () => {
           Question Mode
           <span className={'ml-3 italic'}>
             Total Available
-            <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{questionModeList?.question_total}</span>
+            <span className='rounded-full border border-purple-400 py-1 px-2 ml-1'>{questionModeList?.question_total}</span>
           </span>
         </h1>
         <div className="mb-5 ml-4 mt-2 flex gap-10 items-center">
@@ -270,7 +270,7 @@ const CreateCustomTest = () => {
                 />
                 <span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
                   {item.name}
-                  <span className='rounded-full border border-blue-400 px-1 py-1 ml-1'>{item.count}</span>
+                  <span className='rounded-full border border-purple-400 px-2 py-1 ml-1'>{item.count}</span>
                 </span>
               </label>
             </div>
@@ -303,7 +303,7 @@ const CreateCustomTest = () => {
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-2">{item.name}
-                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                  <span className='rounded-full border border-purple-400 px-2 py-1 ml-1'>{item.count}</span>
                 </span>
               </label>
             </div>
@@ -337,7 +337,7 @@ const CreateCustomTest = () => {
                   disabled={item.count === 0}
                 />
                 <span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>{item.name}
-                  <span className='rounded-full border border-blue-400 px-1 py-1'>{item.count}</span>
+                  <span className='rounded-full border border-purple-400 px-2 py-1 ml-1'>{item.count}</span>
                 </span>
               </label>
             </div>

@@ -60,20 +60,36 @@ const Profile = () => {
           </div>
         </div>
         <div className='card flex items-center justify-between flex-wrap gap-2 w-11/12'>
+          {/*<div*/}
+          {/*  className='input flex flex-col w-[48%]'*/}
+          {/*  onFocus={() => handleDivFocus(1)}*/}
+          {/*  onBlur={handleDivBlur}*/}
+          {/*>*/}
+          {/*  <label htmlFor="username">User Name</label>*/}
+          {/*  <input*/}
+          {/*    type="text"*/}
+          {/*    id={'username'}*/}
+          {/*    onFocus={() => handleDivFocus(1)}*/}
+          {/*    onBlur={handleDivBlur}*/}
+          {/*    className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(1) ? 'border-blue-400' : ''}`}*/}
+          {/*    value={username}*/}
+          {/*    onChange={(e) => setUserName(e.target.value)}*/}
+          {/*  />*/}
+          {/*</div>*/}
           <div
             className='input flex flex-col w-[48%]'
-            onFocus={() => handleDivFocus(1)}
+            onFocus={() => handleDivFocus(3)}
             onBlur={handleDivBlur}
           >
-            <label htmlFor="username">User Name</label>
+            <label htmlFor="name">Full Name</label>
             <input
               type="text"
-              id={'username'}
-              onFocus={() => handleDivFocus(1)}
+              id={'name'}
+              onFocus={() => handleDivFocus(3)}
               onBlur={handleDivBlur}
-              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(1) ? 'border-blue-400' : ''}`}
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
+              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(3) ? 'border-blue-400' : ''}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div
@@ -90,22 +106,6 @@ const Profile = () => {
               className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(4) ? 'border-blue-400' : ''}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div
-            className='input flex flex-col w-full'
-            onFocus={() => handleDivFocus(3)}
-            onBlur={handleDivBlur}
-          >
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id={'name'}
-              onFocus={() => handleDivFocus(3)}
-              onBlur={handleDivBlur}
-              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(3) ? 'border-blue-400' : ''}`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className='input flex flex-col w-full'>

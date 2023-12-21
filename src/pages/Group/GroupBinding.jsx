@@ -1,20 +1,25 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getGroupBinding} from "../../features/modules/moduleSlice";
+import {getGroupBinding, getGroupBindingUsersDetail} from "../../features/modules/moduleSlice";
 import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
-import {AiFillDelete, AiFillEdit} from "react-icons/ai";
-import { FaUsers } from "react-icons/fa";
+import {AiFillDelete, AiFillEdit, AiOutlineClose} from "react-icons/ai";
+import {FaUsers} from "react-icons/fa";
 import DeleteGroupBinding from "./DeleteGroupBinding";
-import { FaChevronCircleRight } from "react-icons/fa";
+import {FaChevronCircleRight} from "react-icons/fa";
 import DetailGroupBinding from "./DetailGroupBinding";
+import {getUsers} from "../../features/testResults/testResultsSlice";
 
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const {groupBindingList} = useSelector(({module}) => module);
+  
+  const timeoutId = useRef()
+  
+  const [searchGroupState, setGroupUser] = useState('')
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -40,6 +45,15 @@ const GroupBinding = () => {
   
   const closeModal = () => setIsModalOpen(false);
   
+  const searchUserFunc = (value) => {
+    setGroupUser(value)
+    clearTimeout(timeoutId.current)
+    timeoutId.current = setTimeout(() => {
+      const page = localStorage.getItem("currentPage");
+      dispatch(getGroupBinding({page_size: 10, page, text: value}))
+    }, 500)
+  }
+  
   useEffect(() => {
     const page = localStorage.getItem("currentPage");
     dispatch(getGroupBinding({page_size: 10, page}));
@@ -47,12 +61,29 @@ const GroupBinding = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-between">
-        <input type="text" placeholder={'Search'} className={'w-1/4 border py-1 px-1 divide-y divide-gray-200' +
-          ' rounded'}/>
+      <div className="flex justify-between items-center">
+        <div className={'flex w-full items-center gap-3'}>
+          <input
+            type="text"
+            placeholder={'Search'}
+            className={'w-1/4 border py-2 px-1 divide-y divide-gray-200 rounded'}
+            value={searchGroupState}
+            onChange={(e) => searchUserFunc(e.target.value)}
+          />
+          <div
+            onClick={() => {
+              setGroupUser('')
+              const page = localStorage.getItem("currentPage");
+              dispatch(getGroupBinding({page_size: 10, page}));
+            }}
+            className={'cursor-pointer'}
+          >
+            <AiOutlineClose size={20}/>
+          </div>
+        </div>
         <Link
           to={ROUTES.GROUP_BINDING_BINDING}
-          className="btn-primary mt-3 inline-block"
+          className="btn-primary mt-3 inline-block w-1/6"
         >
           Group Binding
         </Link>
@@ -101,7 +132,8 @@ const GroupBinding = () => {
                       {item?.group?.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      <div className='flex gap-2 items-center justify-center cursor-pointer' onClick={() => handleDetailModal(item.id)}>
+                      <div className='flex gap-2 items-center justify-center cursor-pointer'
+                           onClick={() => handleDetailModal(item.id)}>
                         <FaUsers size={'22'}/>
                         {item.users.length}
                       </div>
@@ -128,7 +160,7 @@ const GroupBinding = () => {
                         className={'btn-success btn-sm ml-3'}
                         onClick={() => navigate(`/create-group-binding/${item.id}`)}
                       >
-                        <FaChevronCircleRight />
+                        <FaChevronCircleRight/>
                       </button>
                     </td>
                   </tr>
