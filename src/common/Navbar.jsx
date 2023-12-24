@@ -10,12 +10,9 @@ import {Link, useLocation} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {getUserData, logout} from "../auth/jwtService";
 import {AiOutlineHome} from "react-icons/ai";
-import {useSelector} from "react-redux";
 
 const Navbar = () => {
   const {pathname} = useLocation();
-  const {user} = useSelector(({userDetail}) => userDetail)
-  
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
@@ -50,7 +47,7 @@ const Navbar = () => {
                     Group Name:
                   </span>
                   <span className="block text-xs font-medium text-gray-500 -mb-1">
-                    @{user?.group_name}
+                    {getUserData()?.group_name}
                   </span>{" "}
                 </div>
                 <div>
@@ -58,7 +55,7 @@ const Navbar = () => {
                     Name:
                   </span>
                   <span className="block text-xs font-medium text-gray-500 -mb-1">
-                    {user?.name}
+                    {getUserData()?.name}
                   </span>{" "}
                 </div>
               </p>
