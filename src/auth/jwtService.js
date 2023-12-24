@@ -73,7 +73,7 @@ export function refreshToken() {
   });
 }
 
-function setCookie(name, value, expirationDays) {
+export function setCookie(name, value, expirationDays) {
   const date = new Date();
   date.setTime(date.getTime() + expirationDays * 24 * 60 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();

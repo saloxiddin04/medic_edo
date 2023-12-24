@@ -2,10 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getUserDetail, patchUserDetail} from "../features/userDetail/userDetailSlice";
-import {getUserData} from "../auth/jwtService";
+import {getUserData, setCookie} from "../auth/jwtService";
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
+import {userKeyName} from "../auth/jwt.config";
 
 const Profile = () => {
 
@@ -148,6 +149,7 @@ const Profile = () => {
             }, setPassword)).then((res) => {
               if (res.meta.requestStatus === 'fulfilled') {
                 setPassword('')
+                setCookie(userKeyName, JSON.stringify(res?.payload), 7);
               }
             })
           }}
