@@ -41,13 +41,13 @@ const Navbar = () => {
         <div className="flex items-center gap-7">
           <div className="user-block flex">
             {getUserData() && (
-              <p className="text-end mr-2 flex items-center gap-3">
+              <p className="text-end mr-2 flex gap-3">
                 <div>
                   <span className="block text-sm font-medium">
                     Group Name:
                   </span>
                   <span className="block text-xs font-medium text-gray-500 -mb-1">
-                    {getUserData().group_name}
+                    {getUserData().group_name === null ? '--' : getUserData().group_name}
                   </span>{" "}
                 </div>
                 <div>

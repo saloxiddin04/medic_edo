@@ -109,6 +109,22 @@ const Profile = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          <div
+            className='input flex flex-col w-full'
+            onFocus={() => handleDivFocus(5)}
+            onBlur={handleDivBlur}
+          >
+            <label htmlFor="username">Group</label>
+            <input
+              type="email"
+              id={'username'}
+              onFocus={() => handleDivFocus(5)}
+              onBlur={handleDivBlur}
+              className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(5) ? 'border-blue-400' : ''}`}
+              value={user?.group_name}
+              disabled={true}
+            />
+          </div>
           <div className='input flex flex-col w-full'>
             <label htmlFor="password">Password</label>
             <div

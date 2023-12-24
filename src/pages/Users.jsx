@@ -89,12 +89,6 @@ const Users = () => {
               scope={'row'}
               className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
             >
-              User Name
-            </th>
-            <th
-              scope={'row'}
-              className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
-            >
               Name
             </th>
             <th
@@ -122,7 +116,6 @@ const Users = () => {
             users.results.map((item) => (
               <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
                 <td>{item.id}</td>
-                <td>{item.username}</td>
                 <td>{item.name}</td>
                 <td>{item.group_name === null ? "-" : item.group_name}</td>
                 <td>{item.role}</td>

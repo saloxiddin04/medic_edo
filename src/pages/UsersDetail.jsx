@@ -137,6 +137,22 @@ const UsersDetail = () => {
                 />
               </div>
               <div
+                className='input flex flex-col w-full'
+                onFocus={() => handleDivFocus(6)}
+                onBlur={handleDivBlur}
+              >
+                <label htmlFor="name">Group</label>
+                <input
+                  type="email"
+                  id={'name'}
+                  onFocus={() => handleDivFocus(6)}
+                  onBlur={handleDivBlur}
+                  className={`py-2.5 px-2 rounded mt-2 outline-none border ${isDivFocused(6) ? 'border-blue-400' : ''}`}
+                  value={user?.group_name}
+                  disabled={true}
+                />
+              </div>
+              <div
                 className='input flex flex-col w-full mt-1'
                 onFocus={() => handleDivFocus(3)}
                 onBlur={handleDivBlur}
