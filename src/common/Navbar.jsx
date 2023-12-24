@@ -47,7 +47,7 @@ const Navbar = () => {
                     Group Name:
                   </span>
                   <span className="block text-xs font-medium text-gray-500 -mb-1">
-                    {getUserData()?.group_name}
+                    {getUserData().group_name}
                   </span>{" "}
                 </div>
                 <div>
@@ -55,7 +55,7 @@ const Navbar = () => {
                     Name:
                   </span>
                   <span className="block text-xs font-medium text-gray-500 -mb-1">
-                    {getUserData()?.name}
+                    {getUserData().name}
                   </span>{" "}
                 </div>
               </p>

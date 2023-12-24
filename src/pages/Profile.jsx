@@ -150,6 +150,9 @@ const Profile = () => {
               if (res.meta.requestStatus === 'fulfilled') {
                 setPassword('')
                 setCookie(userKeyName, JSON.stringify(res?.payload), 7);
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1000)
               }
             })
           }}
