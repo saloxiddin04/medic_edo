@@ -10,6 +10,9 @@ import {
   updateGroupBinding
 } from "../../features/modules/moduleSlice";
 import {useNavigate, useParams} from "react-router-dom";
+import {getUserData, setCookie} from "../../auth/jwtService";
+import {userKeyName} from "../../auth/jwt.config";
+import {getUserDetail} from "../../features/userDetail/userDetailSlice";
 
 const CreateGroupBinding = () => {
   const dispatch = useDispatch()
@@ -30,14 +33,27 @@ const CreateGroupBinding = () => {
       dispatch(updateGroupBinding({
         id: Number(id),
         data
-      })).then(() => {
+      })).then((res) => {
         navigate("/binding");
+        if (getUserData().role === 'admin') {
+          dispatch(getUserDetail({id: getUserData()?.id})).then((response) => {
+            setCookie(userKeyName, JSON.stringify(response?.payload), 7);
+            setTimeout(() => window.location.reload(), 1000)
+          })
+        }
       });
     } else {
       dispatch(
         postGroupBinding(data)
       ).then(() => {
         navigate("/binding");
+        if (getUserData().role === 'admin') {
+          dispatch(getUserDetail({id: getUserData()?.id})).then((response) => {
+            setCookie(userKeyName, JSON.stringify(response?.payload), 7);
+            setTimeout(() => window.location.reload(), 1000)
+          })
+          // console.log(res)
+        }
       });
     }
     setIsSubmitted(true);
