@@ -3,12 +3,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {getGroupBindingUsersDetail} from "../../features/modules/moduleSlice";
 import Pagination from "../../components/Pagination";
 import { IoClose } from "react-icons/io5";
+import DetailGroupUsersResult from "./DetailGroupUsersResult";
+import {FaChevronCircleRight} from "react-icons/fa";
+import {getUserTestHistory} from "../../features/testResults/testResultsSlice";
 
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
   const {bindingUsers} = useSelector(({module}) => module);
   
   const [searchUserState, setSearchUser] = useState('')
+  const [userId, setUserId] = useState(null)
+  const [resultModalOpen, setResultModalOpen] = useState(false)
   
   const timeoutId = useRef()
   
@@ -26,10 +31,18 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
     }
   }, [isModalOpen, modulId]);
   
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserTestHistory({id: userId}));
+    }
+  }, [userId])
+  
   const handlePageChange = (page) => {
     localStorage.setItem("currentPage", page.toString());
     dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
+  
+  const closeModalDetail = () => setResultModalOpen(false)
   
   return (
     <div>
@@ -77,6 +90,12 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                   >
                     Name
                   </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Action
+                  </th>
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -87,6 +106,17 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        className={'btn-success btn-sm ml-3'}
+                        onClick={() => {
+                          setUserId(item.id)
+                          setResultModalOpen(true)
+                        }}
+                      >
+                        <FaChevronCircleRight/>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -103,6 +133,11 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
           </div>
         </div>
       </div>
+      <DetailGroupUsersResult
+        id={userId}
+        closeModal={closeModalDetail}
+        isOpen={resultModalOpen}
+      />
     </div>
   );
 };

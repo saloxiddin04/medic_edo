@@ -225,6 +225,24 @@ export const getTests = createAsyncThunk(
   }
 );
 
+export const searchTests = createAsyncThunk(
+  "modules/searchTests",
+  async (params, thunkAPI) => {
+    try {
+      if (params) {
+        const res = await $axios.get(`/test/create_test/?search=${params}`);
+        return res.data;
+      } else {
+        const res = await $axios.get(`/test/create_test/${params}`, { params });
+        return res.data;
+      }
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getTestById = createAsyncThunk(
   "modules/getTestById",
   async (id, thunkAPI) => {
@@ -500,6 +518,18 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getTests.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // search tests
+    builder.addCase(searchTests.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(searchTests.fulfilled, (state, { payload }) => {
+      state.testList = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(searchTests.rejected, (state) => {
       state.isLoading = false;
     });
 

@@ -137,6 +137,8 @@ const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }
       );
     });
   };
+  
+  console.log(testList)
 
   return (
     <nav className="fixed top-0 right-0 w-[94vw] h-[50px] z-10 bg-primary px-4">
@@ -144,7 +146,7 @@ const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }
         <div className="flex items-center gap-5 mt-1">
           <h1 className="text-white text-center text-sm">
             Question {question?.order_number} of {testList?.count}
-            <span className="block font-medium">ID: {testList?.id}</span>
+            <span className="block font-medium">ID: {question?.test_question?.id}</span>
           </h1>
           <div className="cursor-pointer" onClick={submitMark}>
             <FcBookmark className="text-white ml-1" size="22" />

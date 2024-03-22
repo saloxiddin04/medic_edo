@@ -27,7 +27,7 @@ const Users = () => {
     setUserId(null)
   }
   
-  const {users, loading} = useSelector(({testResults}) => testResults)
+  const {users} = useSelector(({testResults}) => testResults)
   
   const handlePageChange = (page) => {
     localStorage.setItem("currentPage", page.toString());

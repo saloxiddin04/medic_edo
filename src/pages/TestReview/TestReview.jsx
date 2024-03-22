@@ -123,8 +123,6 @@ const TestReview = () => {
     }
   };
   
-  const timeoutId = useRef(null);
-  
   const paragraphRef = useRef(null);
   
   return (
@@ -193,15 +191,11 @@ const TestReview = () => {
             <div key={idx} className='flex items-center gap-2 mt-2'>
               <label
                 className={`flex items-center gap-2 cursor-pointer my-1 ${
-                  question.is_tutor
-                    ? (option.key === question.wrong_key && `text-danger`) ||
-                    (option.key === question.right_key && `text-success`)
-                    : `${
-                      question?.is_check
-                        ? option?.key === question?.answer && `text-gray-400`
-                        : option?.key === selectedAnswer.key &&
-                        `text-gray-400`
-                    }`
+                  option.key === question?.wrong_key ? 'text-danger' :
+                    option.key === question?.right_key ? 'text-success' :
+                      (question?.is_check
+                        ? option?.key === question?.answer && 'text-gray-400'
+                        : option?.key === selectedAnswer.key && 'text-gray-400')
                 } ${option.is_strik ? 'line-through' : ''}`}
                 htmlFor={option.key}
                 key={idx}
@@ -222,16 +216,12 @@ const TestReview = () => {
                 <span className="uppercase">{option.key}</span>
               </label>
               <span
-                className={`cursor-pointer ${
-                  question.is_tutor
-                    ? (option.key === question.wrong_key && `text-danger`) ||
-                    (option.key === question.right_key && `text-success`)
-                    : `${
-                      question?.is_check
-                        ? option?.key === question?.answer && `text-gray-400`
-                        : option?.key === selectedAnswer.key &&
-                        `text-gray-400`
-                    }`
+                className={`flex items-center gap-2 cursor-pointer my-1 ${
+                  option.key === question?.wrong_key ? 'text-danger' :
+                    option.key === question?.right_key ? 'text-success' :
+                      (question?.is_check
+                        ? option?.key === question?.answer && 'text-gray-400'
+                        : option?.key === selectedAnswer.key && 'text-gray-400')
                 } ${option.is_strik ? 'line-through' : ''}`}
               >
                 {option.answer}
@@ -254,7 +244,7 @@ const TestReview = () => {
             {'Next'}
           </button>
         </div>
-        {question?.is_tutor && question?.is_check && (
+        {question?.is_check && (
           <div className="p-2 my-4 rounded shadow-lg shadow-blue-400 border border-blue-400">
             {selectedAnswerInput?.value === question?.right_key ? (
               <FaCheck
@@ -271,7 +261,7 @@ const TestReview = () => {
             )}
           </div>
         )}
-        {question?.is_tutor && question?.is_check && (
+        {question?.is_check && (
           <>
             {question?.test_question.image3 && (
               <img src={question?.test_question.image3} alt={"img"} className='max-w-[50vw] max-h-[500px]'/>
@@ -281,26 +271,24 @@ const TestReview = () => {
             )}
           </>
         )}
-        {question?.is_tutor && (
-          <div className="py-10 overflow-y-auto">
-            {question?.is_check && (
-              <div className="mt-3">
-                <div className="p-3 border-blue-400 border-2">
-                  <strong className="text-3xl">Explation:</strong>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: question?.test_question?.correct_answer
-                        ? `
+        <div className="py-10 overflow-y-auto">
+          {question?.is_check && (
+            <div className="mt-3">
+              <div className="p-3 border-blue-400 border-2">
+                <strong className="text-3xl">Explation:</strong>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: question?.test_question?.correct_answer
+                      ? `
                           <span class="font-black">Correct Answer ${question?.test_question.correct_answer_key}:</span> ${question?.test_question?.correct_answer}
                         `
-                        : "",
-                    }}
-                  />
-                </div>
+                      : "",
+                  }}
+                />
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
       
       <Footer/>
