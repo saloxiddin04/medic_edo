@@ -3,10 +3,12 @@ import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import {BiChevronRightCircle} from "react-icons/bi";
 import {IoClose} from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
 
-const DetailGroupUsersResult = ({closeModal, id, isOpen}) => {
+const DetailGroupUsersResult = ({closeModal, isOpen}) => {
   
   const {userTestHistory} = useSelector(({testResults}) => testResults)
+  const navigate = useNavigate()
   
   return (
     <div
@@ -83,6 +85,12 @@ const DetailGroupUsersResult = ({closeModal, id, isOpen}) => {
               >
                 End test
               </th>
+              <th
+                scope={'row'}
+                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                action
+              </th>
             </tr>
             </thead>
             <tbody>
@@ -94,6 +102,17 @@ const DetailGroupUsersResult = ({closeModal, id, isOpen}) => {
                   <td className={'border'}>{item.worning_answer_count}</td>
                   <td className={'border'}>{item.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
                   <td className={'border'}>{item.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td className={'border'}>
+                    <button
+                      className='mt-2'
+                      onClick={() => {
+                        localStorage.setItem("testID", item.id)
+                        navigate(`/test-results`)
+                      }}
+                    >
+                      <BiChevronRightCircle size='30' color={'#28CD41'}/>
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
