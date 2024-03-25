@@ -55,25 +55,25 @@ const DetailGroupUsersResult = ({closeModal, id, isOpen}) => {
             <tr>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r'
               >
                 id
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r'
               >
                 Correct answer
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r'
               >
                 Wrong answer
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r'
               >
                 Start test
               </th>
@@ -89,11 +89,11 @@ const DetailGroupUsersResult = ({closeModal, id, isOpen}) => {
             {userTestHistory.isFilled && (
               userTestHistory.tests_history.map((item) => (
                 <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.correct_answer_count}</td>
-                  <td>{item.worning_answer_count}</td>
-                  <td>{item.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
-                  <td>{item.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td className={'border'}>{item.id}</td>
+                  <td className={'border'}>{item.correct_answer_count}</td>
+                  <td className={'border'}>{item.worning_answer_count}</td>
+                  <td className={'border'}>{item.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td className={'border'}>{item.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
                 </tr>
               ))
             )}
