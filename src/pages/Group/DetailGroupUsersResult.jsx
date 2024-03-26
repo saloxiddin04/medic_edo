@@ -30,26 +30,6 @@ const DetailGroupUsersResult = ({closeModal, isOpen}) => {
           <button className={'btn-danger btn-sm'} onClick={closeModal}>
             <IoClose/>
           </button>
-          <section>
-            <div className='flex items-center justify-center text-center gap-8'>
-              <div className='border py-2 px-2.5 rounded'>
-                <h1>All tests</h1>
-                <span>{userTestHistoryForGroup.all_test_count}</span>
-              </div>
-              <div className='border py-2 px-2.5 rounded'>
-                <h1>Correct answers</h1>
-                <span>{userTestHistoryForGroup.correct_answer_count}</span>
-              </div>
-              <div className='border py-2 px-2.5 rounded'>
-                <h1>Unsolved answers</h1>
-                <span>{userTestHistoryForGroup.unsolved_test}</span>
-              </div>
-              <div className='border py-2 px-2.5 rounded'>
-                <h1>Wrong answers</h1>
-                <span>{userTestHistoryForGroup.worning_answer_count}</span>
-              </div>
-            </div>
-          </section>
         </div>
         <div className='mt-3'>
           <table className='min-w-full bg-gray-200'>
