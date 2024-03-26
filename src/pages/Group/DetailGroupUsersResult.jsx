@@ -75,7 +75,7 @@ const DetailGroupUsersResult = ({closeModal, isOpen}) => {
             </thead>
             <tbody>
             {userTestHistoryForGroup.isFilled && (
-              userTestHistoryForGroup.tests_history.map((item) => (
+              userTestHistoryForGroup.results.map((item) => (
                 <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
                   <td className={'border'}>{item.id}</td>
                   <td className={'border'}>{item.correct_answer_count}</td>
