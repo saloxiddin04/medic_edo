@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 const DetailGroupUsersResult = ({closeModal, isOpen}) => {
   
-  const {userTestHistory} = useSelector(({testResults}) => testResults)
+  const {userTestHistoryForGroup} = useSelector(({testResults}) => testResults)
   const navigate = useNavigate()
   
   return (
@@ -34,19 +34,19 @@ const DetailGroupUsersResult = ({closeModal, isOpen}) => {
             <div className='flex items-center justify-center text-center gap-8'>
               <div className='border py-2 px-2.5 rounded'>
                 <h1>All tests</h1>
-                <span>{userTestHistory.all_test_count}</span>
+                <span>{userTestHistoryForGroup.all_test_count}</span>
               </div>
               <div className='border py-2 px-2.5 rounded'>
                 <h1>Correct answers</h1>
-                <span>{userTestHistory.correct_answer_count}</span>
+                <span>{userTestHistoryForGroup.correct_answer_count}</span>
               </div>
               <div className='border py-2 px-2.5 rounded'>
                 <h1>Unsolved answers</h1>
-                <span>{userTestHistory.unsolved_test}</span>
+                <span>{userTestHistoryForGroup.unsolved_test}</span>
               </div>
               <div className='border py-2 px-2.5 rounded'>
                 <h1>Wrong answers</h1>
-                <span>{userTestHistory.worning_answer_count}</span>
+                <span>{userTestHistoryForGroup.worning_answer_count}</span>
               </div>
             </div>
           </section>
@@ -94,8 +94,8 @@ const DetailGroupUsersResult = ({closeModal, isOpen}) => {
             </tr>
             </thead>
             <tbody>
-            {userTestHistory.isFilled && (
-              userTestHistory.tests_history.map((item) => (
+            {userTestHistoryForGroup.isFilled && (
+              userTestHistoryForGroup.tests_history.map((item) => (
                 <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
                   <td className={'border'}>{item.id}</td>
                   <td className={'border'}>{item.correct_answer_count}</td>

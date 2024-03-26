@@ -5,7 +5,7 @@ import Pagination from "../../components/Pagination";
 import { IoClose } from "react-icons/io5";
 import DetailGroupUsersResult from "./DetailGroupUsersResult";
 import {FaChevronCircleRight} from "react-icons/fa";
-import {getUserTestHistory} from "../../features/testResults/testResultsSlice";
+import {getUserTestHistoryForGroup} from "../../features/testResults/testResultsSlice";
 
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
@@ -29,13 +29,13 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
     if (isModalOpen) {
       dispatch(getGroupBindingUsersDetail({id: modulId}))
     }
-  }, [isModalOpen, modulId]);
+  }, [isModalOpen, modulId, dispatch]);
   
   useEffect(() => {
     if (userId) {
-      dispatch(getUserTestHistory({id: userId}));
+      dispatch(getUserTestHistoryForGroup({id: userId}));
     }
-  }, [userId])
+  }, [userId, dispatch])
   
   const handlePageChange = (page) => {
     localStorage.setItem("currentPage", page.toString());

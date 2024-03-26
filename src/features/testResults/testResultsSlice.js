@@ -77,6 +77,21 @@ export const getUserTestHistory = createAsyncThunk(
   }
 );
 
+export const getUserTestHistoryForGroup = createAsyncThunk(
+  "pastTest/getUserTestHistoryForGroup",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.get(
+        `/test/test_result/${payload.id}/user_result_history_for_group/`
+      );
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getTopModules = createAsyncThunk(
   'pastTest/getTopModules',
   async (payload, thunkAPI) => {
@@ -223,6 +238,9 @@ const testResultsSlice = createSlice({
     userTestHistory: {
       isFilled: false
     },
+    userTestHistoryForGroup: {
+      isFilled: false
+    },
     loading: false
   },
   
@@ -316,6 +334,20 @@ const testResultsSlice = createSlice({
     
     builder.addCase(getUserTestHistory.rejected, (state) => {
       state.userTestHistory.isFilled = false;
+    });
+
+    // User test history for group
+    builder.addCase(getUserTestHistoryForGroup.pending, (state) => {
+      state.userTestHistoryForGroup.isFilled = false
+    })
+
+    builder.addCase(getUserTestHistoryForGroup.fulfilled, (state, {payload}) => {
+      state.userTestHistoryForGroup = payload
+      state.userTestHistoryForGroup.isFilled = true
+    })
+
+    builder.addCase(getUserTestHistoryForGroup.rejected, (state) => {
+      state.userTestHistoryForGroup.isFilled = false;
     });
     
     // get all modules result
