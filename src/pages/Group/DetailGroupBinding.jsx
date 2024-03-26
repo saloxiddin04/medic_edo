@@ -12,8 +12,8 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const {bindingUsers} = useSelector(({module}) => module);
   
   const [searchUserState, setSearchUser] = useState('')
-  const [userId, setUserId] = useState(null)
-  const [resultModalOpen, setResultModalOpen] = useState(false)
+  const [userId, setUserId] = useState(localStorage.getItem('resultModalOpenUserId') ? JSON.parse(localStorage.getItem('resultModalOpenUserId') || '[]') : null)
+  const [resultModalOpen, setResultModalOpen] = useState(localStorage.getItem('resultModalOpen') ? JSON.parse(localStorage.getItem('resultModalOpen') || '[]') : false)
   
   const timeoutId = useRef()
   
@@ -42,7 +42,10 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
     dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
   
-  const closeModalDetail = () => setResultModalOpen(false)
+  const closeModalDetail = () => {
+    setResultModalOpen(false)
+    localStorage.setItem('resultModalOpen', JSON.stringify(false))
+  }
   
   return (
     <div>
@@ -113,6 +116,8 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                         onClick={() => {
                           setUserId(item.id)
                           setResultModalOpen(true)
+                          localStorage.setItem('resultModalOpen', JSON.stringify(true))
+                          localStorage.setItem('resultModalOpenUserId', JSON.stringify(item.id))
                         }}
                       >
                         <FaChevronCircleRight/>

@@ -22,8 +22,8 @@ const GroupBinding = () => {
   const [searchGroupState, setGroupUser] = useState('')
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [ModulToDetail, setModulToDetail] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(localStorage.getItem('detailGroupBinding') ? JSON.parse(localStorage.getItem('detailGroupBinding') || '[]') : false);
+  const [ModulToDetail, setModulToDetail] = useState(localStorage.getItem('detailGroupBindingModulId') ? JSON.parse(localStorage.getItem('detailGroupBindingModulId') || '[]') : null);
   const [ModulToDelete, setModulToDelete] = useState(null);
   
   const handlePageChange = (page) => {
@@ -39,9 +39,15 @@ const GroupBinding = () => {
   const handleDetailModal = (id) => {
     setIsDetailModalOpen(true)
     setModulToDetail(id)
+    localStorage.setItem('detailGroupBinding', JSON.stringify(true))
+    localStorage.setItem('detailGroupBindingModulId', JSON.stringify(id))
   }
   
-  const closeModalDetail = () => setIsDetailModalOpen(false)
+  const closeModalDetail = () => {
+    setIsDetailModalOpen(false)
+    localStorage.setItem('detailGroupBinding', JSON.stringify(false))
+    localStorage.removeItem('detailGroupBindingModulId')
+  }
   
   const closeModal = () => setIsModalOpen(false);
   
