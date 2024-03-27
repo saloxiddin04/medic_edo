@@ -16,55 +16,61 @@ const GroupBinding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const {groupBindingList} = useSelector(({module}) => module);
-  
+
   const timeoutId = useRef()
-  
+
   const [searchGroupState, setGroupUser] = useState('')
-  
+
+  const storagePage = localStorage.getItem('GroupBinding')
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(localStorage.getItem('detailGroupBinding') ? JSON.parse(localStorage.getItem('detailGroupBinding') || '[]') : false);
   const [ModulToDetail, setModulToDetail] = useState(localStorage.getItem('detailGroupBindingModulId') ? JSON.parse(localStorage.getItem('detailGroupBindingModulId') || '[]') : null);
   const [ModulToDelete, setModulToDelete] = useState(null);
-  
+
   const handlePageChange = (page) => {
-    localStorage.setItem("currentPage", page.toString());
+    localStorage.setItem("GroupBinding", page.toString());
     dispatch(getGroupBinding({page_size: 10, page}));
   };
-  
+
   const handleDeleteModal = (id) => {
     setIsModalOpen(true);
     setModulToDelete(id);
   };
-  
+
   const handleDetailModal = (id) => {
     setIsDetailModalOpen(true)
     setModulToDetail(id)
     localStorage.setItem('detailGroupBinding', JSON.stringify(true))
     localStorage.setItem('detailGroupBindingModulId', JSON.stringify(id))
   }
-  
+
   const closeModalDetail = () => {
     setIsDetailModalOpen(false)
     localStorage.setItem('detailGroupBinding', JSON.stringify(false))
     localStorage.removeItem('detailGroupBindingModulId')
+    localStorage.removeItem("DetailGroupBinding");
   }
-  
+
   const closeModal = () => setIsModalOpen(false);
-  
+
   const searchUserFunc = (value) => {
     setGroupUser(value)
     clearTimeout(timeoutId.current)
     timeoutId.current = setTimeout(() => {
-      const page = localStorage.getItem("currentPage");
+      const page = localStorage.getItem("GroupBinding");
       dispatch(getGroupBinding({page_size: 10, page, text: value}))
     }, 500)
   }
-  
+
   useEffect(() => {
-    const page = localStorage.getItem("currentPage");
-    dispatch(getGroupBinding({page_size: 10, page}));
+    if (storagePage) {
+      dispatch(getGroupBinding({page_size: 10, page: storagePage}));
+    } else {
+      dispatch(getGroupBinding({page_size: 10}));
+    }
   }, [dispatch]);
-  
+
   return (
     <div className="card">
       <div className="flex justify-between items-center">
@@ -79,7 +85,7 @@ const GroupBinding = () => {
           <div
             onClick={() => {
               setGroupUser('')
-              const page = localStorage.getItem("currentPage");
+              const page = localStorage.getItem("GroupBinding");
               dispatch(getGroupBinding({page_size: 10, page}));
             }}
             className={'cursor-pointer'}
@@ -119,7 +125,7 @@ const GroupBinding = () => {
                   >
                     Users length
                   </th>
-                  
+
                   <th
                     scope="col"
                     className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -144,7 +150,7 @@ const GroupBinding = () => {
                         {item.users.length}
                       </div>
                     </td>
-                    
+
                     <td
                       className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       <Link
@@ -155,7 +161,7 @@ const GroupBinding = () => {
                           <AiFillEdit/>
                         </span>
                       </Link>
-                      
+
                       <button
                         className="btn-danger btn-sm ml-3"
                         onClick={() => handleDeleteModal(item.id)}
@@ -184,13 +190,13 @@ const GroupBinding = () => {
           </div>
         </div>
       </div>
-      
+
       <DeleteGroupBinding
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         modulId={ModulToDelete}
       />
-      
+
       <DetailGroupBinding
         isModalOpen={isDetailModalOpen}
         closeModal={closeModalDetail}

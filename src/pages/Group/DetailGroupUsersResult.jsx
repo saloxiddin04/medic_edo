@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {BiChevronRightCircle} from "react-icons/bi";
 import {IoClose} from "react-icons/io5";
@@ -11,9 +11,21 @@ const DetailGroupUsersResult = ({closeModal, isOpen, id}) => {
   const dispatch = useDispatch()
   const {userTestHistoryForGroup} = useSelector(({testResults}) => testResults)
   const navigate = useNavigate()
+
+  let storagePage = localStorage.getItem("DetailGroupUsersResult");
+
+  useEffect(() => {
+    if (id) {
+      if (storagePage) {
+        dispatch(getUserTestHistoryForGroup({page_size: 10, page: storagePage, id}));
+      } else {
+        dispatch(getUserTestHistoryForGroup({id}));
+      }
+    }
+  }, [id])
   
   const handlePageChange = (page) => {
-    localStorage.setItem("currentPage", page.toString());
+    localStorage.setItem("DetailGroupUsersResult", page.toString());
     dispatch(getUserTestHistoryForGroup({page_size: 10, page, id}));
   };
   
@@ -28,7 +40,7 @@ const DetailGroupUsersResult = ({closeModal, isOpen, id}) => {
       <div
         className={
           isOpen
-            ? "h-4/5 w-4/5 m-auto card overflow-scroll"
+            ? "h-4/5 w-4/5 m-auto card overflow-y-scroll"
             : "hidden card mt-8"
         }
       >

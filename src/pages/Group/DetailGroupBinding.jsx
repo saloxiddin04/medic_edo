@@ -5,12 +5,12 @@ import Pagination from "../../components/Pagination";
 import { IoClose } from "react-icons/io5";
 import DetailGroupUsersResult from "./DetailGroupUsersResult";
 import {FaChevronCircleRight} from "react-icons/fa";
-import {getUserTestHistoryForGroup} from "../../features/testResults/testResultsSlice";
 
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
   const {bindingUsers} = useSelector(({module}) => module);
-  
+
+  let storagePage = localStorage.getItem("DetailGroupBinding");
   const [searchUserState, setSearchUser] = useState('')
   const [userId, setUserId] = useState(localStorage.getItem('resultModalOpenUserId') ? JSON.parse(localStorage.getItem('resultModalOpenUserId') || '[]') : null)
   const [resultModalOpen, setResultModalOpen] = useState(localStorage.getItem('resultModalOpen') ? JSON.parse(localStorage.getItem('resultModalOpen') || '[]') : false)
@@ -27,24 +27,23 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   
   useEffect(() => {
     if (isModalOpen) {
-      dispatch(getGroupBindingUsersDetail({id: modulId}))
+      if (storagePage) {
+        dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page: storagePage}))
+      } else {
+        dispatch(getGroupBindingUsersDetail({id: modulId}))
+      }
     }
   }, [isModalOpen, modulId, dispatch]);
   
-  useEffect(() => {
-    if (userId) {
-      dispatch(getUserTestHistoryForGroup({id: userId}));
-    }
-  }, [userId, dispatch])
-  
   const handlePageChange = (page) => {
-    localStorage.setItem("currentPage", page.toString());
+    localStorage.setItem("DetailGroupBinding", page.toString());
     dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
   
   const closeModalDetail = () => {
     setResultModalOpen(false)
     localStorage.setItem('resultModalOpen', JSON.stringify(false))
+    localStorage.removeItem("DetailGroupUsersResult");
   }
   
   return (

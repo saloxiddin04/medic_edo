@@ -81,10 +81,17 @@ export const getUserTestHistoryForGroup = createAsyncThunk(
   "pastTest/getUserTestHistoryForGroup",
   async (payload, thunkAPI) => {
     try {
-      const res = await $axios.get(
-        `/test/test_result/${payload.id}/user_result_history_for_group/`
-      );
-      return res.data;
+      if (payload.page) {
+        const res = await $axios.get(
+          `/test/test_result/${payload.id}/user_result_history_for_group/?page_size=10&page=${payload.page}`
+        );
+        return res.data;
+      } else {
+        const res = await $axios.get(
+          `/test/test_result/${payload.id}/user_result_history_for_group/`
+        );
+        return res.data;
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
