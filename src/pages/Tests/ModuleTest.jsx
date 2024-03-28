@@ -18,11 +18,20 @@ const ModuleTest = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [testToDelete, setTestToDelete] = useState(null);
-  const [searchTestState, setTestUser] = useState('')
+  const [searchTestState, setTestUser] = useState(localStorage.getItem('searchTestState') || '');
+  
+  const page = localStorage.getItem("ModuleTest");
   
   const handlePageChange = (page) => {
-    localStorage.setItem("currentPage", page.toString());
-    dispatch(getTests({page_size: 10, page}));
+    if (searchTestState === '') {
+      localStorage.setItem("ModuleTest", page.toString());
+      localStorage.setItem("currentPage", page.toString());
+      dispatch(getTests({page_size: 10, page}));
+    } else {
+      localStorage.setItem("ModuleTest", page.toString());
+      localStorage.setItem("currentPage", page.toString());
+      dispatch(searchTests({page_size: 10, page, search: searchTestState}))
+    }
   };
   
   const handleDeleteModal = (id) => {
@@ -34,17 +43,29 @@ const ModuleTest = () => {
   
   const timeoutId = useRef()
   const searchTestFunc = (value) => {
+    if (searchTestState === '') {
+      localStorage.setItem('ModuleTest', '1')
+      localStorage.setItem('currentPage', '1')
+    }
+    localStorage.setItem('searchTestState', value)
     setTestUser(value)
     clearTimeout(timeoutId.current)
     timeoutId.current = setTimeout(() => {
-      dispatch(searchTests(value))
+      dispatch(searchTests({page_size: 10, page, search: searchTestState}))
     }, 500)
   }
   
   useEffect(() => {
-    const page = localStorage.getItem("currentPage");
-    dispatch(getTests({page_size: 10, page}));
-  }, [dispatch]);
+    if (searchTestState === '') {
+      dispatch(getTests({page_size: 10, page}));
+    } else {
+      dispatch(searchTests({page_size: 10, page: page !== null ? page: 1, search: searchTestState}))
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (searchTestState !== '') return searchTestFunc(searchTestState)
+  }, [searchTestState, dispatch])
   
   return (
     <div className="card">
@@ -60,14 +81,29 @@ const ModuleTest = () => {
             className='border focus:border-blue-400 py-2 mt-1 px-2.5 rounded'
             type={'text'}
             value={searchTestState}
-            onChange={(e) => searchTestFunc(e.target.value)}
+            onChange={(e) => {
+              const {value} = e.target
+              if(searchTestState !== '') {
+                setTestUser(value)
+                searchTestFunc(value)
+              } else {
+                localStorage.setItem('ModuleTest', '1')
+                localStorage.setItem('currentPage', '1')
+                localStorage.setItem('searchTestState', value)
+                setTestUser(value)
+                searchTestFunc(value)
+              }
+            }}
             placeholder={'Search Test'}
           />
           <div
             className={'cursor-pointer'}
             onClick={() => {
+              localStorage.removeItem('searchTestState')
+              localStorage.removeItem('ModuleTest')
+              localStorage.removeItem('currentPage')
+              window.location.reload()
               setTestUser('')
-              const page = localStorage.getItem("currentPage");
               dispatch(getTests({page_size: 10, page}))
             }}
           >

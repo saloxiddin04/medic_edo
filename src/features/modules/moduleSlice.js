@@ -230,10 +230,10 @@ export const searchTests = createAsyncThunk(
   async (params, thunkAPI) => {
     try {
       if (params) {
-        const res = await $axios.get(`/test/create_test/?search=${params}`);
+        const res = await $axios.get(`/test/create_test/?search=${params.search}&page_size=${params.page_size}&page=${params.page}`);
         return res.data;
       } else {
-        const res = await $axios.get(`/test/create_test/${params}`, { params });
+        const res = await $axios.get(`/test/create_test/?${params}`, { params });
         return res.data;
       }
     } catch (err) {

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
 
 const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
-  const [currentPage, setCurrentPage] = useState(parseInt(localStorage.getItem("currentPage")) || 1);
+  const [currentPage, setCurrentPage] = useState(JSON.parse(localStorage.getItem("currentPage") || '1'));
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const maxVisiblePages = 8;
   
@@ -21,7 +21,7 @@ const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
     if (totalPages <= maxVisiblePages) {
       // Render all pages if the total number of pages is less than or equal to the maximum visible pages
       for (let i = 1; i <= totalPages; i++) {
-        const isActive = currentPage === i;
+        const isActive = JSON.parse(localStorage.getItem("currentPage") || '1') === i;
         
         paginationItems.push(
           <li

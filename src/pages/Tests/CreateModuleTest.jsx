@@ -135,7 +135,7 @@ const CreateModuleTest = () => {
       formData.append("sistema_id", data.sistema_id);
       formData.append("question", data.question);
       formData.append("correct_answer", data.correct_answer);
-      formData.append("correct_answer_key", data.correct_answer_key);
+      formData.append("correct_answer_key", data.correct_answer_key.toLowerCase());
       formData.append("options", JSON.stringify(data.options));
       formData.append("image", data.image);
       formData.append("image2", data.image2);
