@@ -115,8 +115,11 @@ const PastTest = () => {
   
   useEffect(() => {
     dispatch(getTestsById(testID));
-    dispatch(getExactTest({id: testID, test_id: exactTestID}));
   }, [dispatch, exactTestID, testID]);
+
+  useEffect(() => {
+    dispatch(getExactTest({id: testID, test_id: exactTestID}));
+  }, []);
   
   useEffect(() => {
     if (seconds <= 0) {
