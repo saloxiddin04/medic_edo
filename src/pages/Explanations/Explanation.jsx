@@ -44,7 +44,7 @@ const Explanation = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-5">
             <h1 className="text-white text-center text-sm">
-              <span className="block font-medium">ID: {explanation.id}</span>
+              <span className="block font-medium">ID: {explanation?.test_question?.id}</span>
             </h1>
             <div className="cursor-pointer">
               {explanation.mark && (
