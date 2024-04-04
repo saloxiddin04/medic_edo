@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import JoditEditor from "jodit-react";
 import Select from "react-select";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {
   IoIosRemoveCircleOutline,
@@ -13,16 +13,17 @@ import {
   getTestById,
   updateTest,
 } from "../../features/modules/moduleSlice";
-import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {useNavigate, useParams} from "react-router-dom";
+import {AiOutlineLoading3Quarters} from "react-icons/ai";
+import {toast} from "react-toastify";
 
 const CreateModuleTest = () => {
   // router
   const navigate = useNavigate();
-  const { id } = useParams();
+  const {id} = useParams();
 
   // store
-  const { moduleList, systemList } = useSelector(({ module }) => module);
+  const {moduleList, systemList} = useSelector(({module}) => module);
   const dispatch = useDispatch();
 
   // joditEditor
@@ -31,14 +32,14 @@ const CreateModuleTest = () => {
 
   // variables
   const variants = [
-    { value: "a", label: "A" },
-    { value: "b", label: "B" },
-    { value: "c", label: "C" },
-    { value: "d", label: "D" },
-    { value: "e", label: "E" },
-    { value: "f", label: "F" },
-    { value: "g", label: "G" },
-    { value: "h", label: "H" },
+    {value: "a", label: "A"},
+    {value: "b", label: "B"},
+    {value: "c", label: "C"},
+    {value: "d", label: "D"},
+    {value: "e", label: "E"},
+    {value: "f", label: "F"},
+    {value: "g", label: "G"},
+    {value: "h", label: "H"},
   ];
 
   const [data, setData] = useState({
@@ -51,7 +52,7 @@ const CreateModuleTest = () => {
     question: "",
     correct_answer: "",
     correct_answer_key: "",
-    options: [{ key: "", answer: "" }],
+    options: [{key: "", answer: ""}],
     modul_name: "",
     modul_unique_name: "",
   });
@@ -69,42 +70,42 @@ const CreateModuleTest = () => {
   const handleSelectChange = (selectedOption, index) => {
     const newFormData = JSON.parse(JSON.stringify(data.options));
     newFormData[index].key = selectedOption.value;
-    setData({ ...data, options: newFormData });
+    setData({...data, options: newFormData});
   };
 
-  const handleInputChange = ({ target: { value } }, index) => {
+  const handleInputChange = ({target: {value}}, index) => {
     const newFormData = JSON.parse(JSON.stringify(data.options));
     newFormData[index].answer = value;
-    setData({ ...data, options: newFormData });
+    setData({...data, options: newFormData});
   };
 
   const handleAddForm = () => {
-    setData({ ...data, options: [...data.options, { key: "", answer: "" }] });
+    setData({...data, options: [...data.options, {key: "", answer: ""}]});
   };
 
   const handleDeleteForm = (index) => {
     const newFormData = [...data.options];
     newFormData.splice(index, 1);
-    setData({ ...data, options: newFormData });
+    setData({...data, options: newFormData});
   };
 
   // image upload
-  const uploadImage = ({ target: { files } }) => {
+  const uploadImage = ({target: {files}}) => {
     setImageName(files[0].name);
     setIsUploaded(true);
-    setData({ ...data, image: files[0] });
+    setData({...data, image: files[0]});
   };
 
-  const uploadSecondImage = ({ target: { files } }) => {
+  const uploadSecondImage = ({target: {files}}) => {
     setImageName2(files[0].name);
     setIsUploaded2(true);
-    setData({ ...data, image2: files[0] });
+    setData({...data, image2: files[0]});
   };
 
-  const uploadThirdImage = ({ target: { files } }) => {
+  const uploadThirdImage = ({target: {files}}) => {
     setImageName3(files[0].name);
     setIsUploaded3(true);
-    setData({ ...data, image3: files[0] });
+    setData({...data, image3: files[0]});
   };
 
   // api
@@ -127,7 +128,7 @@ const CreateModuleTest = () => {
     ) {
       if (isSubmitted) return;
       const newFormData = [...data.options];
-      setData({ ...data, options: newFormData });
+      setData({...data, options: newFormData});
 
       const formData = new FormData();
       formData.append("id", data.id);
@@ -153,15 +154,21 @@ const CreateModuleTest = () => {
 
       if (Number(id)) {
         dispatch(updateTest(formData)).then((res) => {
-          if (res?.payload?.response?.status === 400) return
-          else navigate('/module-test')
+          if (res?.payload?.response?.status === 400) {
+            toast.error(res?.payload?.response?.data?.error)
+            setIsSubmitted(false)
+            return
+          } else navigate('/module-test')
           setIsSubmitted(false)
         });
         setShowRequired(false);
       } else {
         dispatch(createTest(formData)).then((res) => {
-          if (res?.payload?.response?.status === 400) return
-          else navigate('/module-test')
+          if (res?.payload?.response?.status === 400) {
+            toast.error(res?.payload?.response?.data?.error)
+            setIsSubmitted(false)
+            return
+          } else navigate('/module-test')
           setIsSubmitted(false)
         });
         setShowRequired(false);
@@ -206,7 +213,7 @@ const CreateModuleTest = () => {
 
   useEffect(() => {
     if (Number(id)) {
-      dispatch(getTestById(Number(id))).then(({ payload }) => {
+      dispatch(getTestById(Number(id))).then(({payload}) => {
         if (payload && payload.name !== "AxiosError") {
           // added new checker
           bindItems(
@@ -230,10 +237,10 @@ const CreateModuleTest = () => {
         }
       });
     }
-    dispatch(getModules({ page_size: 1000 }));
-    dispatch(getSystems({ page_size: 1000 }));
+    dispatch(getModules({page_size: 1000}));
+    dispatch(getSystems({page_size: 1000}));
   }, [dispatch, id]);
-  
+
   return (
     <form onSubmit={saveDatas} className="card">
       <div className="my-5 flex items-start gap-5">
@@ -245,7 +252,7 @@ const CreateModuleTest = () => {
                 options={moduleList?.results}
                 getOptionLabel={(modul) => modul.name}
                 getOptionValue={(modul) => modul.id}
-                onChange={(e) => setData({ ...data, modul_id: e.id })}
+                onChange={(e) => setData({...data, modul_id: e.id})}
                 placeholder={data.modul_name}
               />
               <p className="text-danger">
@@ -258,7 +265,7 @@ const CreateModuleTest = () => {
                 options={systemList?.results}
                 getOptionLabel={(modul) => modul.name}
                 getOptionValue={(modul) => modul.id}
-                onChange={(e) => setData({ ...data, sistema_id: e.id })}
+                onChange={(e) => setData({...data, sistema_id: e.id})}
                 placeholder={data.sistema_name}
               />
               <p className="text-danger">
@@ -308,7 +315,7 @@ const CreateModuleTest = () => {
                       className="text-primary"
                       onClick={handleAddForm}
                     >
-                      <IoIosAddCircleOutline size="20px" />
+                      <IoIosAddCircleOutline size="20px"/>
                     </button>
                   )}
                   {data.options.length !== 1 && (
@@ -317,7 +324,7 @@ const CreateModuleTest = () => {
                       className="text-danger"
                       onClick={() => handleDeleteForm(index)}
                     >
-                      <IoIosRemoveCircleOutline size="20px" />
+                      <IoIosRemoveCircleOutline size="20px"/>
                     </button>
                   )}
                 </div>
@@ -332,7 +339,7 @@ const CreateModuleTest = () => {
             ref={editor}
             value={data.question}
             onChange={(newContent) => {
-              setData({ ...data, question: newContent });
+              setData({...data, question: newContent});
             }}
           />
 
@@ -356,7 +363,7 @@ const CreateModuleTest = () => {
         </div>
       </div>
 
-      <hr />
+      <hr/>
       <div className="mt-5">
         <h1>Correct answer</h1>
         <div className="mt-10 flex gap-5">
@@ -371,7 +378,7 @@ const CreateModuleTest = () => {
                   label: data.correct_answer_key.toUpperCase(),
                 }}
                 onChange={(e) =>
-                  setData({ ...data, correct_answer_key: e.value })
+                  setData({...data, correct_answer_key: e.value})
                 }
               />
               <p className="text-danger">
@@ -418,7 +425,7 @@ const CreateModuleTest = () => {
               ref={correctAnswerRef}
               value={data.correct_answer}
               onChange={(newContent) => {
-                setData({ ...data, correct_answer: newContent });
+                setData({...data, correct_answer: newContent});
               }}
             />
             <p className="text-danger">
@@ -435,7 +442,7 @@ const CreateModuleTest = () => {
             disabled
             className="btn-primary flex gap-3 items-center justify-between"
           >
-            <AiOutlineLoading3Quarters className="animate-spin" />
+            <AiOutlineLoading3Quarters className="animate-spin"/>
             Processing...
           </button>
         ) : (
