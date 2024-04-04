@@ -152,13 +152,17 @@ const CreateModuleTest = () => {
       }
 
       if (Number(id)) {
-        dispatch(updateTest(formData)).then(() => {
-          navigate("/module-test");
+        dispatch(updateTest(formData)).then((res) => {
+          if (res?.payload?.response?.status === 400) return
+          else navigate('/module-test')
+          setIsSubmitted(false)
         });
         setShowRequired(false);
       } else {
-        dispatch(createTest(formData)).then(() => {
-          navigate("/module-test");
+        dispatch(createTest(formData)).then((res) => {
+          if (res?.payload?.response?.status === 400) return
+          else navigate('/module-test')
+          setIsSubmitted(false)
         });
         setShowRequired(false);
       }
