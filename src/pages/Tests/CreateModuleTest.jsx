@@ -13,13 +13,15 @@ import {
   getTestById,
   updateTest,
 } from "../../features/modules/moduleSlice";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
 import {toast} from "react-toastify";
 
 const CreateModuleTest = () => {
   // router
   const navigate = useNavigate();
+  const location = useLocation()
+  console.log(location)
   const {id} = useParams();
 
   // store

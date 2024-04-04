@@ -11,6 +11,7 @@ const Sidebar = () => {
   
   const handleCleanCurrentPage = () => {
     localStorage.removeItem('currentPage')
+    localStorage.removeItem('ModuleTest')
   }
   
   return (

@@ -5,13 +5,12 @@ import {ROUTES} from "../../Routes/constants";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {getTests, searchTests} from "../../features/modules/moduleSlice";
+import LoadingPage from "../LoadingPage";
 
 // icon
 import {AiFillDelete, AiFillEdit, AiOutlineClose} from "react-icons/ai";
 import DeleteModal from "./DeleteModal";
 import Pagination from "../../components/Pagination";
-import {getUsers} from "../../features/testResults/testResultsSlice";
-import LoadingPage from "../LoadingPage";
 
 const ModuleTest = () => {
   const dispatch = useDispatch();
