@@ -20,8 +20,6 @@ import {toast} from "react-toastify";
 const CreateModuleTest = () => {
   // router
   const navigate = useNavigate();
-  const location = useLocation()
-  console.log(location)
   const {id} = useParams();
 
   // store
@@ -157,7 +155,6 @@ const CreateModuleTest = () => {
       if (Number(id)) {
         dispatch(updateTest(formData)).then((res) => {
           if (res?.payload?.response?.status === 400) {
-            toast.error(res?.payload?.response?.data?.error)
             setIsSubmitted(false)
             return
           } else navigate('/module-test')
@@ -167,7 +164,6 @@ const CreateModuleTest = () => {
       } else {
         dispatch(createTest(formData)).then((res) => {
           if (res?.payload?.response?.status === 400) {
-            toast.error(res?.payload?.response?.data?.error)
             setIsSubmitted(false)
             return
           } else navigate('/module-test')

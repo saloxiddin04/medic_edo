@@ -189,7 +189,7 @@ export const createTest = createAsyncThunk(
       toast.success("successfully created");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err?.response?.data?.error);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -206,7 +206,7 @@ export const updateTest = createAsyncThunk(
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err?.response?.data?.error);
       return thunkAPI.rejectWithValue(err);
     }
   }
