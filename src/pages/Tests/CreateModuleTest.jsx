@@ -345,6 +345,7 @@ const CreateModuleTest = () => {
               id="fileUpload"
               type="file"
               className="form-file-input"
+              accept={'image/png, image/jpeg, image/jpg, image/svg'}
               onChange={uploadSecondImage}
             />
             <div
@@ -397,6 +398,7 @@ const CreateModuleTest = () => {
               <input
                 id="fileUpload"
                 type="file"
+                accept={'image/png, image/jpeg, image/jpg, image/svg'}
                 className="form-file-input"
                 onChange={uploadImage}
               />
@@ -424,6 +426,7 @@ const CreateModuleTest = () => {
                 <input
                   id="fileUpload"
                   type="file"
+                  accept={'image/png, image/jpeg, image/jpg, image/svg'}
                   className="form-file-input"
                   onChange={uploadThirdImage}
                 />
