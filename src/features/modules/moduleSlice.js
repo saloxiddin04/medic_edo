@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, prepareAutoBatched} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
 import { toast } from "react-toastify";
 
@@ -522,15 +522,8 @@ const moduleSlice = createSlice({
     });
     
     // search tests
-    builder.addCase(searchTests.pending, (state) => {
-      state.isLoading = true;
-    });
     builder.addCase(searchTests.fulfilled, (state, { payload }) => {
       state.testList = payload;
-      state.isLoading = false;
-    });
-    builder.addCase(searchTests.rejected, (state) => {
-      state.isLoading = false;
     });
 
     // get test by id
