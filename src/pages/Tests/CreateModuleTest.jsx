@@ -360,7 +360,7 @@ const CreateModuleTest = () => {
           </div>
 
           <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-            {(imageName2 === 'delete' || imageName2 === '') ? 'No photo' : imageName2}
+            {(imageName2 === 'delete' || imageName2 === '' || imageName2 === null) ? 'No photo' : imageName2}
           </span>
         </div>
       </div>
@@ -413,7 +413,7 @@ const CreateModuleTest = () => {
             </div>
 
             <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-              {(imageName === 'delete' || imageName === '') ? 'No photo' : imageName}
+              {(imageName === 'delete' || imageName === '' || imageName === null) ? 'No photo' : imageName}
             </span>
 
             <div className="mt-5">
@@ -440,7 +440,7 @@ const CreateModuleTest = () => {
               </div>
 
               <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-                {(imageName3 === 'delete' || imageName3 === '') ? 'No photo' : imageName3}
+                {(imageName3 === 'delete' || imageName3 === '' || imageName3 === null) ? 'No photo' : imageName3}
               </span>
             </div>
           </div>
