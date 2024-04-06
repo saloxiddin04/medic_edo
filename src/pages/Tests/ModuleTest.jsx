@@ -22,6 +22,8 @@ const ModuleTest = () => {
   
   const page = localStorage.getItem("ModuleTest");
   
+  console.log(typeof searchTestState)
+  
   const handlePageChange = (page) => {
     if (searchTestState === '') {
       localStorage.setItem("ModuleTest", page.toString());
@@ -46,14 +48,15 @@ const ModuleTest = () => {
     if (searchTestState === '') {
       localStorage.setItem('ModuleTest', '1')
       localStorage.setItem('currentPage', '1')
+    } else {
+      localStorage.setItem('searchTestState', value)
+      localStorage.setItem('currentPage', '1')
+      setTestUser(value)
+      clearTimeout(timeoutId.current)
+      timeoutId.current = setTimeout(() => {
+        dispatch(searchTests({page_size: 10, page, search: value}))
+      }, 500)
     }
-    localStorage.setItem('searchTestState', value)
-    localStorage.setItem('currentPage', '1')
-    setTestUser(value)
-    clearTimeout(timeoutId.current)
-    timeoutId.current = setTimeout(() => {
-      dispatch(searchTests({page_size: 10, page, search: searchTestState}))
-    }, 500)
   }
   
   useEffect(() => {
