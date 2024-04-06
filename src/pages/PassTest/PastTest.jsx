@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FcBookmark} from "react-icons/fc";
 import {FaCheck, FaCircle} from "react-icons/fa";
-import {AiOutlineClear} from 'react-icons/ai'
 import Footer from "./Footer";
 import Header from "./Header";
 import {
@@ -19,14 +18,12 @@ import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
 
 const PastTest = () => {
-  const {testList, exactTest, question, loading} = useSelector(
+  const {testList, question} = useSelector(
     ({pastTest}) => pastTest
   );
-  const {testID, exactTestID, highlight} = useSelector((state) => state.localStorage);
+  const {testID, exactTestID} = useSelector((state) => state.localStorage);
   const {seconds} = useSelector(({timer}) => timer);
-  
-  const existingEntry = highlight?.find((item) => item.id === question?.id);
-  
+
   const dispatch = useDispatch();
   
   const selectedAnswerInput = document.querySelector(
@@ -42,7 +39,7 @@ const PastTest = () => {
   const [countIndex, setCountIndex] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [is_clear, setClear] = useState(false)
-  
+
   const changeTest = (id, test_id, idx) => {
     dispatch(setItem({key: "exactTestID", value: test_id}));
     dispatch(getExactTest({id, test_id}));
@@ -115,6 +112,9 @@ const PastTest = () => {
   
   useEffect(() => {
     dispatch(getTestsById(testID));
+    if (countIndex === 0) {
+      dispatch(getExactTest({id: testID, test_id: exactTestID}));
+    }
   }, [dispatch, exactTestID, testID]);
 
   useEffect(() => {
@@ -216,41 +216,6 @@ const PastTest = () => {
       }
     };
   }, []);
-  
-  // const selection = () => {
-  //   const selectionWindow = window.getSelection();
-  //   const rangeCount = selectionWindow.rangeCount;
-  //   let modifiedHtml = questionHtml;
-  //
-  //   if (rangeCount > 0) {
-  //     dispatch(getItem({key: "highlight"}))
-  //     const storageText = (highlight !== null && highlight !== undefined) ? [...highlight] : []
-  //     for (let i = 0; i < rangeCount; i++) {
-  //       const range = selectionWindow.getRangeAt(i);
-  //       const selectedText = range.toString();
-  //       if (selectedText) {
-  //         const classedText = `<span class="highlight">${selectedText}</span>`;
-  //         modifiedHtml = modifiedHtml.replace(selectedText, classedText);
-  //         const existingEntry = storageText.find((item) => item.id === question?.id);
-  //         const existingEntryIndex = storageText.findIndex((item) => item.id === question?.id);
-  //         if (existingEntry) {
-  //           const updatedEntry = {...storageText[existingEntryIndex], text: modifiedHtml};
-  //           storageText[existingEntryIndex] = updatedEntry;
-  //           setQuestionHtml(updatedEntry.text)
-  //         } else {
-  //           storageText.push({id: question?.id, text: modifiedHtml});
-  //         }
-  //       }
-  //     }
-  //
-  //     dispatch(setItem({key: 'highlight', value: storageText}))
-  //   }
-  // }
-  
-  const clearSelection = () => {
-    const updatedData = highlight.filter(item => item.id !== question.id);
-    dispatch(setItem({key: 'highlight', value: updatedData}))
-  }
   
   return (
     <div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">

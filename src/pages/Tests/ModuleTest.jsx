@@ -5,16 +5,16 @@ import {ROUTES} from "../../Routes/constants";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {getTests, searchTests} from "../../features/modules/moduleSlice";
+import LoadingPage from "../LoadingPage";
 
 // icon
 import {AiFillDelete, AiFillEdit, AiOutlineClose} from "react-icons/ai";
 import DeleteModal from "./DeleteModal";
 import Pagination from "../../components/Pagination";
-import {getUsers} from "../../features/testResults/testResultsSlice";
 
 const ModuleTest = () => {
   const dispatch = useDispatch();
-  const {testList} = useSelector(({module}) => module);
+  const {testList, isLoading} = useSelector(({module}) => module);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [testToDelete, setTestToDelete] = useState(null);
@@ -48,6 +48,7 @@ const ModuleTest = () => {
       localStorage.setItem('currentPage', '1')
     }
     localStorage.setItem('searchTestState', value)
+    localStorage.setItem('currentPage', '1')
     setTestUser(value)
     clearTimeout(timeoutId.current)
     timeoutId.current = setTimeout(() => {
@@ -66,6 +67,8 @@ const ModuleTest = () => {
   useEffect(() => {
     if (searchTestState !== '') return searchTestFunc(searchTestState)
   }, [searchTestState, dispatch])
+
+  if (isLoading) return <LoadingPage/>
   
   return (
     <div className="card">
@@ -102,7 +105,6 @@ const ModuleTest = () => {
               localStorage.removeItem('searchTestState')
               localStorage.removeItem('ModuleTest')
               localStorage.removeItem('currentPage')
-              window.location.reload()
               setTestUser('')
               dispatch(getTests({page_size: 10, page}))
             }}
