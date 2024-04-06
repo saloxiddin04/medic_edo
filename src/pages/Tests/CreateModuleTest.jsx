@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   IoIosRemoveCircleOutline,
   IoIosAddCircleOutline,
+  IoIosTrash
 } from "react-icons/io";
 import {
   createTest,
@@ -45,9 +46,9 @@ const CreateModuleTest = () => {
     id: null,
     modul_id: null,
     sistema_id: null,
-    image: null,
-    image2: null,
-    image3: null,
+    image: '',
+    image2: '',
+    image3: '',
     question: "",
     correct_answer: "",
     correct_answer_key: "",
@@ -141,15 +142,15 @@ const CreateModuleTest = () => {
       formData.append("image2", data.image2);
       formData.append("image3", data.image3);
 
-      if (typeof data.image == "string") {
-        formData.delete("image");
-      }
-      if (typeof data.image2 == "string") {
-        formData.delete("image2");
-      }
-      if (typeof data.image3 == "string") {
-        formData.delete("image3");
-      }
+      // if (typeof data.image == "string") {
+      //   formData.delete("image");
+      // }
+      // if (typeof data.image2 == "string") {
+      //   formData.delete("image2");
+      // }
+      // if (typeof data.image3 == "string") {
+      //   formData.delete("image3");
+      // }
 
       if (Number(id)) {
         dispatch(updateTest(formData)).then(() => {
@@ -338,16 +339,28 @@ const CreateModuleTest = () => {
 
           <label htmlFor="fileUpload" className="mt-3 ">
             Image
+          </label>
+          <div className={'flex items-center gap-1'}>
             <input
               id="fileUpload"
               type="file"
               className="form-file-input"
               onChange={uploadSecondImage}
             />
-          </label>
+            <div
+              className={'bg-red-500 rounded flex items-center px-2 py-1 cursor-pointer'}
+              onClick={() => {
+                setImageName2('');
+                setIsUploaded2(false);
+                setData({ ...data, image2: id ? 'delete' : '' });
+              }}
+            >
+              <IoIosTrash size={30} color={'#fff'}/>
+            </div>
+          </div>
 
           <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-            {isUploaded2 ? imageName2 : imageName2 || "No photo"}
+            {(imageName2 === 'delete' || imageName2 === '') ? 'No photo' : imageName2}
           </span>
         </div>
       </div>
@@ -380,30 +393,54 @@ const CreateModuleTest = () => {
             <label htmlFor="fileUpload" className="mt-3 inline-block">
               Image
             </label>
-            <input
-              id="fileUpload"
-              type="file"
-              className="form-file-input"
-              onChange={uploadImage}
-            />
+            <div className={'flex items-center gap-2'}>
+              <input
+                id="fileUpload"
+                type="file"
+                className="form-file-input"
+                onChange={uploadImage}
+              />
+              <div
+                className={'bg-red-500 rounded flex items-center px-2 py-1 cursor-pointer'}
+                onClick={() => {
+                  setImageName('');
+                  setIsUploaded(false);
+                  setData({ ...data, image: id ? 'delete' : '' });
+                }}
+              >
+                <IoIosTrash size={30} color={'#fff'}/>
+              </div>
+            </div>
 
             <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-              {isUploaded ? imageName : imageName || "No photo"}
+              {(imageName === 'delete' || imageName === '') ? 'No photo' : imageName}
             </span>
 
             <div className="mt-5">
               <label htmlFor="fileUpload" className="inline-block">
                 Image 2
               </label>
-              <input
-                id="fileUpload"
-                type="file"
-                className="form-file-input"
-                onChange={uploadThirdImage}
-              />
+              <div className={'flex items-center gap-2'}>
+                <input
+                  id="fileUpload"
+                  type="file"
+                  className="form-file-input"
+                  onChange={uploadThirdImage}
+                />
+                <div
+                  className={'bg-red-500 rounded flex items-center px-2 py-1 cursor-pointer'}
+                  onClick={() => {
+                    setImageName3('');
+                    setIsUploaded3(false);
+                    setData({ ...data, image3: id ? 'delete' : '' });
+                  }}
+                >
+                  <IoIosTrash size={30} color={'#fff'}/>
+                </div>
+              </div>
 
               <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-                {isUploaded3 ? imageName3 : imageName3 || "No photo"}
+                {(imageName3 === 'delete' || imageName3 === '') ? 'No photo' : imageName3}
               </span>
             </div>
           </div>
