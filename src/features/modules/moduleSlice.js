@@ -107,7 +107,6 @@ export const getSystemsForTest = createAsyncThunk(
       const res = await $axios.get(
         `test/sistema/get_sistems_used/`, { params }
       );
-      console.log(params)
       return res.data;
     } catch (err) {
       toast.error(err.message);
