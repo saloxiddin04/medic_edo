@@ -50,7 +50,10 @@ const CreateCustomTest = () => {
       return acc;
     }, {});
     
-    dispatch(getModulesForTest(isSelected));
+    dispatch(getModulesForTest({
+      unused: isSelected,
+      ...dynamicParams
+    }));
     dispatch(getSystemsForTest({
         unused: isSelected,
         modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
@@ -60,8 +63,7 @@ const CreateCustomTest = () => {
     dispatch(getQuestionModeForTest({
       unused: isSelected,
       modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-      sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-      ...dynamicParams
+      sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
     }));
   }, [checkedItems, systemItems, questionMode])
   
@@ -104,7 +106,10 @@ const CreateCustomTest = () => {
     const selectedSystems = Object.keys(systemItems)
       .filter((key) => systemItems[key])
       .map(Number)
-    dispatch(getModulesForTest(e.target.checked));
+    
+    dispatch(getModulesForTest({
+      unused: e.target.checked,
+    }));
     dispatch(getSystemsForTest({
         unused: e.target.checked,
         modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",

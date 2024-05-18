@@ -86,9 +86,9 @@ export const getSystems = createAsyncThunk(
 
 export const getModulesForTest = createAsyncThunk(
   "modules/getModulesForTest",
-  async (boolean, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
-      const res = await $axios.get(`test/modul/get_modules_used/?unused=${boolean}`);
+      const res = await $axios.get(`test/modul/get_modules_used/`, {params});
       return res.data;
     } catch (err) {
       toast.error(err.message);
