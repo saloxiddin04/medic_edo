@@ -101,9 +101,13 @@ export const getSystemsForTest = createAsyncThunk(
   "modules/getSystemsForTest",
   async (params, thunkAPI) => {
     try {
+      // const res = await $axios.get(
+      //   `test/sistema/get_sistems_used/?unused=${params.unused}&modul_ides=${params.modul_ides.length > 0 ? [params.modul_ides] : null}`, {params}
+      // );
       const res = await $axios.get(
-        `test/sistema/get_sistems_used/?unused=${params.unused}&modul_ides=${params.modul_ides.length > 0 ? [params.modul_ides] : null}`
+        `test/sistema/get_sistems_used/`, { params }
       );
+      console.log(params)
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -116,8 +120,11 @@ export const getQuestionModeForTest = createAsyncThunk(
   "modules/getQuestionModeForTest",
   async (params, thunkAPI) => {
     try {
+      // const res = await $axios.get(
+      //   `test/test_result/question_mode_get/?unused=${params.unused}&modul_ides=${params.modul_ides.length > 0 ? [params.modul_ides] : null}&sistema_ides=${params.sistema_ides.length > 0 ? [params.sistema_ides] : null}`, {params}
+      // );
       const res = await $axios.get(
-        `test/test_result/question_mode_get/?unused=${params.unused}&modul_ides=${params.modul_ides.length > 0 ? [params.modul_ides] : null}&sistema_ides=${params.sistema_ides.length > 0 ? [params.sistema_ides] : null}`
+        `test/test_result/question_mode_get/`, { params }
       );
       return res.data;
     } catch (err) {

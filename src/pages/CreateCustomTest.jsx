@@ -32,22 +32,36 @@ const CreateCustomTest = () => {
   const [questionMode, setQuestionMode] = useState([])
   
   const getAll = useMemo(() => {
-    const selectedModules = Object.keys(checkedItems).filter(
-      (key) => checkedItems[key]
+    const selectedModules = Object.keys(checkedItems)
+      .filter(key => checkedItems[key])
+      .map(Number);
+    
+    const selectedSystems = Object.keys(systemItems)
+      .filter((key) => systemItems[key])
+      .map(Number)
+    const questionModules = Object.keys(questionMode).filter((key) => questionMode[key]);
+    
+    const filteredQuestionModes = questionModeList?.question_mode?.filter((item) =>
+      questionModules.includes(item.id.toString())
     );
-    const selectedSystems = Object.keys(systemItems).filter(
-      (key) => systemItems[key]
-    );
+    
+    const dynamicParams = filteredQuestionModes?.reduce((acc, item) => {
+      acc[item.name?.toLowerCase()] = true;
+      return acc;
+    }, {});
+    
     dispatch(getModulesForTest(isSelected));
     dispatch(getSystemsForTest({
         unused: isSelected,
-        modul_ides: selectedModules
+        modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+        ...dynamicParams
       }
     ));
     dispatch(getQuestionModeForTest({
       unused: isSelected,
-      modul_ides: selectedModules,
-      sistema_ides: selectedSystems
+      modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+      sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+      ...dynamicParams
     }));
   }, [checkedItems, systemItems, questionMode])
   
@@ -80,25 +94,26 @@ const CreateCustomTest = () => {
       [name]: isChecked,
     });
   };
-
+  
   const handleUnusedChange = (e) => {
     setIsSelected(e.target.checked)
-    const selectedModules = Object.keys(checkedItems).filter(
-      (key) => checkedItems[key]
-    );
-    const selectedSystems = Object.keys(systemItems).filter(
-      (key) => systemItems[key]
-    );
+    const selectedModules = Object.keys(checkedItems)
+      .filter(key => checkedItems[key])
+      .map(Number);
+    
+    const selectedSystems = Object.keys(systemItems)
+      .filter((key) => systemItems[key])
+      .map(Number)
     dispatch(getModulesForTest(e.target.checked));
     dispatch(getSystemsForTest({
         unused: e.target.checked,
-        modul_ides: selectedModules
+        modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
       }
     ));
     dispatch(getQuestionModeForTest({
       unused: e.target.checked,
-      modul_ides: selectedModules,
-      sistema_ides: selectedSystems
+      modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+      sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
     }));
   }
   
@@ -254,7 +269,8 @@ const CreateCustomTest = () => {
           Question Mode
           <span className={'ml-3 italic'}>
             Total Available
-            <span className='rounded-full border border-purple-400 py-1 px-2 ml-1'>{questionModeList?.question_total}</span>
+            <span
+              className='rounded-full border border-purple-400 py-1 px-2 ml-1'>{questionModeList?.question_total}</span>
           </span>
         </h1>
         <div className="mb-5 ml-4 mt-2 flex gap-10 items-center">
