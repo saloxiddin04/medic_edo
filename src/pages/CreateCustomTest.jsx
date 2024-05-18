@@ -107,6 +107,10 @@ const CreateCustomTest = () => {
       .filter((key) => systemItems[key])
       .map(Number)
     
+    if (e.target.checked === false) {
+      setQuestionMode([]);
+    }
+    
     dispatch(getModulesForTest({
       unused: e.target.checked,
     }));
