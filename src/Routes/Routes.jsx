@@ -50,6 +50,14 @@ const AppRoutes = () => {
           <Route path={ROUTES.GROUP_BINDING_BINDING} element={<CreateGroupBinding/>} />
         </>
       )}
+      
+      {getUserData() && getUserData().role === "teacher" && (
+        <>
+          {" "}
+          <Route path={ROUTES.GROUP_BINDING} element={<GroupBinding/>} />
+          <Route path={ROUTES.GROUP_BINDING_BINDING} element={<CreateGroupBinding/>} />
+        </>
+      )}
 
       {/* not found */}
       <Route path={'*'} element={<NotFound />} />

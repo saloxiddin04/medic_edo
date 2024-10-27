@@ -467,6 +467,19 @@ export const getGroupUnused = createAsyncThunk(
   }
 )
 
+export const getTeacherList = createAsyncThunk(
+  'modules/getTeacherList',
+  async (params, thunkAPI) => {
+    try {
+      const response = await $axios.get('/users/register/get_teacher_list/', {params})
+      return response.data
+    } catch (e) {
+      toast.error(e.message)
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 const moduleSlice = createSlice({
   name: "module",
   initialState: {
@@ -486,6 +499,7 @@ const moduleSlice = createSlice({
     groupBindingUsers: [],
     bindingUsers: [],
     groupUnused: [],
+    teacherList: [],
     isLoading: false,
   },
 
@@ -685,6 +699,18 @@ const moduleSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getGroupUnused.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // getTeacherList
+    builder.addCase(getTeacherList.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(getTeacherList.fulfilled, (state, {payload}) => {
+      state.teacherList = payload
+      state.isLoading = false
+    })
+    builder.addCase(getTeacherList.rejected, (state) => {
       state.isLoading = false;
     });
   },

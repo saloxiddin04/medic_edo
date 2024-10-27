@@ -151,6 +151,7 @@ const UsersDetail = () => {
                   onChange={(e) => setRole(e.target.value)}
                 >
                   <option value='admin'>{'admin'}</option>
+                  <option value='teacher'>{'teacher'}</option>
                   <option value='student'>{'student'}</option>
                 </select>
               </div>

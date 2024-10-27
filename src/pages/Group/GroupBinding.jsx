@@ -1,16 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getGroupBinding, getGroupBindingUsersDetail} from "../../features/modules/moduleSlice";
+import {getGroupBinding, getGroupBindingUsersDetail, getTeacherList} from "../../features/modules/moduleSlice";
 import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
 import {AiFillDelete, AiFillEdit, AiOutlineClose} from "react-icons/ai";
+import { GiTeacher } from "react-icons/gi";
 import {FaUsers} from "react-icons/fa";
 import DeleteGroupBinding from "./DeleteGroupBinding";
 import {FaChevronCircleRight} from "react-icons/fa";
 import DetailGroupBinding from "./DetailGroupBinding";
-import {getUsers} from "../../features/testResults/testResultsSlice";
-
+import {getUserData} from "../../auth/jwtService"
+import AddTeacherModal from "./AddTeacherModal";
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,10 @@ const GroupBinding = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(localStorage.getItem('detailGroupBinding') ? JSON.parse(localStorage.getItem('detailGroupBinding') || '[]') : false);
   const [ModulToDetail, setModulToDetail] = useState(localStorage.getItem('detailGroupBindingModulId') ? JSON.parse(localStorage.getItem('detailGroupBindingModulId') || '[]') : null);
   const [ModulToDelete, setModulToDelete] = useState(null);
+  
+  const [addTeacherModal, setAddTeacherModal] = useState(false)
+  const [groupName, setGroupName] = useState(null)
+  const [id, setId] = useState(null)
 
   const handlePageChange = (page) => {
     localStorage.setItem("GroupBinding", page.toString());
@@ -37,7 +42,19 @@ const GroupBinding = () => {
     setIsModalOpen(true);
     setModulToDelete(id);
   };
-
+  
+  const handleAddTeacher = (group, id) => {
+    setGroupName(group)
+    setId(id)
+    setAddTeacherModal(true)
+  }
+  
+  const handleCloseAddTeacher = () => {
+    setGroupName(null)
+    setId(null)
+    setAddTeacherModal(false)
+  }
+  
   const handleDetailModal = (id) => {
     setIsDetailModalOpen(true)
     setModulToDetail(id)
@@ -70,7 +87,13 @@ const GroupBinding = () => {
       dispatch(getGroupBinding({page_size: 10}));
     }
   }, [dispatch]);
-
+  
+  useEffect(() => {
+    if (addTeacherModal) {
+      dispatch(getTeacherList({page_size: 1000}))
+    }
+  }, [dispatch, addTeacherModal]);
+  
   return (
     <div className="card">
       <div className="flex justify-between items-center">
@@ -125,7 +148,14 @@ const GroupBinding = () => {
                   >
                     Users length
                   </th>
-
+                  
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Teacher
+                  </th>
+                  
                   <th
                     scope="col"
                     className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -144,30 +174,47 @@ const GroupBinding = () => {
                       {item?.group?.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      <div className='flex gap-2 items-center justify-center cursor-pointer'
+                      <div className="flex gap-2 items-center justify-center cursor-pointer"
                            onClick={() => handleDetailModal(item.id)}>
                         <FaUsers size={'22'}/>
                         {item.users.length}
                       </div>
                     </td>
-
+                    
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item?.teacher?.name}
+                    </td>
+                    
                     <td
                       className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                      <Link
-                        className="btn-warning btn-sm inline-block"
-                        to={`/create-group-binding/${item.id}`}
-                      >
-                        <span>
-                          <AiFillEdit/>
-                        </span>
-                      </Link>
-
-                      <button
-                        className="btn-danger btn-sm ml-3"
-                        onClick={() => handleDeleteModal(item.id)}
-                      >
-                        <AiFillDelete/>
-                      </button>
+                      
+                      {getUserData()?.role !== 'teacher' && (
+                        <>
+                          <button
+                            className="btn-info btn-sm mr-3"
+                            onClick={() => handleAddTeacher(item?.group?.name, item?.id)}
+                          >
+                            <GiTeacher/>
+                          </button>
+                          
+                          <Link
+                            className="btn-warning btn-sm inline-block"
+                            to={`/create-group-binding/${item.id}`}
+                          >
+                            <span>
+                              <AiFillEdit/>
+                            </span>
+                          </Link>
+                          
+                          <button
+                            className="btn-danger btn-sm ml-3"
+                            onClick={() => handleDeleteModal(item.id)}
+                          >
+                            <AiFillDelete/>
+                          </button>
+                        </>
+                      )}
+                      
                       <button
                         className={'btn-success btn-sm ml-3'}
                         onClick={() => navigate(`/create-group-binding/${item.id}`)}
@@ -201,6 +248,13 @@ const GroupBinding = () => {
         isModalOpen={isDetailModalOpen}
         closeModal={closeModalDetail}
         modulId={ModulToDetail}
+      />
+      
+      <AddTeacherModal
+        groupId={id}
+        groupName={groupName}
+        isModalOpen={addTeacherModal}
+        closeModal={handleCloseAddTeacher}
       />
     </div>
   );

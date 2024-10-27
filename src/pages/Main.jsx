@@ -253,7 +253,7 @@ const Main = () => {
     );
   }
   
-  if (getUserData().role !== "admin" && !getUserData()?.is_group) return <NotGroupModal isModalOpen={!getUserData()?.is_group}/>
+  if ((getUserData().role !== "admin" && getUserData().role !== "teacher") && !getUserData()?.is_group) return <NotGroupModal isModalOpen={!getUserData()?.is_group}/>
   
   return (
     <section>
@@ -294,7 +294,7 @@ const Main = () => {
       </div>
       
       <div className="card mt-8">
-        {getUserData()?.role === "admin" ? (
+        {(getUserData()?.role === "admin" || getUserData()?.role === "teacher") ? (
           <>
             <h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
             <div className="flex item-center justify-between">
@@ -529,8 +529,8 @@ const Main = () => {
         )}
       </div>
       
-      <div className={`card mt-8 ${getUserData()?.role === 'admin' ? 'block' : 'none'}`}>
-        {getUserData()?.role === 'admin' && (
+      <div className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'none'}`}>
+        {(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") && (
           <>
             <div className='flex items-center gap-[80px] mb-5'>
               <div className='w-1/3 flex items-end gap-5'>
@@ -601,7 +601,7 @@ const Main = () => {
         )}
       </div>
       
-      {getUserData()?.role !== 'admin' && (
+      {(getUserData()?.role !== 'admin' || getUserData()?.role !== 'teacher') && (
         <div className="card mt-8">
           <div>
             <section>

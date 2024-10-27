@@ -9,7 +9,7 @@ import {
   postGroupBinding,
   updateGroupBinding
 } from "../../features/modules/moduleSlice";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getUserData, setCookie} from "../../auth/jwtService";
 import {userKeyName} from "../../auth/jwt.config";
 import {getUserDetail} from "../../features/userDetail/userDetailSlice";
