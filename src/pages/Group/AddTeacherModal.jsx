@@ -1,24 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { useState } from "react";
 import {AiOutlineClose, AiOutlineLoading3Quarters} from "react-icons/ai";
 import {getGroupBinding, updateGroupBinding} from "../../features/modules/moduleSlice";
 
-const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal }) => {
+const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal, teacherId }) => {
 	const dispatch = useDispatch();
 	const {teacherList} = useSelector(({module}) => module);
 	
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [teacher, setTeacher] = useState(null)
 	
-	const deleteTestAction = () => {
-		// if (isSubmitted) return;
-		// dispatch(deleteGroupBinding(modulId)).then(() => {
-		// 	dispatch(getGroupBinding());
-		// 	closeModal();
-		// 	setIsSubmitted(false);
-		// });
-		// setIsSubmitted(true);
+	useEffect(() => {
+		if (teacherId !== null) setTeacher(teacherId)
+	}, [teacherId]);
+	
+	const updateTeacher = () => {
+		if (isSubmitted) return;
 		const data = {
 			teacher: Number(teacher) === 0 ? null : Number(teacher)
 		}
@@ -31,8 +29,10 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal }) => {
 				closeModal()
 				setTeacher(null)
 				dispatch(getGroupBinding({page_size: 10}));
+				setIsSubmitted(false)
 			}
 		})
+		setIsSubmitted(true)
 	};
 	
 	return (
@@ -52,8 +52,17 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal }) => {
 			>
 				<div className="fixed inset-0 bg-gray-500 opacity-75"></div>
 				<div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-					<div className="bg-gray-100 p-4">
+					<div className="bg-gray-100 p-4 flex justify-between items-center">
 						<h3 className="text-lg font-medium text-gray-900">Add Teacher</h3>
+						<div
+							onClick={() => {
+								setTeacher(null)
+								closeModal()
+							}}
+							className={'cursor-pointer mb-4'}
+						>
+							<AiOutlineClose size={20}/>
+						</div>
 					</div>
 					<div className="p-4">
 						<div
@@ -113,9 +122,9 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal }) => {
 							<button
 								type="submit"
 								className="btn-success"
-								onClick={deleteTestAction}
+								onClick={updateTeacher}
 							>
-								Add
+								Save
 							</button>
 						)}
 					</div>

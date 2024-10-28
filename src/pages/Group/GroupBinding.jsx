@@ -32,6 +32,7 @@ const GroupBinding = () => {
   const [addTeacherModal, setAddTeacherModal] = useState(false)
   const [groupName, setGroupName] = useState(null)
   const [id, setId] = useState(null)
+  const [teacherId, setTeacherId] = useState(null)
 
   const handlePageChange = (page) => {
     localStorage.setItem("GroupBinding", page.toString());
@@ -43,15 +44,17 @@ const GroupBinding = () => {
     setModulToDelete(id);
   };
   
-  const handleAddTeacher = (group, id) => {
+  const handleAddTeacher = (group, id, teacher_id) => {
     setGroupName(group)
     setId(id)
+    setTeacherId(teacher_id)
     setAddTeacherModal(true)
   }
   
   const handleCloseAddTeacher = () => {
     setGroupName(null)
     setId(null)
+    setTeacherId(null)
     setAddTeacherModal(false)
   }
   
@@ -192,7 +195,7 @@ const GroupBinding = () => {
                         <>
                           <button
                             className="btn-info btn-sm mr-3"
-                            onClick={() => handleAddTeacher(item?.group?.name, item?.id)}
+                            onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
                           >
                             <GiTeacher/>
                           </button>
@@ -255,6 +258,7 @@ const GroupBinding = () => {
         groupName={groupName}
         isModalOpen={addTeacherModal}
         closeModal={handleCloseAddTeacher}
+        teacherId={teacherId}
       />
     </div>
   );
