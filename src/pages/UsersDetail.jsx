@@ -210,37 +210,43 @@ const UsersDetail = () => {
             <tr>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 id
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Correct answer
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Wrong answer
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Start test
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Mode
+              </th>
+              <th
+                scope={'row'}
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 End test
               </th>
               <th
                 scope={'row'}
-                className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Action
               </th>
@@ -250,11 +256,12 @@ const UsersDetail = () => {
             {userTestHistory.isFilled && (
               userTestHistory.tests_history.map((item) => (
                 <tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.correct_answer_count}</td>
-                  <td>{item.worning_answer_count}</td>
-                  <td>{item.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
-                  <td>{item.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td>{item?.id}</td>
+                  <td>{item?.correct_answer_count}</td>
+                  <td>{item?.worning_answer_count}</td>
+                  <td>{item?.start_date ? moment(item.start_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
+                  <td>{item?.is_tutor ? 'Tutor' : '-'}</td>
+                  <td>{item?.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
                   <td>
                     <button
                       className='mt-2'

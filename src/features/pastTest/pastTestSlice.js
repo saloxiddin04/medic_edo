@@ -18,10 +18,10 @@ export const startTest = createAsyncThunk(
 
 export const getTestsById = createAsyncThunk(
   "pastTest/getTestsById",
-  async (id, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      if (id !== undefined) {
-        const res = await $axios.get(`/test/test_result/${id}/start_test_get/`);
+      if (data.id !== undefined) {
+        const res = await $axios.get(`/test/test_result/${data.id}/start_test_get/${data.is_reload !== undefined ? '?/is_reload=true' : ''}`);
         return res.data;
       }
     } catch (err) {

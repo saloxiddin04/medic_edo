@@ -40,6 +40,7 @@ import ReactECharts from "echarts-for-react";
 import Select from "react-select";
 import {AiOutlineClose} from "react-icons/ai";
 import NotGroupModal from "../components/NotGroup";
+import {IoReload} from "react-icons/io5";
 
 const Main = () => {
   const [canShowBar, setCanShowBar] = useState(false);
@@ -631,37 +632,43 @@ const Main = () => {
               <tr>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   id
                 </th>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Correct answer
                 </th>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Wrong answer
                 </th>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Start test
                 </th>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Mode
+                </th>
+                <th
+                  scope={'row'}
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   End test
                 </th>
                 <th
                   scope={'row'}
-                  className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Action
                 </th>
@@ -675,8 +682,18 @@ const Main = () => {
                     <td>{item.correct_answer_count}</td>
                     <td>{item.worning_answer_count}</td>
                     <td>{item.start_date ? item.start_date?.split('T')[0] : '-'}</td>
+                    <td>{item.is_tutor ? 'Tutor' : '-'}</td>
                     <td>{item.end_date ? item.end_date?.split('T')[0] : '-'}</td>
                     <td>
+                      <button
+                        className='mt-2 mr-1'
+                        onClick={() => {
+                          localStorage.setItem("testID", item.id)
+                          navigate(`/test`, {state: {is_reload: true}})
+                        }}
+                      >
+                        <IoReload size='30' color={'rgb(29 137 228)'}/>
+                      </button>
                       <button
                         className='mt-2'
                         onClick={() => {

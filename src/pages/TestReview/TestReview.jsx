@@ -65,7 +65,9 @@ const TestReview = () => {
   }, [dispatch]);
   
   useEffect(() => {
-    dispatch(getTestsById(testID));
+    dispatch(getTestsById({id: testID})).then(({payload}) => {
+      dispatch(setItem({key: "exactTestID", value: payload?.test_ids[countIndex]?.test_question?.id}));
+    })
     dispatch(getExactTest({id: testID, test_id: exactTestID}));
   }, [dispatch, exactTestID, testID]);
   

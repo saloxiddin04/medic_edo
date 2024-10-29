@@ -73,7 +73,7 @@ const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }
         mark: !testList?.test_ids[index].mark,
       })
     ).then(() => {
-      dispatch(getTestsById(testID));
+      dispatch(getTestsById({id: testID}));
       dispatch(
         getExactTest({
           id: testList?.id,

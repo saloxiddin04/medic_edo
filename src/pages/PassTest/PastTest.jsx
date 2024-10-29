@@ -16,8 +16,10 @@ import {
 } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
+import {useLocation} from "react-router-dom";
 
 const PastTest = () => {
+  const location = useLocation()
   const {testList, question} = useSelector(
     ({pastTest}) => pastTest
   );
@@ -74,7 +76,7 @@ const PastTest = () => {
           start_test_id: testList.id,
         })
       ).then(() => {
-        dispatch(getTestsById(testID));
+        dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload}));
         testList.count === countIndex + 1 &&
         dispatch(getExactTest({id: testID, test_id: exactTestID}));
         testList.count > countIndex + 1 &&
@@ -99,7 +101,7 @@ const PastTest = () => {
           start_test_id: testList.id,
         })
       ).then(() => {
-        dispatch(getTestsById(testID));
+        dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload}));
         dispatch(getExactTest({id: testID, test_id: exactTestID}));
       });
     }
@@ -111,11 +113,19 @@ const PastTest = () => {
   }, [dispatch]);
   
   useEffect(() => {
-    dispatch(getTestsById(testID));
-    if (countIndex === 0) {
-      dispatch(getExactTest({id: testID, test_id: exactTestID}));
+    if (location?.state?.is_reload !== undefined) {
+      dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload})).then(({payload}) => {
+        dispatch(getExactTest({id: testID, test_id: payload?.test_ids[countIndex]?.test_question?.id})).then(() => {
+          dispatch(setItem({key: "exactTestID", value: payload?.test_ids[countIndex]?.test_question?.id}));
+        })
+      })
+    } else {
+      dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload}));
+      if (countIndex === 0) {
+        dispatch(getExactTest({id: testID, test_id: exactTestID}));
+      }
     }
-  }, [dispatch, exactTestID, testID]);
+  }, [dispatch, exactTestID, testID, location]);
 
   useEffect(() => {
     dispatch(getExactTest({id: testID, test_id: exactTestID}));
