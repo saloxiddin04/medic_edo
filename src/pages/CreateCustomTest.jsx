@@ -1,9 +1,8 @@
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {startTest} from "../features/pastTest/pastTestSlice";
-import {useEffect} from "react";
 import {
   getModulesForTest,
   getQuestionModeForTest,
@@ -30,6 +29,14 @@ const CreateCustomTest = () => {
   const [checkedItems, setCheckedItems] = useState([])
   const [systemItems, setSystemItems] = useState([])
   const [questionMode, setQuestionMode] = useState([])
+  
+  const [totalCount, setTotalCount] = useState(0);
+  
+  const [test_count, setTestCount] = useState(null)
+  
+  useEffect(() => {
+    calculateTotalCount()
+  }, [systemItems]);
   
   const getAll = useMemo(() => {
     const selectedModules = Object.keys(checkedItems)
@@ -205,6 +212,7 @@ const CreateCustomTest = () => {
           tutor: isTutor,
           is_selected: isSelected,
           user: jsonParseCookie.id,
+          test_count: test_count ? test_count : 40
         })
       ).then((res) => {
         dispatch(setItem({key: "testID", value: res.payload.id}));
@@ -221,6 +229,21 @@ const CreateCustomTest = () => {
     }
     
     setIsSubmitted(true);
+  };
+  
+  const calculateTotalCount = () => {
+    const total = Object.keys(systemItems).reduce((acc, key) => {
+      if (systemItems[key]) {
+        const system = systemListForTest?.find(item => item.id === parseInt(key));
+        return acc + (system ? system?.count : 0);
+      }
+      return acc;
+    }, 0);
+    setTotalCount(total);
+  };
+  
+  const countValidation = () => {
+    return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
   };
   
   return (
@@ -382,19 +405,39 @@ const CreateCustomTest = () => {
             Processing...
           </button>
         ) : (
-          <button
-            className="btn-primary mt-10"
-            onClick={pastTest}
-            disabled={
-              (
-                !Object.values(checkedItems).some((key) => key === true) ||
-                !Object.values(systemItems).some((key) => key === true)
-              )
-              // !Object.values(checkedItems).some((value) => value === true)
-            }
-          >
-            Start Test
-          </button>
+          <div className="flex items-end gap-4">
+            <button
+              className="btn-primary mt-10"
+              onClick={pastTest}
+              disabled={
+                (
+                  !Object.values(checkedItems).some((key) => key === true) ||
+                  !Object.values(systemItems).some((key) => key === true) ||
+                  !countValidation()
+                  // !(test_count >= 40 && totalCount === 40 && test_count <= 40)
+                )
+                // !Object.values(checkedItems).some((value) => value === true)
+              }
+            >
+              Start Test
+            </button>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                id="count"
+                className="border p-2 outline-none rounded w-[60px]"
+                value={test_count || ''}
+                onChange={(e) => {
+                  const re = /^[0-9\b]+$/;
+                  
+                  if (e.target.value === '' || re.test(e.target.value)) {
+                    setTestCount(Number(e.target.value))
+                  }
+                }}
+              />
+              <label htmlFor="count">Max allowed per block(40), count{`(${totalCount})`}</label>
+            </div>
+          </div>
         )}
       </div>
     </>
