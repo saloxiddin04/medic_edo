@@ -452,7 +452,7 @@ const Main = () => {
                           />
                         ))}
                       </Bar>
-                      <Tooltip />
+                      <Tooltip/>
                     </BarChart>
                     <div>
                       <h2 className="text-lg mb-5">Peer Comparison:</h2>
@@ -530,7 +530,8 @@ const Main = () => {
         )}
       </div>
       
-      <div className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'none'}`}>
+      <div
+        className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'none'}`}>
         {(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") && (
           <>
             <div className='flex items-center gap-[80px] mb-5'>
