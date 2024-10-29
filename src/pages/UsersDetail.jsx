@@ -8,6 +8,8 @@ import LoadingPage from "./LoadingPage";
 import {FaUserAlt} from "react-icons/fa";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 import moment from "moment";
+import { getUserData } from "../auth/jwtService";
+import {IoReload} from "react-icons/io5";
 
 const UsersDetail = () => {
   const dispatch = useDispatch()
@@ -263,14 +265,25 @@ const UsersDetail = () => {
                   <td>{item?.is_tutor ? 'Tutor' : '-'}</td>
                   <td>{item?.end_date ? moment(item.end_date).format('DD.MM.YYYY, h:mm:ss') : '-'}</td>
                   <td>
+                    {user?.id === getUserData()?.id && (
+                      <button
+                        className="mt-2 mr-1"
+                        onClick={() => {
+                          localStorage.setItem("testID", item.id)
+                          navigate(`/test`, {state: {is_reload: true}})
+                        }}
+                      >
+                        <IoReload size="30" color={'rgb(29 137 228)'}/>
+                      </button>
+                    )}
                     <button
-                      className='mt-2'
+                      className="mt-2"
                       onClick={() => {
                         localStorage.setItem("testID", item.id)
                         navigate(`/test-results`)
                       }}
                     >
-                      <BiChevronRightCircle size='30' color={'#28CD41'}/>
+                      <BiChevronRightCircle size="30" color={'#28CD41'}/>
                     </button>
                   </td>
                 </tr>
