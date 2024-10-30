@@ -14,6 +14,7 @@ import {FaUsers} from "react-icons/fa";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import LessonByTestModal from "./LessonByTestModal";
 import CreateLessonByTest from "./CreateLessonByTest";
+import {toast} from "react-toastify";
 
 const LessonByTests = () => {
 	
@@ -53,11 +54,18 @@ const LessonByTests = () => {
 		}
 	};
 	
-	const confirmDelete = () => {
-		dispatch(deleteLessonByTest(id)).then(({payload}) => {
-			console.log(payload)
-		})
-	}
+	const confirmDelete = async () => {
+		try {
+			await dispatch(deleteLessonByTest(id)).then(async () => {
+				await toast.success('Deleted')
+				await dispatch(getLessonsByTests({page_size: 10, page}));
+			})
+			return {is_ok: true};
+		} catch (error) {
+			console.error(error);
+			return {is_ok: false};
+		}
+	};
 	
 	const closeDeleteModal = () => {
 		setDeleteModal(false)
@@ -229,7 +237,7 @@ const LessonByTests = () => {
 					/>
 				}
 				
-				<CreateLessonByTest isModalOpen={createModal} close={() => setCreateModal(false)} />
+				<CreateLessonByTest isModalOpen={createModal} close={() => setCreateModal(false)}/>
 			</div>
 		</>
 	);

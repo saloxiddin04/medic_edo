@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import Select from "react-select";
 import {useDispatch, useSelector} from "react-redux";
-import {createLessonBinding, getQuestionUnused} from "../../features/LessonsByTests/LessonsByTestsSlice";
+import {
+	createLessonBinding,
+	getLessonsByTests,
+	getQuestionUnused
+} from "../../features/LessonsByTests/LessonsByTestsSlice";
 import LoadingPage from "../LoadingPage";
+import {toast} from "react-toastify";
 
 const CreateLessonByTest = ({isModalOpen, close}) => {
 	const dispatch = useDispatch()
@@ -23,7 +28,13 @@ const CreateLessonByTest = ({isModalOpen, close}) => {
 	
 	const create = () => {
 		dispatch(createLessonBinding({lesson, question})).then(({payload}) => {
-			console.log(payload)
+			if (payload?.id) {
+				toast.success('Success')
+				handleClose()
+				dispatch(getLessonsByTests({page_size: 10, page: 1}))
+			} else {
+				return toast.error('Error')
+			}
 		})
 	}
 	

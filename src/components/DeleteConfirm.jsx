@@ -7,10 +7,16 @@ const DeleteConfirm = ({ isModalOpen, confirm, closeModal }) => {
 	
 	const deleteAction = () => {
 		if (isSubmitted) return;
-		confirm().then(() => {
-			setIsSubmitted(false)
-			closeModal()
-		})
+		confirm()
+			.then(() => {
+				setIsSubmitted(false);
+				closeModal();
+			})
+			.catch((error) => {
+				console.error(error);
+				setIsSubmitted(false);
+				closeModal();
+			});
 		setIsSubmitted(true);
 	};
 	
