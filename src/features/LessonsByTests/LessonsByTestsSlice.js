@@ -72,6 +72,19 @@ export const getQuestionUnused = createAsyncThunk(
 	}
 )
 
+export const createLessonBinding = createAsyncThunk(
+	"lessonByTests/createLessonByTests",
+	async (data, thunkAPI) => {
+		try {
+			const response = await $axios.post('group/lesson_binding/', data)
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
 const lessonsByTestsSlice = createSlice({
 	name: 'lessonsByTests',
 	initialState: {
@@ -143,6 +156,17 @@ const lessonsByTestsSlice = createSlice({
 		builder.addCase(getQuestionUnused.rejected, state => {
 			state.loading = false
 			state.questionsUnused = null
+		})
+		
+		// createLessonBinding
+		builder.addCase(createLessonBinding.pending, (state) => {
+			state.loading = true
+		})
+		builder.addCase(createLessonBinding.fulfilled, (state) => {
+			state.loading = false
+		})
+		builder.addCase(createLessonBinding.rejected, (state) => {
+			state.loading = false
 		})
 	}
 })

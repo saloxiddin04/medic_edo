@@ -27,6 +27,8 @@ const LessonByTests = () => {
 	
 	const [questionModal, setQuestionModal] = useState(false)
 	
+	const [createModal, setCreateModal] = useState(false)
+	
 	const page = localStorage.getItem("lessonByTest");
 	
 	useEffect(() => {
@@ -116,6 +118,7 @@ const LessonByTests = () => {
 					
 					<button
 						className="btn-primary mt-1 inline-block"
+						onClick={() => setCreateModal(true)}
 					>
 						Create Lesson By Test
 					</button>
@@ -226,7 +229,7 @@ const LessonByTests = () => {
 					/>
 				}
 				
-				<CreateLessonByTest isModalOpen={true} />
+				<CreateLessonByTest isModalOpen={createModal} close={() => setCreateModal(false)} />
 			</div>
 		</>
 	);
