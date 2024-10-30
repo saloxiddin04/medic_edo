@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getGroupBinding, getGroupBindingUsersDetail, getTeacherList} from "../../features/modules/moduleSlice";
+import {getGroupBinding, getTeacherList} from "../../features/modules/moduleSlice";
 import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
