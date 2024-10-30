@@ -140,7 +140,7 @@ const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
     <ul className="flex items-center mt-4">
       <li>
         <button
-          className={currentPage === 1 && "cursor-not-allowed opacity-50"}
+          className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ''}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
@@ -150,7 +150,7 @@ const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
       {renderPaginationItems()}
       <li>
         <button
-          className={currentPage === totalPages && "cursor-not-allowed opacity-50"}
+          className={currentPage === totalPages ? "cursor-not-allowed opacity-50" : ''}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >

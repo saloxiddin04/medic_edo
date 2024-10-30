@@ -45,9 +45,9 @@ const Module = () => {
         </Link>
 
         <Pagination
-          totalItems={moduleList.count} // Replace with the total number of items you have
-          itemsPerPage={10} // Replace with the number of items to display per page
-          onPageChange={handlePageChange} // Pass the handlePageChange function
+          totalItems={moduleList.count}
+          itemsPerPage={10}
+          onPageChange={handlePageChange}
         />
       </div>
       <div className="flex flex-col mt-3">

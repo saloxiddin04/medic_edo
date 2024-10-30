@@ -6,9 +6,11 @@ import localStorageSlice from "./LocalStorageSlice/LocalStorageSlice";
 import testResultsSlice from "./testResults/testResultsSlice";
 import timerSlice from "./Timer/timerSlice";
 import userDetailSlice from "./userDetail/userDetailSlice";
+import lessonsByTestsSlice from "./LessonsByTests/LessonsByTestsSlice";
 
 export const store = configureStore({
   reducer: {
+    lessonByTest: lessonsByTestsSlice,
     module: moduleSlice,
     pastTest: pastTestSlice,
     localStorage: localStorageSlice,

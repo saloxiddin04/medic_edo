@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="flex items-center gap-7">
           <div className="user-block flex">
             {getUserData() && (
-              <p className="text-end mr-2 flex gap-3">
+              <div className="text-end mr-2 flex gap-3">
                 <div>
                   <span className="block text-sm font-medium">
                     Group Name:
@@ -58,7 +58,7 @@ const Navbar = () => {
                     {getUserData().name}
                   </span>{" "}
                 </div>
-              </p>
+              </div>
             )}
             <button className="text-primary">
               <FaUserAlt size="22"/>

@@ -23,5 +23,7 @@ export const ROUTES = {
   GROUP_BINDING_BINDING: '/create-group-binding/:id',
   VERIFY: '/verify',
   FORGOT: '/forgot',
-  NEW_PASSWORD: '/new-password'
+  NEW_PASSWORD: '/new-password',
+  LESSON_BY_TESTS: '/lesson-by-tests',
+  LESSON_BY_TESTS_DETAIL: '/lesson-by-tests/:id'
 };

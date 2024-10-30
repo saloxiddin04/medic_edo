@@ -22,8 +22,6 @@ const ModuleTest = () => {
   
   const page = localStorage.getItem("ModuleTest");
   
-  console.log(typeof searchTestState)
-  
   const handlePageChange = (page) => {
     if (searchTestState === '') {
       localStorage.setItem("ModuleTest", page.toString());

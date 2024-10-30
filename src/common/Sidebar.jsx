@@ -60,6 +60,15 @@ const Sidebar = () => {
                 <NavLink
                   onClick={handleCleanCurrentPage}
                   activeclassname="active"
+                  to={ROUTES.LESSON_BY_TESTS}
+                  className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+                >
+                  <FaUserFriends size="22" className='mt-1' />
+                  <span>Lesson By Test</span>
+                </NavLink>
+                <NavLink
+                  onClick={handleCleanCurrentPage}
+                  activeclassname="active"
                   to={ROUTES.USERS}
                   className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
                 >
