@@ -23,11 +23,13 @@ import CreateGroup from "../pages/Group/CreateGroup";
 import GroupBinding from "../pages/Group/GroupBinding";
 import CreateGroupBinding from "../pages/Group/CreateGroupBinding";
 import LessonByTests from "../pages/LessonByTest/LessonByTests";
+import PassLesson from "../pages/PassLesson/PassLesson";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
+      <Route path={ROUTES.LESSON_TEST} element={<PassLesson />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />
       <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />

@@ -25,5 +25,7 @@ export const ROUTES = {
   FORGOT: '/forgot',
   NEW_PASSWORD: '/new-password',
   LESSON_BY_TESTS: '/lesson-by-tests',
-  LESSON_BY_TESTS_DETAIL: '/lesson-by-tests/:id'
+  LESSON_BY_TESTS_DETAIL: '/lesson-by-tests/:id',
+  LESSON_TEST: '/lesson-test',
+  CREATE_LESSON_TEST: '/create-lesson-test'
 };

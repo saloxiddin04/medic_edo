@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 export const getLessonsByTests = createAsyncThunk(
 	"lessonsByTests/getLessonsByTests",
@@ -98,6 +98,58 @@ export const patchLessonBinding = createAsyncThunk(
 	}
 )
 
+export const getResultUserStatistic = createAsyncThunk(
+	"lessonByTests/getResultUserStatistic",
+	async (id, thunkAPI) => {
+		try {
+			const response = await $axios.get(`test/test_result/${id}/result_user_statistic_by_lessons/`)
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
+export const getTopFiveStudentsLesson = createAsyncThunk(
+	"lessonByTests/getTopFiveStudentsLesson",
+	async (payload, thunkAPI) => {
+		try {
+			const response = await $axios.get('test/test_result/top_five_students_by_lessons/')
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
+export const getTopModulesLesson = createAsyncThunk(
+	"lessonByTests/getTopModulesLesson",
+	async (_, thunkAPI) => {
+		try {
+			const response = await $axios.get('test/test_result/top_activ_moduls_by_lessons/')
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
+export const getUserResultHistoryLesson = createAsyncThunk(
+	"lessonByTests/getUserResultHistoryLesson",
+	async (id, thunkAPI) => {
+		try {
+			const response = await $axios.get(`test/test_result/${id}/user_result_history_by_lessons/`)
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
 const lessonsByTestsSlice = createSlice({
 	name: 'lessonsByTests',
 	initialState: {
@@ -105,9 +157,71 @@ const lessonsByTestsSlice = createSlice({
 		lessonByTestsList: null,
 		lessonByTest: null,
 		questionsDetail: null,
-		questionsUnused: null
+		questionsUnused: null,
+		
+		resultUserStatistic: null,
+		topFiveStudents: null,
+		topModules: null,
+		userTestHistory: null
 	},
 	extraReducers: (builder) => {
+		// getUserResultHistoryLesson
+		builder
+			.addCase(getUserResultHistoryLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getUserResultHistoryLesson.fulfilled, (state, {payload}) => {
+				state.userTestHistory = payload
+				state.loading = false
+			})
+			.addCase(getUserResultHistoryLesson.rejected, (state) => {
+				state.loading = false
+				state.userTestHistory = null
+			})
+		
+		// getTopModulesLesson
+		builder
+			.addCase(getTopModulesLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getTopModulesLesson.fulfilled, (state, {payload}) => {
+				state.topModules = payload
+				state.loading = false
+			})
+			.addCase(getTopModulesLesson.rejected, (state) => {
+				state.loading = false
+				state.topModules = null
+			})
+		
+		// getTopFiveStudentsLesson
+		builder
+			.addCase(getTopFiveStudentsLesson.pending, state => {
+				state.loading = true
+			})
+			.addCase(getTopFiveStudentsLesson.fulfilled, (state, {payload}) => {
+				console.log(payload)
+				state.topFiveStudents = payload
+				state.loading = false
+			})
+			.addCase(getTopFiveStudentsLesson.rejected, (state) => {
+				state.loading = false
+				state.topFiveStudents = null
+			})
+		
+		// getResultUserStatistic
+		builder
+			.addCase(getResultUserStatistic.pending, state => {
+				state.loading = true
+			})
+			.addCase(getResultUserStatistic.fulfilled, (state, {payload}) => {
+				state.resultUserStatistic = payload
+				state.loading = false
+			})
+			.addCase(getResultUserStatistic.rejected, state => {
+				state.loading = false
+				state.resultUserStatistic = null
+			})
+		
 		// getLessonsByTests
 		builder.addCase(getLessonsByTests.pending, (state) => {
 			state.loading = true
@@ -194,12 +308,5 @@ const lessonsByTestsSlice = createSlice({
 		})
 	}
 })
-
-
-
-
-
-
-
 
 export default lessonsByTestsSlice.reducer

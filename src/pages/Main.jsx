@@ -259,7 +259,7 @@ const Main = () => {
   return (
     <section>
       <div className="flex items-center gap-8">
-        <div className="card w-1/2">
+        <div className="card w-full">
           <div className="flex items-center gap-5">
             <MdOutlinePlaylistAdd size="30" className="text-primary"/>
             <h1 className="text-xl">Custom Tests</h1>
@@ -273,23 +273,6 @@ const Main = () => {
             className="btn-primary font-semibold btn-small block w-fit"
           >
             CREATE CUSTOM TEST
-          </Link>
-        </div>
-        
-        <div className="card w-1/2">
-          <div className="flex items-center gap-5">
-            <CgMoveTask size="30" className="text-primary"/>
-            <h1 className="text-xl">Learning Paths</h1>
-          </div>
-          <p className="my-5">
-            Prepare for your exam with schedules, practice exams, and
-            self-assessments created by teaching experts.
-          </p>
-          <Link
-            to={'/main'}
-            className="btn-primary font-semibold btn-small block w-fit opacity-50"
-          >
-            SOON
           </Link>
         </div>
       </div>

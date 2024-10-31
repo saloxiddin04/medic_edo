@@ -159,18 +159,20 @@ const GroupBinding = () => {
                     Teacher
                   </th>
                   
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Action
-                  </th>
+                  {getUserData()?.role !== 'teacher' && (
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Action
+                    </th>
+                  )}
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                 {groupBindingList?.results?.map((item) => (
                   <tr key={item.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -215,15 +217,15 @@ const GroupBinding = () => {
                           >
                             <AiFillDelete/>
                           </button>
+                          
+                          <button
+                            className={'btn-success btn-sm ml-3'}
+                            onClick={() => navigate(`/create-group-binding/${item.id}`)}
+                          >
+                            <FaChevronCircleRight/>
+                          </button>
                         </>
                       )}
-                      
-                      <button
-                        className={'btn-success btn-sm ml-3'}
-                        onClick={() => navigate(`/create-group-binding/${item.id}`)}
-                      >
-                        <FaChevronCircleRight/>
-                      </button>
                     </td>
                   </tr>
                 ))}
