@@ -85,6 +85,19 @@ export const createLessonBinding = createAsyncThunk(
 	}
 )
 
+export const patchLessonBinding = createAsyncThunk(
+	"lessonByTests/patchLessonByTests",
+	async (data, thunkAPI) => {
+		try {
+			const response = await $axios.patch(`group/lesson_binding/${data.id}/`, data.data)
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
 const lessonsByTestsSlice = createSlice({
 	name: 'lessonsByTests',
 	initialState: {
@@ -166,6 +179,17 @@ const lessonsByTestsSlice = createSlice({
 			state.loading = false
 		})
 		builder.addCase(createLessonBinding.rejected, (state) => {
+			state.loading = false
+		})
+		
+		// patchLessonBinding
+		builder.addCase(patchLessonBinding.pending, (state) => {
+			state.loading = true
+		})
+		builder.addCase(patchLessonBinding.fulfilled, (state) => {
+			state.loading = false
+		})
+		builder.addCase(patchLessonBinding.rejected, (state) => {
 			state.loading = false
 		})
 	}

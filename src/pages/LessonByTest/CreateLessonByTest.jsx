@@ -2,23 +2,35 @@ import React, {useEffect, useState} from 'react';
 import Select from "react-select";
 import {useDispatch, useSelector} from "react-redux";
 import {
-	createLessonBinding,
+	createLessonBinding, getLessonsByTestDetail,
 	getLessonsByTests,
-	getQuestionUnused
+	getQuestionUnused, patchLessonBinding
 } from "../../features/LessonsByTests/LessonsByTestsSlice";
 import LoadingPage from "../LoadingPage";
 import {toast} from "react-toastify";
 
-const CreateLessonByTest = ({isModalOpen, close}) => {
+const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const dispatch = useDispatch()
-	const {questionsUnused, loading} = useSelector(({lessonByTest}) => lessonByTest)
+	const {questionsUnused, loading, lessonByTest} = useSelector(({lessonByTest}) => lessonByTest)
 	
 	const [lesson, setLesson] = useState(null)
 	const [question, setQuestion] = useState([])
 	
 	useEffect(() => {
-		if (isModalOpen) dispatch(getQuestionUnused({page_size: 100000}))
+		if (isModalOpen) {
+			dispatch(getQuestionUnused({page_size: 100000}))
+		}
 	}, [dispatch, isModalOpen]);
+	
+	useEffect(() => {
+		if (isModalOpen && id !== undefined) {
+			dispatch(getLessonsByTestDetail(id)).then(({payload}) => {
+				console.log(payload)
+				setQuestion(payload?.question?.map(item => item?.id))
+				setLesson(payload?.lesson)
+			})
+		}
+	}, [isModalOpen, id, dispatch]);
 	
 	const handleClose = () => {
 		setLesson(null)
@@ -27,15 +39,27 @@ const CreateLessonByTest = ({isModalOpen, close}) => {
 	}
 	
 	const create = () => {
-		dispatch(createLessonBinding({lesson, question})).then(({payload}) => {
-			if (payload?.id) {
-				toast.success('Success')
-				handleClose()
-				dispatch(getLessonsByTests({page_size: 10, page: 1}))
-			} else {
-				return toast.error('Error')
-			}
-		})
+		if (id) {
+			dispatch(patchLessonBinding({id, data: {lesson, question}})).then(({payload}) => {
+				if(payload?.id) {
+					toast.success('Success')
+					handleClose()
+					dispatch(getLessonsByTests({page_size: 10, page: 1}))
+				} else {
+					return toast.error('Error')
+				}
+			})
+		} else {
+			dispatch(createLessonBinding({lesson, question})).then(({payload}) => {
+				if (payload?.id) {
+					toast.success('Success')
+					handleClose()
+					dispatch(getLessonsByTests({page_size: 10, page: 1}))
+				} else {
+					return toast.error('Error')
+				}
+			})
+		}
 	}
 	
 	return (

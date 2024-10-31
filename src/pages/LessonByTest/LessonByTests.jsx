@@ -188,11 +188,14 @@ const LessonByTests = () => {
 													className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
 													<button
 														className="btn-warning btn-sm inline-block"
-														// to={`/create-module-test/${item.id}`}
+														onClick={() => {
+															setId(item?.id)
+															setCreateModal(true)
+														}}
 													>
-                        <span>
-                          <AiFillEdit/>
-                        </span>
+		                        <span>
+		                          <AiFillEdit/>
+		                        </span>
 													</button>
 													
 													<button
@@ -237,7 +240,11 @@ const LessonByTests = () => {
 					/>
 				}
 				
-				<CreateLessonByTest isModalOpen={createModal} close={() => setCreateModal(false)}/>
+				<CreateLessonByTest
+					id={id}
+					isModalOpen={createModal}
+					close={() => setCreateModal(false)}
+				/>
 			</div>
 		</>
 	);
