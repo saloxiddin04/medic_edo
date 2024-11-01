@@ -150,6 +150,32 @@ export const getUserResultHistoryLesson = createAsyncThunk(
 	}
 )
 
+export const allResultModulesLesson = createAsyncThunk(
+	"lessonByTests/allResultModulesLesson",
+	async (params, thunkAPI) => {
+		try {
+			const response = await $axios.get(`test/test_result/all_moduls_graph_by_lessons/`, {params})
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
+export const getUserResultCompareLesson = createAsyncThunk(
+	"lessonByTests/getUserResultCompareLesson",
+	async (id, thunkAPI) => {
+		try {
+			const response = await $axios.get(`test/test_result/${id}/user_result_compare_by_lessons/`)
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
 const lessonsByTestsSlice = createSlice({
 	name: 'lessonsByTests',
 	initialState: {
@@ -162,9 +188,39 @@ const lessonsByTestsSlice = createSlice({
 		resultUserStatistic: null,
 		topFiveStudents: null,
 		topModules: null,
-		userTestHistory: null
+		userTestHistory: null,
+		allTestResultModules: null,
+		userResultCompare: null
 	},
 	extraReducers: (builder) => {
+		// getUserResultCompareLesson
+		builder
+			.addCase(getUserResultCompareLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getUserResultCompareLesson.fulfilled, (state, {payload}) => {
+				state.userResultCompare = payload
+				state.loading = false
+			})
+			.addCase(getUserResultCompareLesson.rejected, (state) => {
+				state.userResultCompare = null
+				state.loading = false
+			})
+		
+		// allResultModulesLesson
+		builder
+			.addCase(allResultModulesLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(allResultModulesLesson.fulfilled, (state, {payload}) => {
+				state.allTestResultModules = payload
+				state.loading = false
+			})
+			.addCase(allResultModulesLesson.rejected, (state, {payload}) => {
+				state.loading = false
+				state.allTestResultModules = null
+			})
+		
 		// getUserResultHistoryLesson
 		builder
 			.addCase(getUserResultHistoryLesson.pending, (state) => {

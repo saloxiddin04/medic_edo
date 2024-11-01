@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {MdOutlinePlaylistAdd} from "react-icons/md";
 import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
@@ -6,14 +6,37 @@ import {CgMoveTask} from "react-icons/cg";
 import {getUserData} from "../../auth/jwtService";
 import {useDispatch, useSelector} from "react-redux";
 import {
+	allResultModulesLesson,
 	getResultUserStatistic,
 	getTopFiveStudentsLesson,
-	getTopModulesLesson, getUserResultHistoryLesson
+	getTopModulesLesson, getUserResultCompareLesson, getUserResultHistoryLesson
 } from "../../features/LessonsByTests/LessonsByTestsSlice";
-import {Bar, BarChart, CartesianGrid, Cell, LabelList, Pie, PieChart, Tooltip, XAxis, YAxis} from "recharts";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	LabelList,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis
+} from "recharts";
 import {GiPlainCircle} from "react-icons/gi";
 import {IoReload} from "react-icons/io5";
 import {BiChevronRightCircle} from "react-icons/bi";
+import {
+	allResultModules,
+	getModules,
+	getTopFiveStudents,
+	getTopModules,
+	getUsers
+} from "../../features/testResults/testResultsSlice";
+import Select from "react-select";
+import {AiOutlineClose} from "react-icons/ai";
+import LoadingPage from "../LoadingPage";
 
 const PassLesson = () => {
 	const dispatch = useDispatch()
@@ -24,8 +47,18 @@ const PassLesson = () => {
 		resultUserStatistic,
 		topFiveStudents,
 		topModules,
-		userTestHistory
+		userTestHistory,
+		allTestResultModulesLesson,
+		userResultCompare
 	} = useSelector(({lessonByTest}) => lessonByTest)
+	
+	const {
+		users,
+		modules,
+	} = useSelector(({testResults}) => testResults)
+	
+	const [user, setUser] = useState('')
+	const [modulesState, setModules] = useState('')
 	
 	const COLORS = ["#1d89e4", "#ffcf00"];
 	const TOP_STUDENTS_COLORS = ['#2C728C', '#AAC6D1', '#A7ECF5', '#E6E6E6', '#0092ED']
@@ -41,16 +74,16 @@ const PassLesson = () => {
 		},
 	];
 	
-	// const userCompareResult = [
-	// 	{
-	// 		name: 'Peers accuracy',
-	// 		value: userResultCompare?.peers_accuracy
-	// 	},
-	// 	{
-	// 		name: 'Your accuracy',
-	// 		value: userResultCompare?.your_accuracy
-	// 	}
-	// ]
+	const userCompareResult = [
+		{
+			name: 'Peers accuracy',
+			value: userResultCompare?.peers_accuracy
+		},
+		{
+			name: 'Your accuracy',
+			value: userResultCompare?.your_accuracy
+		}
+	]
 	
 	let option = useMemo(() => {
 		return {
@@ -122,9 +155,48 @@ const PassLesson = () => {
 	useEffect(() => {
 		dispatch(getTopFiveStudentsLesson());
 		dispatch(getTopModulesLesson())
+		dispatch(getUsers())
+		dispatch(getModules())
+		dispatch(allResultModulesLesson())
 		dispatch(getResultUserStatistic(getUserData()?.id))
 		dispatch(getUserResultHistoryLesson(getUserData()?.id))
+		dispatch(getUserResultCompareLesson(getUserData()?.id))
 	}, [dispatch]);
+	
+	useEffect(() => {
+		if (user || modulesState) {
+			dispatch(allResultModulesLesson({user_id: user?.id, modul_id: modulesState?.id}))
+		}
+	}, [user, modulesState, dispatch])
+	
+	useEffect(() => {
+		
+		if (resultUserStatistic?.result) {
+			option.xAxis.data = resultUserStatistic?.result.map(
+				(x) => `${x.first_count}-${x.last_count}`
+			);
+			
+			option.series.data = resultUserStatistic?.result.map(
+				(series) => series.user_count
+			);
+			
+			option.series.markPoint.data[1].yAxis = Math.max(...option.series.data);
+			
+			const findIndex = resultUserStatistic?.result.findIndex(
+				(obj) => obj.user_result !== 0
+			);
+			
+			if (findIndex >= 0) {
+				option.series.markPoint.data[0].xAxis = findIndex;
+				
+				option.series.markPoint.data[0].yAxis =
+					resultUserStatistic?.result[findIndex]?.user_count;
+				
+				option.series.markPoint.data[0].value =
+					resultUserStatistic?.result[findIndex]?.user_result;
+			}
+		}
+	}, [resultUserStatistic, option]);
 	
 	const renderCustomizedLabel = (props) => {
 		const {x, y, width, height, value} = props;
@@ -178,6 +250,8 @@ const PassLesson = () => {
 		);
 	}
 	
+	if (loading) return <LoadingPage />
+	
 	return (
 		<section>
 			<div className="flex items-center gap-8">
@@ -224,32 +298,32 @@ const PassLesson = () => {
 									</Pie>
 									<Tooltip/>
 								</PieChart>
-								{/*<div>*/}
-								{/*	<h2 className="text-lg mb-5">Peer Comparison:</h2>*/}
-								{/*	<ul>*/}
-								{/*		<li className="flex items-center gap-3 ">*/}
-								{/*			<GiPlainCircle className="mt-1 text-primary" size="20"/>*/}
-								{/*			<span>*/}
-                {/*        {" "}*/}
-								{/*				Correct Answers:{" "}*/}
-								{/*				<b>*/}
-                {/*          {userStatisticsForAdmin?.correct_answer_interest}%*/}
-                {/*        </b>*/}
-                {/*      </span>*/}
-								{/*		</li>*/}
-								{/*		<li className="flex items-center gap-3 mt-2">*/}
-								{/*			<GiPlainCircle className="mt-1 text-yellow" size="20"/>*/}
-								{/*			<span>*/}
-                {/*        {" "}*/}
-								{/*				Incorrect Answer:{" "}*/}
-								{/*				<b>{userStatisticsForAdmin?.worning_interest}%</b>*/}
-                {/*      </span>*/}
-								{/*		</li>*/}
-								{/*	</ul>*/}
-								{/*</div>*/}
+								<div>
+									<h2 className="text-lg mb-5">Peer Comparison:</h2>
+									<ul>
+										<li className="flex items-center gap-3 ">
+											<GiPlainCircle className="mt-1 text-primary" size="20"/>
+											<span>
+								        {" "}
+												Correct Answers:{" "}
+												<b>
+								          {resultUserStatistic?.correct_answer_interest}%
+								        </b>
+								      </span>
+										</li>
+										<li className="flex items-center gap-3 mt-2">
+											<GiPlainCircle className="mt-1 text-yellow" size="20"/>
+											<span>
+								        {" "}
+												Incorrect Answer:{" "}
+												<b>{resultUserStatistic?.worning_interest}%</b>
+								      </span>
+										</li>
+									</ul>
+								</div>
 							</div>
 							
-							<div className='flex flex-col text-center'>
+							<div className="flex flex-col text-center">
 								<h1>Top 5 students</h1>
 								<BarChart
 									margin={{
@@ -295,7 +369,7 @@ const PassLesson = () => {
 								</BarChart>
 							</div>
 							
-							<div className='flex flex-col text-center'>
+							<div className="flex flex-col text-center">
 								<h1>Active modules</h1>
 								<BarChart
 									margin={{
@@ -343,40 +417,194 @@ const PassLesson = () => {
 					</>
 				) : (
 					<>
-					
+						<div>
+							<section>
+								<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
+								<div className="flex items-center gap-8">
+									<div className="flex items-center gap-10 w-1/2">
+										<BarChart width={150} height={180} data={userCompareResult}>
+											<Bar dataKey="value">
+												{userCompareResult.map((entry, index) => (
+													<Cell
+														key={`cell-${index}`}
+														fill={COLORS[index % COLORS.length]}
+													/>
+												))}
+											</Bar>
+											<Tooltip/>
+										</BarChart>
+										<div>
+											<h2 className="text-lg mb-5">Peer Comparison:</h2>
+											<ul>
+												<li className="flex items-center gap-3 ">
+													<GiPlainCircle className="mt-1 text-primary" size="20"/>
+													<span>
+                        {" "}
+														Peers accuracy:{" "}
+														<b>
+                          {userResultCompare?.peers_accuracy}%
+                        </b>
+                      </span>
+												</li>
+												<li className="flex items-center gap-3 mt-2">
+													<GiPlainCircle className="mt-1 text-yellow" size="20"/>
+													<span>
+                        {" "}
+														Your accuracy:{" "}
+														<b>{userResultCompare?.your_accuracy}%</b>
+                      </span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+									<div className="flex items-center gap-10 w-1/2">
+										<PieChart width={180} height={200}>
+											<Pie
+												data={adminData}
+												cx="50%"
+												cy="50%"
+												labelLine={false}
+												outerRadius={80}
+												fill="#8884d8"
+												dataKey="value"
+											>
+												{adminData.map((entry, index) => (
+													<Cell
+														key={`cell-${index}`}
+														fill={COLORS[index % COLORS.length]}
+													/>
+												))}
+											</Pie>
+											<Tooltip/>
+										</PieChart>
+										<div>
+											<h2 className="text-lg mb-5">Your accuracy:</h2>
+											<ul>
+												<li className="flex items-center gap-3 ">
+													<GiPlainCircle className="mt-1 text-primary" size="20"/>
+													<span>
+                        {" "}
+														Correct Answers:{" "}
+														<b>
+                          {resultUserStatistic?.correct_answer_interest}%
+                        </b>
+                      </span>
+												</li>
+												<li className="flex items-center gap-3 mt-2">
+													<GiPlainCircle className="mt-1 text-yellow" size="20"/>
+													<span>
+                        {" "}
+														Incorrect Answers:{" "}
+														<b>{resultUserStatistic?.worning_interest}%</b>
+                      </span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
 					</>
 				)}
 			</div>
 			
-			<div className="card"></div>
+			<div
+				className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'none'}`}>
+				{(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") && (
+					<>
+						<div className="flex items-center gap-[80px] mb-5">
+							<div className="w-1/3 flex items-end gap-5">
+								<div className="w-full">
+									<label htmlFor="modul">Modules</label>
+									<Select
+										options={modules?.results}
+										getOptionLabel={(modul) => modul.name}
+										getOptionValue={(modul) => modul.id}
+										value={modulesState}
+										onChange={(e) => setModules(e)}
+										className="w-full"
+									/>
+								</div>
+								<div className="mb-3 cursor-pointer" onClick={() => {
+									dispatch(getTopFiveStudentsLesson())
+									dispatch(getTopModulesLesson())
+									dispatch(allResultModules())
+									dispatch(getModules())
+									dispatch(getUsers())
+									setModules(null)
+								}}>
+									<AiOutlineClose size={20}/>
+								</div>
+							</div>
+							<div className="w-1/3 flex items-end gap-5">
+								<div className="w-full">
+									<label htmlFor="user">Users</label>
+									<Select
+										options={users?.results}
+										getOptionLabel={(modul) => modul.name}
+										getOptionValue={(modul) => modul.id}
+										value={user}
+										onChange={(e) => setUser(e)}
+										className="w-full"
+									/>
+								</div>
+								<div className="mb-3 cursor-pointer" onClick={() => {
+									dispatch(getTopFiveStudentsLesson())
+									dispatch(allResultModules())
+									dispatch(getModules())
+									dispatch(getUsers())
+									dispatch(getTopModulesLesson())
+									setUser(null)
+								}}>
+									<AiOutlineClose size={20}/>
+								</div>
+							</div>
+						</div>
+						<ResponsiveContainer width={'100%'} aspect={3.0}>
+							<BarChart
+								height={400}
+								data={allTestResultModulesLesson}
+								margin={{left: 10, right: 10, top: 30}}
+							>
+								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
+								<XAxis dataKey="interest"/>
+								<Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
+									<LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
+								</Bar>
+							</BarChart>
+						</ResponsiveContainer>
+					</>
+				)}
+			</div>
 			
 			{(getUserData()?.role !== 'admin' || getUserData()?.role !== 'teacher') && (
 				<div className="card mt-8">
 					<div>
 						<section>
-							<div className='flex items-center justify-center text-center gap-8'>
-								<div className='border py-2 px-2.5 rounded'>
+							<div className="flex items-center justify-center text-center gap-8">
+								<div className="border py-2 px-2.5 rounded">
 									<h1>All tests</h1>
 									<span>{userTestHistory?.all_test_count}</span>
 								</div>
-								<div className='border py-2 px-2.5 rounded'>
+								<div className="border py-2 px-2.5 rounded">
 									<h1>Correct answers</h1>
 									<span>{userTestHistory?.correct_answer_count}</span>
 								</div>
-								<div className='border py-2 px-2.5 rounded'>
+								<div className="border py-2 px-2.5 rounded">
 									<h1>Unsolved answers</h1>
 									<span>{userTestHistory?.unsolved_test}</span>
 								</div>
-								<div className='border py-2 px-2.5 rounded'>
+								<div className="border py-2 px-2.5 rounded">
 									<h1>Wrong answers</h1>
 									<span>{userTestHistory?.worning_answer_count}</span>
 								</div>
 							</div>
 						</section>
 					</div>
-					<div className='mt-3'>
-						<table className='min-w-full bg-gray-200'>
-							<thead className='bg-gray-50'>
+					<div className="mt-3">
+						<table className="min-w-full bg-gray-200">
+							<thead className="bg-gray-50">
 							<tr>
 								<th
 									scope={'row'}
@@ -425,7 +653,7 @@ const PassLesson = () => {
 							<tbody>
 							{userTestHistory && (
 								userTestHistory?.tests_history.map((item) => (
-									<tr className='bg-white px-2 py-1 text-center mt-2' key={item.id}>
+									<tr className="bg-white px-2 py-1 text-center mt-2" key={item.id}>
 										<td>{item.id}</td>
 										<td>{item.correct_answer_count}</td>
 										<td>{item.worning_answer_count}</td>
@@ -434,22 +662,22 @@ const PassLesson = () => {
 										<td>{item.end_date ? item.end_date?.split('T')[0] : '-'}</td>
 										<td>
 											<button
-												className='mt-2 mr-1'
+												className="mt-2 mr-1"
 												onClick={() => {
 													localStorage.setItem("testID", item.id)
 													navigate(`/test`, {state: {is_reload: true}})
 												}}
 											>
-												<IoReload size='30' color={'rgb(29 137 228)'}/>
+												<IoReload size="30" color={'rgb(29 137 228)'}/>
 											</button>
 											<button
-												className='mt-2'
+												className="mt-2"
 												onClick={() => {
 													localStorage.setItem("testID", item.id)
 													navigate(`/test-results`)
 												}}
 											>
-												<BiChevronRightCircle size='30' color={'#28CD41'}/>
+												<BiChevronRightCircle size="30" color={'#28CD41'}/>
 											</button>
 										</td>
 									</tr>
