@@ -10,6 +10,18 @@ import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 import moment from "moment";
 import { getUserData } from "../auth/jwtService";
 import {IoReload} from "react-icons/io5";
+import TabsRender from "../components/Tabs";
+
+const tabs = [
+  {
+    title: 'Custom test history',
+    active: true
+  },
+  {
+    title: "Lesson by test history",
+    active: false
+  }
+];
 
 const UsersDetail = () => {
   const dispatch = useDispatch()
@@ -17,6 +29,8 @@ const UsersDetail = () => {
   const {userTestHistory} = useSelector(({testResults}) => testResults)
   const {user, loading} = useSelector(({userDetail}) => userDetail)
   const id = useParams()
+  
+  const [openTab, setOpenTab] = useState(tabs.findIndex(tab => tab.active));
   
   const divRef = useRef(null)
   
@@ -31,8 +45,8 @@ const UsersDetail = () => {
   
   useEffect(() => {
     dispatch(getUserDetail(id))
-    dispatch(getUserTestHistory(id));
-  }, [dispatch, id]);
+    dispatch(getUserTestHistory({id: id?.id, openTab}));
+  }, [dispatch, id, openTab]);
   
   useEffect(() => {
     setUserName(user.username || localStorage.getItem('username') || '');
@@ -183,7 +197,17 @@ const UsersDetail = () => {
           </div>
         </div>
       </div>
-      <div className="card mt-8">
+      
+      <div className="flex justify-center mt-4">
+        <TabsRender
+          tabs={tabs}
+          color={'#000'}
+          openTab={openTab}
+          setOpenTab={setOpenTab}
+        />
+      </div>
+      
+      <div className="card">
         <div>
           <section>
             <div className='flex items-center justify-center text-center gap-8'>

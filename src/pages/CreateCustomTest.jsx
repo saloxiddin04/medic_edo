@@ -414,9 +414,7 @@ const CreateCustomTest = () => {
                   !Object.values(checkedItems).some((key) => key === true) ||
                   !Object.values(systemItems).some((key) => key === true) ||
                   !countValidation()
-                  // !(test_count >= 40 && totalCount === 40 && test_count <= 40)
                 )
-                // !Object.values(checkedItems).some((value) => value === true)
               }
             >
               Start Test

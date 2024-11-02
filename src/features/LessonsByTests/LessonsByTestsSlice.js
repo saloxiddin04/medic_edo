@@ -176,6 +176,62 @@ export const getUserResultCompareLesson = createAsyncThunk(
 	}
 )
 
+export const getModulesForLesson = createAsyncThunk(
+	"lessonByTests/getModulesForLesson",
+	async (params, thunkAPI) => {
+		try {
+			const res = await $axios.get(`test/modul/get_modules_used_by_lessons/`, {params});
+			return res.data;
+		} catch (err) {
+			toast.error(err.message);
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+);
+
+export const getSystemsForLesson = createAsyncThunk(
+	"lessonByTests/getSystemsForLesson",
+	async (params, thunkAPI) => {
+		try {
+			const res = await $axios.get(
+				`test/sistema/get_lessons_used/`, { params }
+			);
+			return res.data;
+		} catch (err) {
+			toast.error(err.message);
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+);
+
+export const getQuestionModeForLesson = createAsyncThunk(
+	"lessonByTests/getQuestionModeForLesson",
+	async (params, thunkAPI) => {
+		try {
+			const res = await $axios.get(
+				`test/test_result/question_mode_get_by_lessons/`, { params }
+			);
+			return res.data;
+		} catch (err) {
+			toast.error(err.message);
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+);
+
+export const startLesson = createAsyncThunk(
+	"lessonByTests/startLesson",
+	async (payload, thunkAPI) => {
+		try {
+			const res = await $axios.post(`/test/test_result/start_test_by_lessons/`, payload);
+			return res.data;
+		} catch (err) {
+			toast.error(err.message);
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+);
+
 const lessonsByTestsSlice = createSlice({
 	name: 'lessonsByTests',
 	initialState: {
@@ -190,9 +246,55 @@ const lessonsByTestsSlice = createSlice({
 		topModules: null,
 		userTestHistory: null,
 		allTestResultModules: null,
-		userResultCompare: null
+		userResultCompare: null,
+		
+		moduleListForLesson: null,
+		systemListForLesson: null,
+		questionModeList: null
 	},
 	extraReducers: (builder) => {
+		// getQuestionModeForLesson
+		builder
+			.addCase(getQuestionModeForLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getQuestionModeForLesson.fulfilled, (state, {payload}) => {
+				state.questionModeList = payload
+				state.loading = false
+			})
+			.addCase(getQuestionModeForLesson.rejected, (state, {payload}) => {
+				state.loading = false
+				state.questionModeList = null
+			})
+		
+		// getSystemsForLesson
+		builder
+			.addCase(getSystemsForLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getSystemsForLesson.fulfilled, (state, {payload}) => {
+				state.systemListForLesson = payload
+				state.loading = false
+			})
+			.addCase(getSystemsForLesson.rejected, (state) => {
+				state.loading = false
+				state.systemListForLesson = null
+			})
+		
+		// getModulesForLesson
+		builder
+			.addCase(getModulesForLesson.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getModulesForLesson.fulfilled, (state, {payload}) => {
+				state.moduleListForLesson = payload
+				state.loading = false
+			})
+			.addCase(getModulesForLesson.rejected, (state) => {
+				state.loading = false
+				state.moduleListForLesson = null
+			})
+		
 		// getUserResultCompareLesson
 		builder
 			.addCase(getUserResultCompareLesson.pending, (state) => {
@@ -255,7 +357,6 @@ const lessonsByTestsSlice = createSlice({
 				state.loading = true
 			})
 			.addCase(getTopFiveStudentsLesson.fulfilled, (state, {payload}) => {
-				console.log(payload)
 				state.topFiveStudents = payload
 				state.loading = false
 			})

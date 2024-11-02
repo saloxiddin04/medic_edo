@@ -24,6 +24,7 @@ import GroupBinding from "../pages/Group/GroupBinding";
 import CreateGroupBinding from "../pages/Group/CreateGroupBinding";
 import LessonByTests from "../pages/LessonByTest/LessonByTests";
 import PassLesson from "../pages/PassLesson/PassLesson";
+import CreateLessonTest from "../pages/LessonByTest/CreateLessonTest";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />
       <Route path={ROUTES.TEST_REVIEW} element={<TestReview />} />
+      <Route path={ROUTES.CREATE_LESSON_TEST} element={<CreateLessonTest />} />
       {getUserData() && getUserData().role === "admin" && (
         <>
           {" "}

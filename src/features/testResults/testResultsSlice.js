@@ -66,10 +66,18 @@ export const getUserTestHistory = createAsyncThunk(
   "pastTest/getUserTestHistory",
   async (payload, thunkAPI) => {
     try {
-      const res = await $axios.get(
-        `/test/test_result/${payload.id}/user_result_history/`
-      );
-      return res.data;
+      console.log(payload)
+      if (payload?.openTab === 0) {
+        const res = await $axios.get(
+          `/test/test_result/${payload.id}/user_result_history/`
+        );
+        return res.data;
+      } else {
+        const res = await $axios.get(
+          `/test/test_result/${payload.id}/user_result_history_by_lessons/`
+        );
+        return res.data;
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
