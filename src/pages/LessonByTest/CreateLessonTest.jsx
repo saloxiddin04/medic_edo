@@ -222,7 +222,7 @@ const CreateLessonTest = () => {
 					})
 				);
 				dispatch(setItem({key: "idx", value: 0}));
-				navigate(ROUTES.TEST);
+				navigate(ROUTES.TEST, {state: {is_lesson: true}});
 				setIsSubmitted(false);
 			});
 		}

@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../Routes/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {resetTimer} from "../../features/Timer/timerSlice";
@@ -10,6 +10,10 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {testID} = useSelector((state) => state.localStorage);
+  
+  const location = useLocation()
+  console.log(location.state)
+  
   const endTheTest = () => {
     closeModal();
     dispatch(resetTimer());
@@ -19,7 +23,7 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
         user_id: getUserData().id
       })
     ).then(() => {
-      navigate(ROUTES.RESULTS);
+      navigate(ROUTES.RESULTS, {state: {is_lesson: location?.state?.is_lesson}});
       localStorage.removeItem('highlight')
     })
   };

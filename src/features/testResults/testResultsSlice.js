@@ -4,12 +4,20 @@ import {toast} from "react-toastify";
 
 export const getTestResults = createAsyncThunk(
   "testResults/getTestResults",
-  async (id, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      const res = await $axios.get(
-        `test/test_result/${id}/result_worning_answers_statistic/`
-      );
-      return res.data;
+      console.log(data)
+      if (data?.state?.is_lesson !== undefined) {
+        const res = await $axios.get(
+          `test/test_result/${data?.id}/result_worning_answers_statistic_by_lessons/`
+        );
+        return res.data
+      } else {
+        const res = await $axios.get(
+          `test/test_result/${data?.id}/result_worning_answers_statistic/`
+        );
+        return res.data
+      }
     } catch (err) {
       toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
@@ -66,7 +74,6 @@ export const getUserTestHistory = createAsyncThunk(
   "pastTest/getUserTestHistory",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       if (payload?.openTab === 0) {
         const res = await $axios.get(
           `/test/test_result/${payload.id}/user_result_history/`

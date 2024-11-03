@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { ROUTES } from "../../Routes/constants";
 import {AiOutlineHome} from "react-icons/ai";
 import ProgressBar from "../../components/ProgressBar";
@@ -15,6 +15,9 @@ const Results = () => {
   const { testResults } = useSelector(({ testResults }) => testResults);
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const {state} = useLocation()
+  
+  console.log(state)
 
   const data = [
     { name: "Correct", value: testResults.correct_answer_interest },
@@ -64,7 +67,7 @@ const Results = () => {
 
   useEffect(() => {
     const id = JSON.parse(localStorage.getItem("testID"));
-    dispatch(getTestResults(id));
+    dispatch(getTestResults({id, state}));
   }, [dispatch]);
 
   return (

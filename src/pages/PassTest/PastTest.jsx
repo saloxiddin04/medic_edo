@@ -25,6 +25,8 @@ const PastTest = () => {
   );
   const {testID, exactTestID} = useSelector((state) => state.localStorage);
   const {seconds} = useSelector(({timer}) => timer);
+  
+  console.log(location.state)
 
   const dispatch = useDispatch();
   
