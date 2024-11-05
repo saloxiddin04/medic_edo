@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Select from "react-select";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -56,17 +56,25 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const dispatch = useDispatch()
 	const {questionsUnused, loading, lessonByTest} = useSelector(({lessonByTest}) => lessonByTest)
 	
-	const [page, setPage] = useState(1);
-	const pageSize = 10;
+	const selectRef = useRef(null);
 	
 	const [lesson, setLesson] = useState(null)
 	const [question, setQuestion] = useState([])
 	
 	useEffect(() => {
 		if (isModalOpen) {
-			dispatch(getQuestionUnused({page, page_size: pageSize}))
+			dispatch(getQuestionUnused({page_size: 100000}))
 		}
-	}, [dispatch, isModalOpen, page]);
+	}, [dispatch, isModalOpen]);
+	
+	useEffect(() => {
+		if (selectRef.current) {
+			const valueContainer = selectRef.current.controlRef.querySelector('.css-46gnuy-ValueContainer');
+			if (valueContainer) {
+				valueContainer.scrollTop = valueContainer.scrollHeight;
+			}
+		}
+	}, [question, dispatch]);
 	
 	useEffect(() => {
 		if (isModalOpen && id !== null) {
@@ -107,12 +115,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		}
 	}
 	
-	const handleMenuScroll = (event) => {
-		const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
-		if (bottom) {
-			setPage((prevPage) => prevPage + 1);
-		}
-	};
+	console.log(selectRef.current?.controlRef)
 	
 	return (
 		<div
@@ -131,13 +134,13 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 			>
 				<div className="fixed inset-0 bg-gray-500 opacity-75"></div>
 				<div
-					className="bg-white px-4 py-16 w-full flex flex-col justify-between rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full">
-					<div className={'text-right'}>
+					className="bg-white px-4 py-4 w-full flex flex-col justify-between rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full">
+					<div className={'text-right mb-6'}>
 						<button className={'btn-danger btn-sm'} onClick={handleClose}>
 							<IoClose/>
 						</button>
 					</div>
-					<div className={'flex items-center justify-between'}>
+					<div className={'flex items-center justify-between py-6'}>
 						<div className="w-[45%] flex flex-col">
 							<label htmlFor="lesson">Lesson name</label>
 							<input
@@ -148,8 +151,9 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 							/>
 						</div>
 						<div className="w-[45%]">
-							<label htmlFor="moduleName">Select Group</label>
+							<label htmlFor="moduleName">Select Question</label>
 							<Select
+								ref={selectRef}
 								options={questionsUnused?.results}
 								getOptionLabel={(modul) => modul.question}
 								getOptionValue={(modul) => modul.id}
@@ -159,30 +163,37 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 								isMulti
 								value={questionsUnused?.results?.filter((item) => question.includes(item?.id))}
 								placeholder={'Select Question'}
-								menuPortalTarget={document.body}
-								menuShouldScrollIntoView={false}
-								onMenuScrollToBottom={handleMenuScroll}
 								styles={{
 									menu: (provided) => ({
 										...provided,
-										maxHeight: 400,
+										maxHeight: 200,
 										overflowY: 'auto'
 									}),
-									menuPortal: (base) => ({...base, zIndex: 9999, background: '#fff'}),
+									menuPortal: (base) => ({...base, zIndex: 9999999, background: '#fff'}),
 									multiValue: (provided) => ({
 										...provided,
 										maxWidth: '100%',
+										maxHeight: 400
 									}),
 									valueContainer: (provided) => ({
 										...provided,
 										maxHeight: 100,
 										overflowY: 'auto',
 									}),
+									option: (provided) => ({
+										...provided,
+										fontSize: '14px',
+										whiteSpace: 'nowrap',
+										overflow: 'hidden',
+										textOverflow: 'ellipsis',
+										maxWidth: '100%',
+										padding: '8px'
+									})
 								}}
 							/>
 						</div>
 					</div>
-					<div className="flex items-center justify-end mt-5 gap-3">
+					<div className="flex items-center justify-end my-4 mt-16 gap-3">
 						<button className="py-2 px-4 bg-red-400 text-white rounded text-lg" onClick={handleClose}>
 							Close
 						</button>

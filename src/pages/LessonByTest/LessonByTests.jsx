@@ -136,83 +136,81 @@ const LessonByTests = () => {
 					<div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 						<div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 							<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-								{loading ? <LoadingPage/> : (
-									<table className="min-w-full divide-y divide-gray-200">
-										<thead className="bg-gray-50">
-										<tr>
-											<th
-												scope="col"
-												className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-											>
-												ID
-											</th>
-											<th
-												scope="col"
-												className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-											>
-												Lesson name
-											</th>
-											<th
-												scope="col"
-												className="px-7 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-											>
-												Tests length
-											</th>
-											<th
-												scope="col"
-												className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-											>
-												Action
-											</th>
-										</tr>
-										</thead>
-										<tbody className="bg-white divide-y divide-gray-200">
-										{lessonByTestsList && lessonByTestsList?.results?.map((item) => (
-											<tr key={item.id}>
-												<td className="px-6 py-4 whitespace-nowrap text-center">
-													{item.id}
-												</td>
-												<td className="px-6 py-4 whitespace-nowrap text-center">
-													{item?.lesson}
-												</td>
-												<td className="px-1 py-4 whitespace-nowrap text-center">
-													<div
-														className="flex gap-2 items-center justify-center cursor-pointer"
-														onClick={() => handleDetailModal(item.id)}
-													>
-														<FaUsers size={'22'}/>
-														{item?.question?.length}
-													</div>
-												</td>
-												<td
-													className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-													<button
-														className="btn-warning btn-sm inline-block"
-														onClick={() => {
-															setId(item?.id)
-															setCreateModal(true)
-														}}
-													>
+								<table className="min-w-full divide-y divide-gray-200">
+									<thead className="bg-gray-50">
+									<tr>
+										<th
+											scope="col"
+											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											ID
+										</th>
+										<th
+											scope="col"
+											className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											Lesson name
+										</th>
+										<th
+											scope="col"
+											className="px-7 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											Tests length
+										</th>
+										<th
+											scope="col"
+											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											Action
+										</th>
+									</tr>
+									</thead>
+									<tbody className="bg-white divide-y divide-gray-200">
+									{lessonByTestsList && lessonByTestsList?.results?.map((item) => (
+										<tr key={item.id}>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
+												{item.id}
+											</td>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
+												{item?.lesson}
+											</td>
+											<td className="px-1 py-4 whitespace-nowrap text-center">
+												<div
+													className="flex gap-2 items-center justify-center cursor-pointer"
+													onClick={() => handleDetailModal(item.id)}
+												>
+													<FaUsers size={'22'}/>
+													{item?.question?.length}
+												</div>
+											</td>
+											<td
+												className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+												<button
+													className="btn-warning btn-sm inline-block"
+													onClick={() => {
+														setId(item?.id)
+														setCreateModal(true)
+													}}
+												>
 		                        <span>
 		                          <AiFillEdit/>
 		                        </span>
-													</button>
-													
-													<button
-														className="btn-danger btn-sm ml-3"
-														onClick={() => {
-															setId(item?.id)
-															setDeleteModal(true)
-														}}
-													>
-														<AiFillDelete/>
-													</button>
-												</td>
-											</tr>
-										))}
-										</tbody>
-									</table>
-								)}
+												</button>
+												
+												<button
+													className="btn-danger btn-sm ml-3"
+													onClick={() => {
+														setId(item?.id)
+														setDeleteModal(true)
+													}}
+												>
+													<AiFillDelete/>
+												</button>
+											</td>
+										</tr>
+									))}
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
@@ -243,7 +241,10 @@ const LessonByTests = () => {
 				<CreateLessonByTest
 					id={id}
 					isModalOpen={createModal}
-					close={() => setCreateModal(false)}
+					close={() => {
+						setCreateModal(false)
+						setId(null)
+					}}
 				/>
 			</div>
 		</>

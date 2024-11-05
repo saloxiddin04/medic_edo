@@ -69,38 +69,36 @@ const LessonByTestModal = ({isModalOpen, modulId, closeModal}) => {
 							</button>
 						</div>
 						<div className={'w-[97%] m-auto'}>
-							{loading ? <LoadingPage/> : (
-								<table className="w-full divide-y divide-gray-200 border px-4">
-									<thead className="whitespace-nowrap">
-									<tr>
-										<th
-											scope="col"
-											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
-											ID
-										</th>
-										<th
-											scope="col"
-											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
-											Name
-										</th>
+							<table className="w-full divide-y divide-gray-200 border px-4">
+								<thead className="whitespace-nowrap">
+								<tr>
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										ID
+									</th>
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										Name
+									</th>
+								</tr>
+								</thead>
+								<tbody className="bg-white divide-y divide-gray-200">
+								{questionDetail?.results?.map((item) => (
+									<tr key={item.id}>
+										<td className="px-6 py-4 whitespace-nowrap text-center">
+											{item.id}
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap text-center">
+											{item.question}
+										</td>
 									</tr>
-									</thead>
-									<tbody className="bg-white divide-y divide-gray-200">
-									{questionDetail?.results?.map((item) => (
-										<tr key={item.id}>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-												{item.id}
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-												{item.question}
-											</td>
-										</tr>
-									))}
-									</tbody>
-								</table>
-							)}
+								))}
+								</tbody>
+							</table>
 						</div>
 						<div className="flex justify-end p-2">
 							<Pagination

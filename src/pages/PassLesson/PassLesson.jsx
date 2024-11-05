@@ -247,8 +247,6 @@ const PassLesson = () => {
 		);
 	}
 	
-	if (loading) return <LoadingPage/>
-	
 	return (
 		<section>
 			<div className="flex items-center gap-8">
