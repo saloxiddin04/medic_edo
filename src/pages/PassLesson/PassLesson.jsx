@@ -524,7 +524,7 @@ const PassLesson = () => {
 								<div className="mb-3 cursor-pointer" onClick={() => {
 									dispatch(getTopFiveStudentsLesson())
 									dispatch(getTopModulesLesson())
-									dispatch(allResultModules())
+									dispatch(allResultModulesLesson())
 									dispatch(getModules())
 									dispatch(getUsers())
 									setModules(null)
@@ -546,10 +546,10 @@ const PassLesson = () => {
 								</div>
 								<div className="mb-3 cursor-pointer" onClick={() => {
 									dispatch(getTopFiveStudentsLesson())
-									dispatch(allResultModules())
 									dispatch(getModules())
 									dispatch(getUsers())
 									dispatch(getTopModulesLesson())
+									dispatch(allResultModulesLesson())
 									setUser(null)
 								}}>
 									<AiOutlineClose size={20}/>
