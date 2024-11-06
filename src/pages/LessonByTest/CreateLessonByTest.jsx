@@ -83,11 +83,6 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		}
 	}
 	
-	const questionMap = questionsUnused?.results?.reduce((acc, item) => {
-		acc[item.id] = item.question;
-		return acc;
-	}, {});
-	
 	const toggleDropdown = () => setIsOpen(!isOpen);
 	
 	const handleOptionClick = (option) => {
@@ -156,7 +151,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 													key={id}
 													className="flex items-center bg-gray-200 px-1 py-1 rounded-md"
 												>
-													<span className="text-gray-700">{questionMap[id]}</span>
+													<span className="text-gray-700">{questionsUnused?.results?.find((item) => item?.id === id)?.question}</span>
 													<button
 														onClick={(e) => {
 															e.stopPropagation();
