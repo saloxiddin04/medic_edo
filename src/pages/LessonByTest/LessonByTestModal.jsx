@@ -93,7 +93,7 @@ const LessonByTestModal = ({isModalOpen, modulId, closeModal}) => {
 											{item.id}
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap text-center">
-											{item.question}
+											<div dangerouslySetInnerHTML={{__html: item?.question}} />
 										</td>
 									</tr>
 								))}
