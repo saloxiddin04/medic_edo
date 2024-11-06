@@ -55,6 +55,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const handleClose = () => {
 		setLesson(null)
 		setQuestion([])
+		setIsOpen(false)
 		close()
 	}
 	
@@ -141,7 +142,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 							/>
 						</div>
 						<div className="w-[45%]">
-							<label htmlFor="moduleName">Select Question</label>
+							<label htmlFor="moduleName">Select Question {question?.length}</label>
 							<div className="relative w-full max-w-md mx-auto">
 								<div
 									className="border border-gray-300 rounded-md p-2 cursor-pointer bg-white max-h-40 overflow-y-auto"

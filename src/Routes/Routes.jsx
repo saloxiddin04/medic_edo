@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route, Navigate} from "react-router-dom";
 
 // components
 import Main from "../pages/Main";
@@ -30,6 +30,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
+      <Route path={'/'} element={<Navigate to={ROUTES.MAIN} />} />
       <Route path={ROUTES.LESSON_TEST} element={<PassLesson />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />

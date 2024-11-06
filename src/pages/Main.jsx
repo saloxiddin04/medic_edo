@@ -161,7 +161,7 @@ const Main = () => {
 		dispatch(getModules())
 		dispatch(getUsers())
 		dispatch(getUserStatisticsForAdmin({id: getUserData()?.id}));
-		dispatch(getUserTestHistory({id: getUserData()?.id}));
+		dispatch(getUserTestHistory({id: getUserData()?.id, openTab: 0}));
 		dispatch(getUserResultCompare({id: getUserData()?.id}))
 	}, [dispatch]);
 	
