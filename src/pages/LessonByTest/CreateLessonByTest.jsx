@@ -1,56 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Select from "react-select";
+// import Select, {components} from "react-select";
 import {useDispatch, useSelector} from "react-redux";
 import {
 	createLessonBinding, getLessonsByTestDetail,
 	getLessonsByTests,
 	getQuestionUnused, patchLessonBinding
 } from "../../features/LessonsByTests/LessonsByTestsSlice";
-import LoadingPage from "../LoadingPage";
 import {toast} from "react-toastify";
 import {IoClose} from "react-icons/io5";
-
-const LazyLoadSelect = ({options, onChange, value}) => {
-	const [visibleOptions, setVisibleOptions] = useState([]);
-	const [loadCount, setLoadCount] = useState(10);
-	
-	useEffect(() => {
-		setVisibleOptions(options?.slice(0, loadCount));
-	}, [loadCount, options]);
-	
-	const handleMenuScroll = (event) => {
-		const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
-		if (bottom && loadCount < options.length) {
-			setLoadCount((prevCount) => prevCount + 10);
-		}
-	};
-	
-	console.log(loadCount)
-	
-	return (
-		<Select
-			options={visibleOptions}
-			onChange={onChange}
-			value={value}
-			isMulti
-			placeholder="Select Question"
-			styles={{
-				menu: (provided) => ({
-					...provided,
-					maxHeight: 200,
-				}),
-			}}
-			onMenuScrollToBottom={handleMenuScroll}
-			components={{
-				Menu: (props) => (
-					<div {...props.innerProps} onScroll={handleMenuScroll} style={{maxHeight: 200, overflowY: 'auto'}}>
-						{props.children}
-					</div>
-				),
-			}}
-		/>
-	);
-};
 
 const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const dispatch = useDispatch()
@@ -58,8 +15,12 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	
 	const selectRef = useRef(null);
 	
+	const dropdownRef = useRef(null);
+	const [isOpen, setIsOpen] = useState(false);
+	
 	const [lesson, setLesson] = useState(null)
 	const [question, setQuestion] = useState([])
+	const [filterText, setFilterText] = useState("");
 	
 	useEffect(() => {
 		if (isModalOpen) {
@@ -69,12 +30,18 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	
 	useEffect(() => {
 		if (selectRef.current) {
-			const valueContainer = selectRef.current.controlRef.querySelector('.css-46gnuy-ValueContainer');
-			if (valueContainer) {
-				valueContainer.scrollTop = valueContainer.scrollHeight;
-			}
+			selectRef.current.scrollTop = selectRef.current.scrollHeight
 		}
 	}, [question, dispatch]);
+	
+		// useEffect(() => {
+	// 	if (selectRef.current) {
+	// 		const valueContainer = selectRef.current.controlRef.querySelector('.css-46gnuy-ValueContainer');
+	// 		if (valueContainer) {
+	// 			valueContainer.scrollTop = valueContainer.scrollHeight;
+	// 		}
+	// 	}
+	// }, [question, dispatch]);
 	
 	useEffect(() => {
 		if (isModalOpen && id !== null) {
@@ -115,7 +82,30 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		}
 	}
 	
-	console.log(selectRef.current?.controlRef)
+	const questionMap = questionsUnused?.results?.reduce((acc, item) => {
+		acc[item.id] = item.question;
+		return acc;
+	}, {});
+	
+	const toggleDropdown = () => setIsOpen(!isOpen);
+	
+	const handleOptionClick = (option) => {
+		setQuestion((prevQuestion) => {
+			if (prevQuestion.includes(option)) {
+				return prevQuestion.filter((item) => item !== option);
+			} else {
+				return [...prevQuestion, option];
+			}
+		});
+	};
+	
+	const removeSelectedOption = (option) => {
+		setQuestion((prevQuestion) => prevQuestion.filter((item) => item !== option));
+	};
+	
+	const filteredOptions = questionsUnused?.results?.filter((option) =>
+		option.id.toString().includes(filterText)
+	);
 	
 	return (
 		<div
@@ -152,45 +142,113 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 						</div>
 						<div className="w-[45%]">
 							<label htmlFor="moduleName">Select Question</label>
-							<Select
-								ref={selectRef}
-								options={questionsUnused?.results}
-								getOptionLabel={(modul) => modul.question}
-								getOptionValue={(modul) => modul.id}
-								onChange={(selectedOption) => {
-									setQuestion(selectedOption?.map((option) => option.id));
-								}}
-								isMulti
-								value={questionsUnused?.results?.filter((item) => question.includes(item?.id))}
-								placeholder={'Select Question'}
-								styles={{
-									menu: (provided) => ({
-										...provided,
-										maxHeight: 200,
-										overflowY: 'auto'
-									}),
-									menuPortal: (base) => ({...base, zIndex: 9999999, background: '#fff'}),
-									multiValue: (provided) => ({
-										...provided,
-										maxWidth: '100%',
-										maxHeight: 400
-									}),
-									valueContainer: (provided) => ({
-										...provided,
-										maxHeight: 100,
-										overflowY: 'auto',
-									}),
-									option: (provided) => ({
-										...provided,
-										fontSize: '14px',
-										whiteSpace: 'nowrap',
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										maxWidth: '100%',
-										padding: '8px'
-									})
-								}}
-							/>
+							<div className="relative w-full max-w-md mx-auto">
+								<div
+									className="border border-gray-300 rounded-md p-2 cursor-pointer bg-white max-h-40 overflow-y-auto"
+									ref={selectRef}
+									onClick={toggleDropdown}
+								>
+									<div className="flex flex-wrap gap-2">
+										{question.length > 0 ? (
+											question.map((id) => (
+												<div
+													key={id}
+													className="flex items-center bg-gray-200 px-1 py-1 rounded-md"
+												>
+													<span className="text-gray-700">{questionMap[id]}</span>
+													<button
+														onClick={(e) => {
+															e.stopPropagation();
+															removeSelectedOption(id);
+														}}
+														className="ml-2 text-gray-500 hover:text-gray-700"
+													>
+														&times;
+													</button>
+												</div>
+											))
+										) : (
+											<span className="text-gray-400">Select Options</span>
+										)}
+									</div>
+								</div>
+								
+								{isOpen && (
+									<div
+										ref={dropdownRef}
+										className="absolute z-50 mt-1 w-full border border-gray-300 bg-white rounded-md shadow-lg max-h-60 overflow-y-auto"
+									>
+										<div className="p-2">
+											<input
+												type="text"
+												placeholder="Filter by ID"
+												value={filterText}
+												onChange={(e) => setFilterText(e.target.value)}
+												className="w-full border border-gray-300 rounded-md p-2"
+											/>
+										</div>
+										
+										{filteredOptions?.map((option) => (
+											<div
+												key={option.id}
+												onClick={() => handleOptionClick(option.id)}
+												className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+													question.includes(option.id) ? 'bg-gray-200' : ''
+												}`}
+											>
+												{option.question}
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+							
+							
+							{/*<Select*/}
+							{/*	ref={selectRef}*/}
+							{/*	options={questionsUnused?.results}*/}
+							{/*	getOptionLabel={(modul) => modul.question}*/}
+							{/*	getOptionValue={(modul) => modul.id}*/}
+							{/*	// getOptionValue={(modul) => console.log(modul)}*/}
+							{/*	onChange={(selectedOptions) => {*/}
+							{/*		const orderedSelection = selectedOptions*/}
+							{/*			? selectedOptions?.map((option) => option.id)*/}
+							{/*			: [];*/}
+							{/*		setSelectedQuestions(orderedSelection);*/}
+							{/*		setQuestion(orderedSelection);*/}
+							{/*		// setQuestion(selectedOption?.map((option) => option.id));*/}
+							{/*	}}*/}
+							{/*	isMulti*/}
+							{/*	value={questionsUnused?.results?.filter((item) => selectedQuestions.includes(item?.id))}*/}
+							{/*	placeholder={'Select Question'}*/}
+							{/*	styles={{*/}
+							{/*		menu: (provided) => ({*/}
+							{/*			...provided,*/}
+							{/*			maxHeight: 200,*/}
+							{/*			overflowY: 'auto'*/}
+							{/*		}),*/}
+							{/*		menuPortal: (base) => ({...base, zIndex: 9999999, background: '#fff'}),*/}
+							{/*		multiValue: (provided) => ({*/}
+							{/*			...provided,*/}
+							{/*			maxWidth: '100%',*/}
+							{/*			maxHeight: 400*/}
+							{/*		}),*/}
+							{/*		valueContainer: (provided) => ({*/}
+							{/*			...provided,*/}
+							{/*			maxHeight: 200,*/}
+							{/*			overflowY: 'auto'*/}
+							{/*		}),*/}
+							{/*		option: (provided) => ({*/}
+							{/*			...provided,*/}
+							{/*			fontSize: '14px',*/}
+							{/*			whiteSpace: 'nowrap',*/}
+							{/*			overflow: 'hidden',*/}
+							{/*			textOverflow: 'ellipsis',*/}
+							{/*			maxWidth: '100%',*/}
+							{/*			padding: '8px'*/}
+							{/*		})*/}
+							{/*	}}*/}
+							{/*/>*/}
 						</div>
 					</div>
 					<div className="flex items-center justify-end my-4 mt-16 gap-3">
