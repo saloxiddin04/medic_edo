@@ -1,5 +1,5 @@
 import React from "react";
-import { TbLetterQ } from "react-icons/tb";
+import {TbLetterL, TbLetterQ} from "react-icons/tb";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
@@ -26,15 +26,15 @@ const Sidebar = () => {
               className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
             >
               <TbLetterQ className="mt-1" size="20" />
-              <span>Question Blank</span>
+              <span>Question Bank</span>
             </NavLink>
             <NavLink
               activeclassname="active"
               to={ROUTES.LESSON_TEST}
               className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
             >
-              <TbLetterQ className="mt-1" size="20" />
-              <span>Lesson Blank</span>
+              <TbLetterL className="mt-1" size="20" />
+              <span>Qbank by lesson</span>
             </NavLink>
             {getUserData() && getUserData().role === "admin" && (
               <>

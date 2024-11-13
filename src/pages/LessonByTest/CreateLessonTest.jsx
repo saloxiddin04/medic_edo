@@ -292,6 +292,18 @@ const CreateLessonTest = () => {
           rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
 							></div>
 						</label>
+						
+						{isSelected && (
+							questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
+								<div key={item.name}>
+									{item?.name === 'Unused' && (
+										<span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
+                    <span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+                  </span>
+									)}
+								</div>
+							))
+						)}
 					</div>
 				</div>
 				<hr/>
@@ -305,7 +317,7 @@ const CreateLessonTest = () => {
           </span>
 				</h1>
 				<div className="mb-5 ml-4 mt-2 flex gap-10 items-center">
-					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
+					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused')?.map((item) => (
 						<div key={item.name}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input

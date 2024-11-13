@@ -40,7 +40,8 @@ import ReactECharts from "echarts-for-react";
 import Select from "react-select";
 import {AiOutlineClose} from "react-icons/ai";
 import NotGroupModal from "../components/NotGroup";
-import {IoReload} from "react-icons/io5";
+import {IoPlay, IoReload} from "react-icons/io5";
+import {GrCirclePlay} from "react-icons/gr";
 
 const Main = () => {
 	const [canShowBar, setCanShowBar] = useState(false);
@@ -679,7 +680,7 @@ const Main = () => {
 														navigate(`/test`, {state: {is_reload: true}})
 													}}
 												>
-													<IoReload size="30" color={'rgb(29 137 228)'}/>
+													<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>
 												</button>
 											)}
 											<button

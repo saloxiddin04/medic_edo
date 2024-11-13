@@ -34,6 +34,7 @@ import {
 import Select from "react-select";
 import {AiOutlineClose} from "react-icons/ai";
 import LoadingPage from "../LoadingPage";
+import {GrCirclePlay} from "react-icons/gr";
 
 const PassLesson = () => {
 	const dispatch = useDispatch()
@@ -662,7 +663,7 @@ const PassLesson = () => {
 														navigate(`/test`, {state: {is_reload: true}})
 													}}
 												>
-													<IoReload size="30" color={'rgb(29 137 228)'}/>
+													<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>
 												</button>
 											)}
 											<button
