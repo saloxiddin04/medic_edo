@@ -257,7 +257,7 @@ const Main = () => {
 		);
 	}
 	
-	if ((getUserData().role !== "admin" && getUserData().role !== "teacher") && !getUserData()?.is_group) return <NotGroupModal
+	if ((getUserData()?.role !== "admin" && getUserData()?.role !== "teacher") && !getUserData()?.is_group) return <NotGroupModal
 		isModalOpen={!getUserData()?.is_group}/>
 	
 	return (
