@@ -53,10 +53,11 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	}, [isModalOpen, id, dispatch]);
 	
 	const handleClose = () => {
+		close()
 		setLesson(null)
 		setQuestion([])
 		setIsOpen(false)
-		close()
+		setFilterText('')
 	}
 	
 	const create = () => {
@@ -99,9 +100,13 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		setQuestion((prevQuestion) => prevQuestion.filter((item) => item !== option));
 	};
 	
-	const filteredOptions = questionsUnused?.results?.filter((option) =>
-		option.id.toString().includes(filterText)
-	);
+	const timeoutId = useRef()
+	const searchTest = (value) => {
+		clearTimeout(timeoutId.current)
+		timeoutId.current = setTimeout(() => {
+			dispatch(getQuestionUnused({page_size: 100000, search: value}))
+		}, 300)
+	}
 	
 	return (
 		<div
@@ -179,12 +184,15 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 												type="text"
 												placeholder="Filter by ID"
 												value={filterText}
-												onChange={(e) => setFilterText(e.target.value)}
+												onChange={(e) => {
+													setFilterText(e.target.value)
+													searchTest(e.target.value)
+												}}
 												className="w-full border border-gray-300 rounded-md p-2"
 											/>
 										</div>
 										
-										{filteredOptions?.map((option) => (
+										{questionsUnused?.results?.map((option) => (
 											<div
 												key={option.id}
 												onClick={() => handleOptionClick(option.id)}
