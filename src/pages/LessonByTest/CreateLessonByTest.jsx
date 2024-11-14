@@ -4,14 +4,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {
 	createLessonBinding, getLessonsByTestDetail,
 	getLessonsByTests,
-	getQuestionUnused, patchLessonBinding
+	getQuestionUnused, getQuestionUnusedSearch, patchLessonBinding
 } from "../../features/LessonsByTests/LessonsByTestsSlice";
 import {toast} from "react-toastify";
 import {IoClose} from "react-icons/io5";
 
 const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const dispatch = useDispatch()
-	const {questionsUnused, loading, lessonByTest} = useSelector(({lessonByTest}) => lessonByTest)
+	const {questionsUnused, loading, questionsUnusedSearch} = useSelector(({lessonByTest}) => lessonByTest)
 	
 	const selectRef = useRef(null);
 	
@@ -104,7 +104,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const searchTest = (value) => {
 		clearTimeout(timeoutId.current)
 		timeoutId.current = setTimeout(() => {
-			dispatch(getQuestionUnused({page_size: 100000, search: value}))
+			dispatch(getQuestionUnusedSearch({page_size: 100000, search: value}))
 		}, 300)
 	}
 	
@@ -192,17 +192,31 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 											/>
 										</div>
 										
-										{questionsUnused?.results?.map((option) => (
-											<div
-												key={option.id}
-												onClick={() => handleOptionClick(option.id)}
-												className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
-													question.includes(option.id) ? 'bg-gray-200' : ''
-												}`}
-											>
-												{option.question}
-											</div>
-										))}
+										{filterText === '' ? (
+											questionsUnused?.results?.map((option) => (
+												<div
+													key={option.id}
+													onClick={() => handleOptionClick(option.id)}
+													className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+														question.includes(option.id) ? 'bg-gray-200' : ''
+													}`}
+												>
+													{option.question}
+												</div>
+											))
+										) : (
+											questionsUnusedSearch?.results?.map((option) => (
+												<div
+													key={option.id}
+													onClick={() => handleOptionClick(option.id)}
+													className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+														question.includes(option.id) ? 'bg-gray-200' : ''
+													}`}
+												>
+													{option.question}
+												</div>
+											))
+										)}
 									</div>
 								)}
 							</div>

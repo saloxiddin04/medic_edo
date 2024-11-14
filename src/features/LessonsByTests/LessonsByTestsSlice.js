@@ -72,6 +72,19 @@ export const getQuestionUnused = createAsyncThunk(
 	}
 )
 
+export const getQuestionUnusedSearch = createAsyncThunk(
+	"lessonByTests/getQuestionUnusedSearch",
+	async (params, thunkAPI) => {
+		try {
+			const response = await $axios.get('group/lesson_binding/get_not_used_lesson/', {params})
+			return response.data
+		} catch (e) {
+			toast.error(e.message)
+			return thunkAPI.rejectWithValue(e)
+		}
+	}
+)
+
 export const createLessonBinding = createAsyncThunk(
 	"lessonByTests/createLessonByTests",
 	async (data, thunkAPI) => {
@@ -240,6 +253,7 @@ const lessonsByTestsSlice = createSlice({
 		lessonByTest: null,
 		questionsDetail: null,
 		questionsUnused: null,
+		questionsUnusedSearch: null,
 		
 		resultUserStatistic: null,
 		topFiveStudents: null,
@@ -253,6 +267,20 @@ const lessonsByTestsSlice = createSlice({
 		questionModeList: null
 	},
 	extraReducers: (builder) => {
+		// getQuestionUnusedSearch
+		builder
+			.addCase(getQuestionUnusedSearch.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getQuestionUnusedSearch.fulfilled, (state, {payload}) => {
+				state.questionsUnusedSearch = payload
+				state.loading = false
+			})
+			.addCase(getQuestionUnusedSearch.rejected, (state, {payload}) => {
+				state.loading = false
+				state.questionsUnusedSearch = null
+			})
+		
 		// getQuestionModeForLesson
 		builder
 			.addCase(getQuestionModeForLesson.pending, (state) => {
