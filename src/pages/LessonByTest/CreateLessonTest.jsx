@@ -20,6 +20,7 @@ const CreateLessonTest = () => {
 	const [isTutor, setIsTutor] = useState(true);
 	const [isTimer, setIsTimer] = useState(false);
 	const [isSelected, setIsSelected] = useState(false);
+	const [used, setUsed] = useState(false)
 	
 	const [all_modules, setAllModules] = useState(null)
 	const [all_systems, setAllSystems] = useState(null)
@@ -57,24 +58,57 @@ const CreateLessonTest = () => {
 		}, {});
 		
 		dispatch(getModulesForLesson({
+			used,
 			unused: isSelected,
 			...dynamicParams
 		}));
 		dispatch(getSystemsForLesson({
+			used,
 				unused: isSelected,
 				modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
 				...dynamicParams
 			}
 		));
 		dispatch(getQuestionModeForLesson({
+			used,
 			unused: isSelected,
 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
 			lessons_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
 		}));
 	}, [checkedItems, systemItems, questionMode])
 	
-	const handleUnusedChange = (e) => {
-		setIsSelected(e.target.checked)
+	// const handleUnusedChange = (e) => {
+	// 	setIsSelected(e.target.checked)
+	// 	const selectedModules = Object.keys(checkedItems)
+	// 		.filter(key => checkedItems[key])
+	// 		.map(Number);
+	//
+	// 	const selectedSystems = Object.keys(systemItems)
+	// 		.filter((key) => systemItems[key])
+	// 		.map(Number)
+	//
+	// 	if (e.target.checked === false) {
+	// 		setQuestionMode([]);
+	// 	}
+	//
+	// 	dispatch(getModulesForLesson({
+	// 		unused: e.target.checked,
+	// 	}));
+	// 	dispatch(getSystemsForLesson({
+	// 			unused: e.target.checked,
+	// 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+	// 		}
+	// 	));
+	// 	dispatch(getQuestionModeForLesson({
+	// 		unused: e.target.checked,
+	// 		modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+	// 		sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+	// 	}));
+	// }
+	
+	const handleUnusedChange = (e, type) => {
+		const isChecked = e.target.checked;
+		
 		const selectedModules = Object.keys(checkedItems)
 			.filter(key => checkedItems[key])
 			.map(Number);
@@ -87,20 +121,72 @@ const CreateLessonTest = () => {
 			setQuestionMode([]);
 		}
 		
-		dispatch(getModulesForLesson({
-			unused: e.target.checked,
-		}));
-		dispatch(getSystemsForLesson({
-				unused: e.target.checked,
-				modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+		if (type === 'used') {
+			if (!isChecked && !isSelected) {
+				setUsed(false);
+				dispatch(getModulesForLesson({ unused: false, used: false }));
+				dispatch(getSystemsForLesson({
+					used: false,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				}));
+				dispatch(getQuestionModeForLesson({
+					used: false,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				}));
+			} else {
+				setUsed(isChecked);
+				setIsSelected(false);
+				setQuestionMode([]);
+				dispatch(getModulesForLesson({ unused: false, used: isChecked }));
+				dispatch(getSystemsForLesson({
+					used: isChecked,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				}));
+				dispatch(getQuestionModeForLesson({
+					used: isChecked,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				}));
 			}
-		));
-		dispatch(getQuestionModeForLesson({
-			unused: e.target.checked,
-			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-			sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-		}));
-	}
+		} else if (type === 'unused') {
+			if (!isChecked && !used) {
+				setIsSelected(false);
+				setQuestionMode([]);
+				dispatch(getModulesForLesson({ unused: false, used: false }));
+				dispatch(getSystemsForLesson({
+					used: false,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				}));
+				dispatch(getQuestionModeForLesson({
+					used: false,
+					unused: false,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				}));
+			} else {
+				setIsSelected(isChecked);
+				setUsed(false);
+				dispatch(getModulesForLesson({ unused: isChecked, used: false }));
+				dispatch(getSystemsForLesson({
+					used: false,
+					unused: isChecked,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				}));
+				dispatch(getQuestionModeForLesson({
+					used: false,
+					unused: isChecked,
+					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				}));
+			}
+		}
+	};
 	
 	const handleCheckboxChange = (event) => {
 		const name = event.target.name;
@@ -280,12 +366,41 @@ const CreateLessonTest = () => {
 							></div>
 						</label>
 					</div>
+					
+					<div className="flex items-center gap-3">
+						<span>Used:</span>
+						<label className="relative inline-flex items-center cursor-pointer">
+							<input
+								type="checkbox"
+								checked={used}
+								onChange={(e) => handleUnusedChange(e, 'used')}
+								className="sr-only peer"
+							/>
+							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none
+          rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+							></div>
+						</label>
+						
+						{used && (
+							questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
+								<div key={item.name}>
+									{item?.name === 'used' && (
+										<span className={`ml-2 ${item.count === 0 || item.name === 'used' ? 'opacity-50' : ''}`}>
+                    <span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+                  </span>
+									)}
+								</div>
+							))
+						)}
+					</div>
+					
 					<div className="flex items-center gap-3">
 						<span>Unused:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
 							<input
 								type="checkbox"
-								onChange={handleUnusedChange}
+								checked={isSelected}
+								onChange={(e) => handleUnusedChange(e, 'unused')}
 								className="sr-only peer"
 							/>
 							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none
