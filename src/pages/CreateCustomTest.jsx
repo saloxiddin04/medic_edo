@@ -39,7 +39,7 @@ const CreateCustomTest = () => {
 		calculateTotalCount()
 	}, [systemItems]);
 	
-	const getAll = useMemo(() => {
+	useEffect(() => {
 		const selectedModules = Object.keys(checkedItems)
 			.filter(key => checkedItems[key])
 			.map(Number);
@@ -76,7 +76,7 @@ const CreateCustomTest = () => {
 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
 			sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
 		}));
-	}, [checkedItems, systemItems, questionMode])
+	}, [checkedItems, systemItems, questionMode, isSelected])
 	
 	const handleCheckboxChange = (event) => {
 		const name = event.target.name;
@@ -139,82 +139,88 @@ const CreateCustomTest = () => {
 	
 	const handleUnusedChange = (e, type) => {
 		const isChecked = e.target.checked;
-		
+
 		const selectedModules = Object.keys(checkedItems)
 			.filter(key => checkedItems[key])
 			.map(Number);
-		
+
 		const selectedSystems = Object.keys(systemItems)
 			.filter((key) => systemItems[key])
 			.map(Number)
-		
+
 		if (e.target.checked === false) {
 			setQuestionMode([]);
 		}
 		
+		console.log(type)
+
 		if (type === 'used') {
+			console.log('used if')
 			if (!isChecked && !isSelected) {
 				setUsed(false);
-				dispatch(getModulesForTest({ unused: false, used: false }));
-				dispatch(getSystemsForTest({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForTest({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForTest({ unused: false, used: false }));
+				// dispatch(getSystemsForTest({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForTest({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			} else {
+				console.log('used else')
 				setUsed(isChecked);
 				setIsSelected(false);
 				setQuestionMode([]);
-				dispatch(getModulesForTest({ unused: false, used: isChecked }));
-				dispatch(getSystemsForTest({
-					used: isChecked,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForTest({
-					used: isChecked,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForTest({ unused: false, used: isChecked }));
+				// dispatch(getSystemsForTest({
+				// 	used: isChecked,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForTest({
+				// 	used: isChecked,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			}
 		} else if (type === 'unused') {
+			console.log('unused if')
 			if (!isChecked && !used) {
 				setIsSelected(false);
 				setQuestionMode([]);
-				dispatch(getModulesForTest({ unused: false, used: false }));
-				dispatch(getSystemsForTest({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForTest({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForTest({ unused: false, used: false }));
+				// dispatch(getSystemsForTest({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForTest({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			} else {
+				console.log('unused else')
 				setIsSelected(isChecked);
 				setUsed(false);
-				dispatch(getModulesForTest({ unused: isChecked, used: false }));
-				dispatch(getSystemsForTest({
-					used: false,
-					unused: isChecked,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForTest({
-					used: false,
-					unused: isChecked,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForTest({ unused: isChecked, used: false }));
+				// dispatch(getSystemsForTest({
+				// 	used: false,
+				// 	unused: isChecked,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForTest({
+				// 	used: false,
+				// 	unused: isChecked,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			}
 		}
 	};
@@ -384,9 +390,9 @@ const CreateCustomTest = () => {
 						
 						{used && (
 							questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
-								<div key={item.name}>
-									{item?.name === 'used' && (
-										<span className={`ml-2 ${item.count === 0 || item.name === 'used' ? 'opacity-50' : ''}`}>
+								<div key={item.name} className={`${item?.name !== "Used" ? "hidden" : ""}`}>
+									{item?.name === 'Used' && (
+										<span className={`ml-2 ${item.count === 0 || item.name === 'Used' ? 'opacity-50' : ''}`}>
                     <span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                   </span>
 									)}
@@ -433,17 +439,17 @@ const CreateCustomTest = () => {
           </span>
 				</h1>
 				<div className="mb-5 mt-2 flex gap-10 justify-start items-center">
-					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused')?.map((item) => (
+					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused' && el?.name !== 'Used')?.map((item) => (
 						<div key={item.name}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input
 									type="checkbox"
 									name={item.id}
-									disabled={item.count === 0 || item.name === 'Unused'}
-									checked={item.count === 0 ? false : questionMode[item.id] || false}
+									disabled={!used || item?.count === 0}
+									checked={item.name === 'Used' ? true : item.count === 0 ? false : questionMode[item.id] || false}
 									onChange={handleQuestionModeChange}
 								/>
-								<span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
+								<span className={`ml-2 ${item.count === 0 || !used ? 'opacity-50' : ''}`}>
                   {item.name}
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>

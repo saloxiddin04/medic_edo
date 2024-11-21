@@ -38,7 +38,7 @@ const CreateLessonTest = () => {
 		calculateTotalCount()
 	}, [systemItems]);
 	
-	const get = useMemo(() => {
+	useEffect(() => {
 		const selectedModules = Object.keys(checkedItems)
 			.filter(key => checkedItems[key])
 			.map(Number);
@@ -75,36 +75,7 @@ const CreateLessonTest = () => {
 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
 			lessons_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
 		}));
-	}, [checkedItems, systemItems, questionMode])
-	
-	// const handleUnusedChange = (e) => {
-	// 	setIsSelected(e.target.checked)
-	// 	const selectedModules = Object.keys(checkedItems)
-	// 		.filter(key => checkedItems[key])
-	// 		.map(Number);
-	//
-	// 	const selectedSystems = Object.keys(systemItems)
-	// 		.filter((key) => systemItems[key])
-	// 		.map(Number)
-	//
-	// 	if (e.target.checked === false) {
-	// 		setQuestionMode([]);
-	// 	}
-	//
-	// 	dispatch(getModulesForLesson({
-	// 		unused: e.target.checked,
-	// 	}));
-	// 	dispatch(getSystemsForLesson({
-	// 			unused: e.target.checked,
-	// 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-	// 		}
-	// 	));
-	// 	dispatch(getQuestionModeForLesson({
-	// 		unused: e.target.checked,
-	// 		modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-	// 		sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-	// 	}));
-	// }
+	}, [checkedItems, systemItems, questionMode, isSelected])
 	
 	const handleUnusedChange = (e, type) => {
 		const isChecked = e.target.checked;
@@ -124,66 +95,66 @@ const CreateLessonTest = () => {
 		if (type === 'used') {
 			if (!isChecked && !isSelected) {
 				setUsed(false);
-				dispatch(getModulesForLesson({ unused: false, used: false }));
-				dispatch(getSystemsForLesson({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForLesson({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForLesson({ unused: false, used: false }));
+				// dispatch(getSystemsForLesson({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForLesson({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			} else {
 				setUsed(isChecked);
 				setIsSelected(false);
 				setQuestionMode([]);
-				dispatch(getModulesForLesson({ unused: false, used: isChecked }));
-				dispatch(getSystemsForLesson({
-					used: isChecked,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForLesson({
-					used: isChecked,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForLesson({ unused: false, used: isChecked }));
+				// dispatch(getSystemsForLesson({
+				// 	used: isChecked,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForLesson({
+				// 	used: isChecked,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			}
 		} else if (type === 'unused') {
 			if (!isChecked && !used) {
 				setIsSelected(false);
 				setQuestionMode([]);
-				dispatch(getModulesForLesson({ unused: false, used: false }));
-				dispatch(getSystemsForLesson({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForLesson({
-					used: false,
-					unused: false,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForLesson({ unused: false, used: false }));
+				// dispatch(getSystemsForLesson({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForLesson({
+				// 	used: false,
+				// 	unused: false,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			} else {
 				setIsSelected(isChecked);
 				setUsed(false);
-				dispatch(getModulesForLesson({ unused: isChecked, used: false }));
-				dispatch(getSystemsForLesson({
-					used: false,
-					unused: isChecked,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				}));
-				dispatch(getQuestionModeForLesson({
-					used: false,
-					unused: isChecked,
-					modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-					sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				}));
+				// dispatch(getModulesForLesson({ unused: isChecked, used: false }));
+				// dispatch(getSystemsForLesson({
+				// 	used: false,
+				// 	unused: isChecked,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// }));
+				// dispatch(getQuestionModeForLesson({
+				// 	used: false,
+				// 	unused: isChecked,
+				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
+				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+				// }));
 			}
 		}
 	};
@@ -383,9 +354,9 @@ const CreateLessonTest = () => {
 						
 						{used && (
 							questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.map((item) => (
-								<div key={item.name}>
-									{item?.name === 'used' && (
-										<span className={`ml-2 ${item.count === 0 || item.name === 'used' ? 'opacity-50' : ''}`}>
+								<div key={item.name} className={`${item?.name !== "Used" ? "hidden" : ""}`}>
+									{item?.name === 'Used' && (
+										<span className={`ml-2 ${item.count === 0 || item.name === 'Used' ? 'opacity-50' : ''}`}>
                     <span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                   </span>
 									)}
@@ -431,18 +402,18 @@ const CreateLessonTest = () => {
 	            className="rounded-full border border-purple-400 py-1 px-2 ml-1">{questionModeList?.question_total}</span>
           </span>
 				</h1>
-				<div className="mb-5 ml-4 mt-2 flex gap-10 items-center">
-					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused')?.map((item) => (
+				<div className="mb-5 mt-2 flex gap-10 justify-start items-center">
+					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused' && el?.name !== 'Used')?.map((item) => (
 						<div key={item.name}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input
 									type="checkbox"
 									name={item.id}
-									disabled={item.count === 0 || item.name === 'Unused'}
-									checked={item.count === 0 ? false : questionMode[item.id] || false}
+									disabled={!used || item?.count === 0}
+									checked={item.name === 'Used' ? true : item.count === 0 ? false : questionMode[item.id] || false}
 									onChange={handleQuestionModeChange}
 								/>
-								<span className={`ml-2 ${item.count === 0 || item.name === 'Unused' ? 'opacity-50' : ''}`}>
+								<span className={`ml-2 ${item.count === 0 || !used ? 'opacity-50' : ''}`}>
                   {item.name}
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>
@@ -450,6 +421,7 @@ const CreateLessonTest = () => {
 						</div>
 					))}
 				</div>
+				
 				
 				<h1 className="text-xl my-2">
 					Test Modules
