@@ -73,7 +73,8 @@ const CreateLessonTest = () => {
 			used,
 			unused: isSelected,
 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-			lessons_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
+			lessons_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+			...dynamicParams
 		}));
 	}, [checkedItems, systemItems, questionMode, isSelected])
 	
@@ -90,71 +91,27 @@ const CreateLessonTest = () => {
 		
 		if (e.target.checked === false) {
 			setQuestionMode([]);
+			setAllModules(null)
+			setAllSystems(null)
+			setCheckedItems([])
+			setSystemItems([])
 		}
 		
 		if (type === 'used') {
 			if (!isChecked && !isSelected) {
 				setUsed(false);
-				// dispatch(getModulesForLesson({ unused: false, used: false }));
-				// dispatch(getSystemsForLesson({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForLesson({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			} else {
 				setUsed(isChecked);
 				setIsSelected(false);
 				setQuestionMode([]);
-				// dispatch(getModulesForLesson({ unused: false, used: isChecked }));
-				// dispatch(getSystemsForLesson({
-				// 	used: isChecked,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForLesson({
-				// 	used: isChecked,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			}
 		} else if (type === 'unused') {
 			if (!isChecked && !used) {
 				setIsSelected(false);
 				setQuestionMode([]);
-				// dispatch(getModulesForLesson({ unused: false, used: false }));
-				// dispatch(getSystemsForLesson({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForLesson({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			} else {
 				setIsSelected(isChecked);
 				setUsed(false);
-				// dispatch(getModulesForLesson({ unused: isChecked, used: false }));
-				// dispatch(getSystemsForLesson({
-				// 	used: false,
-				// 	unused: isChecked,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForLesson({
-				// 	used: false,
-				// 	unused: isChecked,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			}
 		}
 	};

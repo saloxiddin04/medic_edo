@@ -74,7 +74,8 @@ const CreateCustomTest = () => {
 			used,
 			unused: isSelected,
 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-			sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null"
+			sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
+			...dynamicParams
 		}));
 	}, [checkedItems, systemItems, questionMode, isSelected])
 	
@@ -108,119 +109,32 @@ const CreateCustomTest = () => {
 		});
 	};
 	
-	// const handleUnusedChange = (e) => {
-	// 	setIsSelected(e.target.checked)
-	// 	const selectedModules = Object.keys(checkedItems)
-	// 		.filter(key => checkedItems[key])
-	// 		.map(Number);
-	//
-	// 	const selectedSystems = Object.keys(systemItems)
-	// 		.filter((key) => systemItems[key])
-	// 		.map(Number)
-	//
-	// 	if (e.target.checked === false) {
-	// 		setQuestionMode([]);
-	// 	}
-	//
-	// 	dispatch(getModulesForTest({
-	// 		unused: e.target.checked,
-	// 	}));
-	// 	dispatch(getSystemsForTest({
-	// 			unused: e.target.checked,
-	// 			modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-	// 		}
-	// 	));
-	// 	dispatch(getQuestionModeForTest({
-	// 		unused: e.target.checked,
-	// 		modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-	// 		sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-	// 	}));
-	// }
-	
 	const handleUnusedChange = (e, type) => {
 		const isChecked = e.target.checked;
 
-		const selectedModules = Object.keys(checkedItems)
-			.filter(key => checkedItems[key])
-			.map(Number);
-
-		const selectedSystems = Object.keys(systemItems)
-			.filter((key) => systemItems[key])
-			.map(Number)
-
 		if (e.target.checked === false) {
 			setQuestionMode([]);
+			setAllModules(null)
+			setAllSystems(null)
+			setCheckedItems([])
+			setSystemItems([])
 		}
 		
-		console.log(type)
-
 		if (type === 'used') {
-			console.log('used if')
 			if (!isChecked && !isSelected) {
 				setUsed(false);
-				// dispatch(getModulesForTest({ unused: false, used: false }));
-				// dispatch(getSystemsForTest({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForTest({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			} else {
-				console.log('used else')
 				setUsed(isChecked);
 				setIsSelected(false);
 				setQuestionMode([]);
-				// dispatch(getModulesForTest({ unused: false, used: isChecked }));
-				// dispatch(getSystemsForTest({
-				// 	used: isChecked,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForTest({
-				// 	used: isChecked,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			}
 		} else if (type === 'unused') {
-			console.log('unused if')
 			if (!isChecked && !used) {
 				setIsSelected(false);
 				setQuestionMode([]);
-				// dispatch(getModulesForTest({ unused: false, used: false }));
-				// dispatch(getSystemsForTest({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForTest({
-				// 	used: false,
-				// 	unused: false,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			} else {
-				console.log('unused else')
 				setIsSelected(isChecked);
 				setUsed(false);
-				// dispatch(getModulesForTest({ unused: isChecked, used: false }));
-				// dispatch(getSystemsForTest({
-				// 	used: false,
-				// 	unused: isChecked,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// }));
-				// dispatch(getQuestionModeForTest({
-				// 	used: false,
-				// 	unused: isChecked,
-				// 	modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
-				// 	sistema_ides: selectedSystems.length > 0 ? JSON.stringify(selectedSystems) : "null",
-				// }));
 			}
 		}
 	};
