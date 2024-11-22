@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {useDispatch, useSelector} from "react-redux";
@@ -37,7 +37,7 @@ const CreateCustomTest = () => {
 	
 	useEffect(() => {
 		calculateTotalCount()
-	}, [systemItems]);
+	}, [systemItems, questionMode, checkedItems, systemListForTest, dispatch]);
 	
 	useEffect(() => {
 		const selectedModules = Object.keys(checkedItems)
@@ -264,7 +264,7 @@ const CreateCustomTest = () => {
 			return acc;
 		}, 0);
 		setTotalCount(total);
-	};
+	}
 	
 	const countValidation = () => {
 		return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
@@ -310,10 +310,11 @@ const CreateCustomTest = () => {
 						<span>Used:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
 							<input
+								disabled={isSelected}
 								type="checkbox"
 								checked={used}
 								onChange={(e) => handleUnusedChange(e, 'used')}
-								className="sr-only peer"
+								className="sr-only peer disabled:opacity-25"
 							/>
 							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none
           rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
@@ -337,10 +338,11 @@ const CreateCustomTest = () => {
 						<span>Unused:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
 							<input
+								disabled={used}
 								type="checkbox"
 								checked={isSelected}
 								onChange={(e) => handleUnusedChange(e, 'unused')}
-								className="sr-only peer"
+								className="sr-only peer disabled:opacity-25"
 							/>
 							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none
           rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
@@ -405,7 +407,7 @@ const CreateCustomTest = () => {
 					</label>
 				</div>
 				<div className="flex flex-wrap mb-5 mt-2 ml-4">
-					{moduleListForTest.map((item) => (
+					{moduleListForTest?.map((item) => (
 						<div className="w-1/2" key={item.id}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input

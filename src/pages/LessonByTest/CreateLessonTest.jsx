@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {
@@ -36,7 +36,7 @@ const CreateLessonTest = () => {
 	
 	useEffect(() => {
 		calculateTotalCount()
-	}, [systemItems]);
+	}, [systemItems, questionMode, checkedItems, systemListForLesson, dispatch]);
 	
 	useEffect(() => {
 		const selectedModules = Object.keys(checkedItems)
@@ -270,7 +270,7 @@ const CreateLessonTest = () => {
 			return acc;
 		}, 0);
 		setTotalCount(total);
-	};
+	}
 	
 	const countValidation = () => {
 		return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
@@ -316,6 +316,7 @@ const CreateLessonTest = () => {
 						<span>Used:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
 							<input
+								disabled={isSelected}
 								type="checkbox"
 								checked={used}
 								onChange={(e) => handleUnusedChange(e, 'used')}
@@ -343,6 +344,7 @@ const CreateLessonTest = () => {
 						<span>Unused:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
 							<input
+								disabled={used}
 								type="checkbox"
 								checked={isSelected}
 								onChange={(e) => handleUnusedChange(e, 'unused')}
