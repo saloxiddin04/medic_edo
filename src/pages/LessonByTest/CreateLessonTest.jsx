@@ -100,18 +100,35 @@ const CreateLessonTest = () => {
 		if (type === 'used') {
 			if (!isChecked && !isSelected) {
 				setUsed(false);
+				setQuestionMode([]);
+				setAllModules(null)
+				setAllSystems(null)
+				setCheckedItems([])
+				setSystemItems([])
 			} else {
 				setUsed(isChecked);
 				setIsSelected(false);
 				setQuestionMode([]);
+				setAllModules(null)
+				setAllSystems(null)
+				setCheckedItems([])
+				setSystemItems([])
 			}
 		} else if (type === 'unused') {
 			if (!isChecked && !used) {
 				setIsSelected(false);
 				setQuestionMode([]);
+				setAllModules(null)
+				setAllSystems(null)
+				setCheckedItems([])
+				setSystemItems([])
 			} else {
 				setIsSelected(isChecked);
 				setUsed(false);
+				setAllModules(null)
+				setAllSystems(null)
+				setCheckedItems([])
+				setSystemItems([])
 			}
 		}
 	};
