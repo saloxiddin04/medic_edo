@@ -166,18 +166,18 @@ const CreateLessonTest = () => {
 	const handleAllModulesChange = (e) => {
 		const isChecked = e.target.checked;
 		setAllModules(isChecked);
-		setAllSystems(isChecked);
+		// setAllSystems(isChecked);
 		
 		if (isChecked) {
 			const updatedCheckedItems = {};
 			moduleListForLesson.forEach((item) => {
 				updatedCheckedItems[item.id] = true;
 			});
-			const updatedCheckedSystems = {};
-			systemListForLesson?.forEach((item) => {
-				updatedCheckedSystems[item.id] = true;
-			});
-			setSystemItems(updatedCheckedSystems);
+			// const updatedCheckedSystems = {};
+			// systemListForLesson?.forEach((item) => {
+			// 	updatedCheckedSystems[item.id] = true;
+			// });
+			// setSystemItems(updatedCheckedSystems);
 			setCheckedItems(updatedCheckedItems);
 		} else {
 			setCheckedItems([]);

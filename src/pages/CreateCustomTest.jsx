@@ -64,8 +64,8 @@ const CreateCustomTest = () => {
 			...dynamicParams
 		}));
 		dispatch(getSystemsForTest({
-			used,
-			unused: isSelected,
+				used,
+				unused: isSelected,
 				modul_ides: selectedModules.length > 0 ? JSON.stringify(selectedModules) : "null",
 				...dynamicParams
 			}
@@ -111,7 +111,7 @@ const CreateCustomTest = () => {
 	
 	const handleUnusedChange = (e, type) => {
 		const isChecked = e.target.checked;
-
+		
 		if (e.target.checked === false) {
 			setQuestionMode([]);
 			setAllModules(null)
@@ -158,22 +158,25 @@ const CreateCustomTest = () => {
 	};
 	
 	const handleAllModulesChange = (e) => {
+		if (isLoading) return;
 		const isChecked = e.target.checked;
 		setAllModules(isChecked);
-		setAllSystems(isChecked);
+		// setAllSystems(isChecked);
 		
 		if (isChecked) {
 			const updatedCheckedItems = {};
 			moduleListForTest.forEach((item) => {
 				updatedCheckedItems[item.id] = true;
 			});
-			const updatedCheckedSystems = {};
-			systemListForTest?.forEach((item) => {
-				updatedCheckedSystems[item.id] = true;
-			});
-			setSystemItems(updatedCheckedSystems);
+			// const updatedCheckedSystems = {};
+			// systemListForTest?.forEach((item) => {
+			// 	updatedCheckedSystems[item.id] = true;
+			// });
+			// setSystemItems(updatedCheckedSystems);
 			setCheckedItems(updatedCheckedItems);
+			console.log('if')
 		} else {
+			console.log('else')
 			setCheckedItems([]);
 			setSystemItems([])
 		}
@@ -428,7 +431,6 @@ const CreateCustomTest = () => {
 			<div className="card">
 				<h1 className="text-xl">System Mode</h1>
 				<hr/>
-				
 				<div className="w-1/3 mt-5">
 					<label className="mb-2 inline-block cursor-pointer">
 						<input
