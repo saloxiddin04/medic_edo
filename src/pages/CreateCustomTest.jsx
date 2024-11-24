@@ -158,7 +158,6 @@ const CreateCustomTest = () => {
 	};
 	
 	const handleAllModulesChange = (e) => {
-		if (isLoading) return;
 		const isChecked = e.target.checked;
 		setAllModules(isChecked);
 		// setAllSystems(isChecked);
