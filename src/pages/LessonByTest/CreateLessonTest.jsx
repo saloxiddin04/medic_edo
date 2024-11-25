@@ -273,7 +273,7 @@ const CreateLessonTest = () => {
 	}
 	
 	const countValidation = () => {
-		return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
+		if (totalCount) return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
 	};
 	
 	return (
