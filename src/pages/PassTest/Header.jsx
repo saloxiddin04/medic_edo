@@ -10,9 +10,10 @@ import {
 import { setItem } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import Timer from "../../components/Timer";
 import {AiOutlineClear} from "react-icons/ai";
+import { SlChemistry } from "react-icons/sl";
 import {useLocation, useParams} from "react-router-dom";
 
-const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }) => {
+const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear, labValues }) => {
   const dispatch = useDispatch();
   const { testList, question } = useSelector(({ pastTest }) => pastTest);
   const { testID,exactTestID } = useSelector((state) => state.localStorage);
@@ -137,6 +138,9 @@ const Header = ({ index, setIndex, setSelectedAnswerAnswer, paragref, is_clear }
               className={`flex ml-auto`}
             >
               <AiOutlineClear size={'25'} color={'#fff'}/>
+            </button>
+            <button className="flex ml-4" onClick={labValues}>
+              <SlChemistry size={'22'} color={'#fff'}/>
             </button>
           </div>
         )}
