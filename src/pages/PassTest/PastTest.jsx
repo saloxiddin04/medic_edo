@@ -280,7 +280,7 @@ const PastTest = () => {
 				labValues={handleLabValuesOpen}
 			/>
 			
-			<div className="mt-[3rem] p-5 overflow-y-auto w-[94%] question">
+			<div className={`mt-[3rem] p-5 overflow-y-auto ${lab_values ? 'w-[64%]' : 'w-[94%]'} question`}>
 				{/*<button*/}
 				{/*  onClick={() => {*/}
 				{/*    dispatch(*/}
