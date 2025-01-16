@@ -49,13 +49,11 @@ const PastTest = () => {
 	
 	const handleLabValuesOpen = () => {
 		setLabValues(true)
-		setCalculator(false)
 	}
 	const handleLabValuesClose = () => setLabValues(false)
 	
 	const handleCalculatorOpen = () => {
 		setCalculator(true)
-		setLabValues(false)
 	}
 	const handleCalculatorClose = () => setCalculator(false)
 	
@@ -292,7 +290,7 @@ const PastTest = () => {
 				calculator={handleCalculatorOpen}
 			/>
 			
-			<div className={`mt-[3rem] p-5 overflow-y-auto ${(lab_values || calculator) ? 'w-[64%]' : 'w-[94%]'} question`}>
+			<div className={`mt-[3rem] p-5 overflow-y-auto ${lab_values ? 'w-[64%]' : 'w-[94%]'} question`}>
 				{/*<button*/}
 				{/*  onClick={() => {*/}
 				{/*    dispatch(*/}

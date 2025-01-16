@@ -2,80 +2,92 @@ import React, { useState } from 'react';
 
 const Calculator = ({ closeModal }) => {
 	const [input, setInput] = useState('');
+	const [position, setPosition] = useState({ x: 1000, y: 400 });
+	const [dragging, setDragging] = useState(false);
+	const [offset, setOffset] = useState({ x: 0, y: 0 });
 	
 	const handleButtonClick = (value) => {
-		setInput((prevInput) => prevInput + value);
-	};
-	
-	const handleCalculate = () => {
-		try {
-			const validExpression = /^[\d+\-*/().\s]*$/;
-			if (validExpression.test(input)) {
+		if (value === "C") {
+			setInput("");
+		} else if (value === "=") {
+			try {
 				setInput(eval(input).toString());
-			} else {
-				setInput('Error');
+			} catch {
+				setInput("Error");
 			}
-		} catch (e) {
-			setInput('Error');
+		} else {
+			setInput(input + value);
 		}
 	};
 	
-	const handleClear = () => {
-		setInput('');
+	const handleMouseDown = (e) => {
+		setDragging(true);
+		setOffset({
+			x: e.clientX - position.x,
+			y: e.clientY - position.y,
+		});
 	};
 	
+	const handleMouseMove = (e) => {
+		if (dragging) {
+			setPosition({
+				x: e.clientX - offset.x,
+				y: e.clientY - offset.y,
+			});
+		}
+	};
+	
+	const handleMouseUp = () => {
+		setDragging(false);
+	};
+	
+	const buttons = [
+		["M+", "MR", "MC", "C"],
+		["±", "√", "1/x", "/"],
+		["7", "8", "9", "×"],
+		["4", "5", "6", "-"],
+		["1", "2", "3", "+"],
+		["0", ".", "="],
+	];
+	
+	
 	return (
-		<div className="fixed top-10 right-0 h-full w-[30%] bg-white border-l-2 shadow-lg">
-			<div className="p-6">
-				<div className="flex justify-between items-center mb-4">
-					<h2 className="text-lg font-bold">Calculator</h2>
+		<div
+			className="absolute bg-blue-100 shadow-lg p-4 rounded-lg w-64 cursor-grab"
+			style={{top: `${position.y}px`, left: `${position.x}px`}}
+			onMouseDown={handleMouseDown}
+			onMouseMove={handleMouseMove}
+			onMouseUp={handleMouseUp}
+			onMouseLeave={handleMouseUp}
+		>
+			<div className="flex justify-between bg-blue-500 rounded mb-4 p-2">
+				<div className="font-bold text-white">
+					Calculator
+				</div>
+				<button
+					onClick={closeModal}
+					className="bg-red-500 text-white rounded-full w-6 h-6 text-center"
+				>
+					×
+				</button>
+			</div>
+			<div
+				className="mb-4 text-right bg-white p-2 rounded-md shadow-inner text-lg"
+			>
+				{input || "0"}
+			</div>
+			<div className="grid grid-cols-4 gap-2">
+			{buttons.flat().map((btn, index) => (
 					<button
-						onClick={closeModal}
-						className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+						key={index}
+						onClick={() => handleButtonClick(btn.replace("×", "*").replace("÷", "/"))}
+						className={`bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 transition ${
+							btn === "=" ? "col-span-2" : ""
+						}`}
 					>
-						×
+						{btn}
 					</button>
-				</div>
-				
-				{/* Left Section - Display */}
-				<div className="p-4 text-white w-full flex flex-col justify-end items-center">
-					<input
-						type="text"
-						value={input}
-						className="text-right text-xl bg-transparent border w-full rounded p-2 mb-4 text-dark"
-						readOnly={true}
-					/>
-				</div>
-				
-				{/* Right Section - Buttons */}
-				<div className="grid grid-cols-4 gap-4 p-4">
-					{/* 7-9 and / buttons */}
-					<button onClick={() => handleButtonClick('7')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">7</button>
-					<button onClick={() => handleButtonClick('8')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">8</button>
-					<button onClick={() => handleButtonClick('9')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">9</button>
-					<button onClick={() => handleButtonClick('/')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">/</button>
-					
-					{/* 4-6 and * buttons */}
-					<button onClick={() => handleButtonClick('4')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">4</button>
-					<button onClick={() => handleButtonClick('5')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">5</button>
-					<button onClick={() => handleButtonClick('6')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">6</button>
-					<button onClick={() => handleButtonClick('*')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">*</button>
-					
-					{/* 1-3 and - buttons */}
-					<button onClick={() => handleButtonClick('1')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">1</button>
-					<button onClick={() => handleButtonClick('2')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">2</button>
-					<button onClick={() => handleButtonClick('3')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">3</button>
-					<button onClick={() => handleButtonClick('-')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">-</button>
-					
-					{/* 0, . and + buttons */}
-					<button onClick={() => handleButtonClick('0')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded col-span-2">0</button>
-					<button onClick={() => handleButtonClick('.')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">.</button>
-					<button onClick={() => handleButtonClick('+')} className="bg-gray-200 hover:bg-gray-300 p-4 rounded">+</button>
-					
-					{/* Clear and Calculate buttons */}
-					<button onClick={handleClear} className="bg-red-500 hover:bg-red-600 text-white p-4 rounded col-span-2">C</button>
-					<button onClick={handleCalculate} className="bg-green-500 hover:bg-green-600 text-white p-4 rounded col-span-2">=</button>
-				</div>
+				))}
 			</div>
 		</div>
 	);
