@@ -18,6 +18,7 @@ import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
 import {useLocation} from "react-router-dom";
 import LabValues from "./LabValues";
+import Calculator from "./Calculator";
 
 const PastTest = () => {
 	const location = useLocation()
@@ -44,9 +45,19 @@ const PastTest = () => {
 	const [is_clear, setClear] = useState(false)
 	
 	const [lab_values, setLabValues] = useState(false)
+	const [calculator, setCalculator] = useState(false)
 	
-	const handleLabValuesOpen = () => setLabValues(true)
+	const handleLabValuesOpen = () => {
+		setLabValues(true)
+		setCalculator(false)
+	}
 	const handleLabValuesClose = () => setLabValues(false)
+	
+	const handleCalculatorOpen = () => {
+		setCalculator(true)
+		setLabValues(false)
+	}
+	const handleCalculatorClose = () => setCalculator(false)
 	
 	const changeTest = (id, test_id, idx) => {
 		dispatch(setItem({key: "exactTestID", value: test_id}));
@@ -278,9 +289,10 @@ const PastTest = () => {
 				paragref={paragraphRef}
 				is_clear={is_clear}
 				labValues={handleLabValuesOpen}
+				calculator={handleCalculatorOpen}
 			/>
 			
-			<div className={`mt-[3rem] p-5 overflow-y-auto ${lab_values ? 'w-[64%]' : 'w-[94%]'} question`}>
+			<div className={`mt-[3rem] p-5 overflow-y-auto ${(lab_values || calculator) ? 'w-[64%]' : 'w-[94%]'} question`}>
 				{/*<button*/}
 				{/*  onClick={() => {*/}
 				{/*    dispatch(*/}
@@ -449,6 +461,7 @@ const PastTest = () => {
 			{lab_values && (
 				<LabValues closeModal={handleLabValuesClose}/>
 			)}
+			{calculator && <Calculator closeModal={handleCalculatorClose} />}
 		</div>
 	);
 };
