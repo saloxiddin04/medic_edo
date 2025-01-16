@@ -388,7 +388,7 @@ const LabValues = ({closeModal}) => {
 	};
 	
 	return (
-		<div className="fixed top-10 right-0 h-full w-[30%] bg-white border-l-2 shadow-lg">
+		<div className="fixed top-10 right-0 h-screen w-[30%] bg-white border-l-2 shadow-lg">
 			<div className="p-6">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-lg font-bold">Lab Values</h2>
@@ -442,7 +442,7 @@ const LabValues = ({closeModal}) => {
 					);
 				})}
 				
-				<div className="h-[500px] overflow-y-auto border border-gray-300 rounded-b-lg p-4">
+				<div className="h-[700px] overflow-y-auto border border-gray-300 rounded-b-lg p-4">
 					<table className="w-full border-collapse border border-gray-300">
 						<thead>
 						<tr className="bg-gray-100">
