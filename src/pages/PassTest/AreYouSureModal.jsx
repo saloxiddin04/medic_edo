@@ -12,7 +12,6 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
   const {testID} = useSelector((state) => state.localStorage);
   
   const location = useLocation()
-  console.log(location.state)
   
   const endTheTest = () => {
     closeModal();

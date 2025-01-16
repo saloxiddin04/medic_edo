@@ -365,6 +365,14 @@ const LabValues = ({closeModal}) => {
 		]
 	};
 	
+	const isSearchTermInTabContent = (tabId) => {
+		return tabContent[tabId].some((row) =>
+			Object.values(row).some((value) =>
+				value.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+		);
+	};
+	
 	const getHighlightedText = (text, searchTerm) => {
 		if (!searchTerm) return text;
 		const regex = new RegExp(`(${searchTerm})`, 'gi');
@@ -415,21 +423,24 @@ const LabValues = ({closeModal}) => {
 					</div>
 				</form>
 				
-				<div className="flex space-x-4 border-b">
-					{tabs.map((tab) => (
+				{tabs.map((tab) => {
+					const tabContainsSearchTerm = isSearchTermInTabContent(tab.id);
+					return (
 						<button
 							key={tab.id}
 							onClick={() => setActiveTab(tab.id)}
 							className={`px-4 py-2 whitespace-nowrap rounded-t-lg border-b-2 ${
-								activeTab === tab.id
-									? 'bg-blue-100 border-blue-500'
-									: 'bg-gray-100 border-gray-300'
+								searchTerm === '' ?
+								(activeTab === tab.id
+									? 'bg-gray-200 border-gray-300 text-gray-700'
+									: 'bg-transparent text-dark')
+									: (tabContainsSearchTerm ? `text-yellow border ${activeTab === tab.id && 'bg-gray-200 border-gray-300 text-gray-700'}` : (activeTab === tab.id ? 'bg-gray-200 border-gray-300 text-gray-700' : ''))
 							}`}
 						>
 							{tab.label}
 						</button>
-					))}
-				</div>
+					);
+				})}
 				
 				<div className="h-[500px] overflow-y-auto border border-gray-300 rounded-b-lg p-4">
 					<table className="w-full border-collapse border border-gray-300">
