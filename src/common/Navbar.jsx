@@ -48,7 +48,7 @@ const Navbar = () => {
             onClick={() => dispatch(toggleSidebar())}
             className="bg-blue-500 text-gray-800 p-2 focus:outline-none focus:ring-2 focus:ring-primary rounded"
           >
-             <HiMenu size={28} color="white"/>
+            {isSidebarOpen ? <HiX size={28} color="white"/> : <HiMenu size={28} color="white"/>}
           </button>
         </div>
         <div className="flex items-center gap-7">
