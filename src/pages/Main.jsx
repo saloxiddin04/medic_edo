@@ -285,7 +285,7 @@ const Main = () => {
 			{(getUserData()?.role === "admin" || getUserData()?.role === "teacher") ? (
 				<div className="card mt-8">
 					<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-					<div className="flex item-center justify-between">
+					<div className="flex item-center justify-between flex-wrap">
 						<div className="flex items-center gap-5">
 							<PieChart width={180} height={200}>
 								<Pie
@@ -341,7 +341,7 @@ const Main = () => {
 									bottom: 5
 								}}
 								maxBarsize={10}
-								width={400}
+								width={window.innerWidth <= 768 ? 300 : 400}
 								height={250}
 								data={topFiveStudents}
 								layout="vertical"
@@ -386,7 +386,7 @@ const Main = () => {
 									left: 50,
 									bottom: 5
 								}}
-								width={350}
+								width={window.innerWidth <= 768 ? 300 : 400}
 								height={250}
 								data={topModules}
 								layout="vertical"
@@ -591,29 +591,27 @@ const Main = () => {
 			
 			{(getUserData()?.role !== 'admin' || getUserData()?.role !== 'teacher') && (
 				<div className="card mt-8">
-					<div>
-						<section>
-							<div className="flex items-center justify-center text-center gap-8">
-								<div className="border py-2 px-2.5 rounded">
-									<h1>All tests</h1>
-									<span>{userTestHistory.all_test_count}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Correct answers</h1>
-									<span>{userTestHistory.correct_answer_count}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Unsolved answers</h1>
-									<span>{userTestHistory.unsolved_test}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Wrong answers</h1>
-									<span>{userTestHistory.worning_answer_count}</span>
-								</div>
+					<section className="overflow-y-auto">
+						<div className="flex items-center justify-center text-center gap-8">
+							<div className="border py-2 px-2.5 rounded">
+								<h1>All tests</h1>
+								<span>{userTestHistory.all_test_count}</span>
 							</div>
-						</section>
-					</div>
-					<div className="mt-3">
+							<div className="border py-2 px-2.5 rounded">
+								<h1>Correct answers</h1>
+								<span>{userTestHistory.correct_answer_count}</span>
+							</div>
+							<div className="border py-2 px-2.5 rounded">
+								<h1>Unsolved answers</h1>
+								<span>{userTestHistory.unsolved_test}</span>
+							</div>
+							<div className="border py-2 px-2.5 rounded">
+								<h1>Wrong answers</h1>
+								<span>{userTestHistory.worning_answer_count}</span>
+							</div>
+						</div>
+					</section>
+					<div className="mt-3 overflow-y-auto">
 						<table className="min-w-full bg-gray-200">
 							<thead className="bg-gray-50">
 							<tr>
