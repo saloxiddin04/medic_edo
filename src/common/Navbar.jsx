@@ -10,13 +10,20 @@ import {Link, useLocation} from "react-router-dom";
 import {ROUTES} from "../Routes/constants";
 import {getUserData, logout} from "../auth/jwtService";
 import {AiOutlineHome} from "react-icons/ai";
+import { RxHamburgerMenu } from "react-icons/rx";
+import {HiMenu, HiX} from "react-icons/hi";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleSidebar} from "../features/LocalStorageSlice/LocalStorageSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch()
+  const {isSidebarOpen} = useSelector((state) => state.localStorage)
+  
   const {pathname} = useLocation();
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
-        <div>
+        <div className="flex items-center gap-4">
           {pathname === "/create-custom-test" ? (
             <Link to={ROUTES.MAIN} className=" flex items-center px-5 py-4">
               <AiOutlineHome size="20" className="mt-0.5"/>
@@ -25,18 +32,24 @@ const Navbar = () => {
             </Link>
           ) : (
             <Link
-              className="text-primary text-lg font-semibold uppercase"
+              className={`text-primary text-lg font-semibold uppercase ${isSidebarOpen ? '' : 'hidden'}`}
               to={ROUTES.MAIN}
             >
-              <div className="relative w-[280px] h-[42px] overflow-hidden">
+              <div className="relative overflow-hidden">
                 <img
-                  className="absolute -top-[110px] -left-[50px] scale-75"
+                  className="w-full h-full object-cover"
                   src={LOGO}
                   alt=""
                 />
               </div>
             </Link>
           )}
+          <button
+            onClick={() => dispatch(toggleSidebar())}
+            className="bg-blue-500 text-gray-800 p-2 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+          >
+             <HiMenu size={28} color="white"/>
+          </button>
         </div>
         <div className="flex items-center gap-7">
           <div className="user-block flex">

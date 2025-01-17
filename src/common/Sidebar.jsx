@@ -6,8 +6,10 @@ import { ROUTES } from "../Routes/constants";
 import { getUserData } from "../auth/jwtService";
 import {FaUserAlt, FaUserFriends} from "react-icons/fa";
 import { MdGroupAdd } from "react-icons/md";
+import {useDispatch, useSelector} from "react-redux";
 
 const Sidebar = () => {
+  const {isSidebarOpen} = useSelector((state) => state.localStorage)
   
   const handleCleanCurrentPage = () => {
     localStorage.removeItem('currentPage')
@@ -16,7 +18,7 @@ const Sidebar = () => {
   }
   
   return (
-    <div className="fixed top-16 bg-white text-gray-700 h-screen w-56 py-8">
+    <div className={`fixed top-16 bg-white text-gray-700 h-screen w-56 py-8 ${isSidebarOpen ? '' : 'hidden'}`}>
       <nav>
         <ul>
           <li>

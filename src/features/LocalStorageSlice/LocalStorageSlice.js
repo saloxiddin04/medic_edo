@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {};
+const initialState = {
+  isSidebarOpen: true
+};
 
 const localStorageSlice = createSlice({
   name: 'localStorage',
@@ -16,8 +18,11 @@ const localStorageSlice = createSlice({
       const item = localStorage.getItem(key);
       state[key] = item ? JSON.parse(item) : null;
     },
+    toggleSidebar: state => {
+      state.isSidebarOpen = !state.isSidebarOpen
+    }
   },
 });
 
-export const { setItem, getItem } = localStorageSlice.actions;
+export const { setItem, getItem, toggleSidebar } = localStorageSlice.actions;
 export default localStorageSlice.reducer;

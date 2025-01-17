@@ -25,11 +25,15 @@ import TestReview from "./pages/TestReview/TestReview";
 import Verify from "./pages/Auth/Verify";
 import Forgot from "./pages/Auth/Forgot";
 import NewPassword from "./pages/Auth/NewPassword";
+import {useSelector} from "react-redux";
 
 const App = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const {isSidebarOpen} = useSelector((state) => state.localStorage)
+  
   const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     setIsLoading(false);
     if (pathname === "/") {
@@ -75,7 +79,7 @@ const App = () => {
         <>
           <Navbar />
           <Sidebar />
-          <div className="ml-56 p-8 pt-24 min-h-screen bg-[#f5f5f5]">
+          <div className={`${isSidebarOpen ? 'ml-56' : 'ml-0'} p-8 pt-24 min-h-screen bg-[#f5f5f5]`}>
             <AppRoutes />
           </div>
         </>
