@@ -77,16 +77,20 @@ const App = () => {
     <div>
       {checkRoute() ? (
         <>
-          <Navbar />
-          <Sidebar />
-          <div className={`${isSidebarOpen ? 'ml-56' : 'ml-0'} p-8 pt-24 min-h-screen bg-[#f5f5f5]`}>
-            <AppRoutes />
+          <Navbar/>
+          <Sidebar/>
+          <div
+            className={`${
+              isSidebarOpen ? 'sm:ml-0 lg:ml-56' : 'ml-0'
+            } p-8 pt-24 min-h-screen bg-[#f5f5f5]`}
+          >
+            <AppRoutes/>
           </div>
         </>
       ) : (
         <Routes>
-          <Route path={ROUTES.SINGIN} element={<SignIn />} />
-          <Route path={ROUTES.SINGUP} element={<SignUp />} />
+          <Route path={ROUTES.SINGIN} element={<SignIn/>}/>
+          <Route path={ROUTES.SINGUP} element={<SignUp/>}/>
           <Route path={ROUTES.TEST} element={<PastTest />} />
           <Route path={ROUTES.RESULTS} element={<Results />} />
           <Route path={ROUTES.EXPLANATION} element={<Explanation />} />
