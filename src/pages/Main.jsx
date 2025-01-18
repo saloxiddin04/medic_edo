@@ -251,7 +251,7 @@ const Main = () => {
 				x={x}
 				y={y - 10} // Vertikal pozitsiyani yuqoriga siljitish
 				fill="#000"
-				textAnchor="middle" // Markazga joylashtirish
+				textAnchor="start" // Markazga joylashtirish
 				fontSize="12px" // Matn hajmi
 			>
 				{value}
