@@ -24,11 +24,13 @@ const Sidebar = () => {
 			<div
 				className={`${
 					isSidebarOpen ? 'block sm:block md:block lg:hidden' : 'hidden'
-				} fixed top-16 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 z-50`}
+				} fixed top-14 sm:top-14 md:top-[58px] lg:top-16 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 z-50`}
 				onClick={() => dispatch(toggleSidebar())}
 			></div>
 			<div
-				className={`fixed top-16 bg-white text-gray-700 h-screen w-56 z-50 py-8 ${isSidebarOpen ? '' : 'hidden'}`}
+				className={`fixed top-14 sm:top-14 md:top-[58px] lg:top-16 bg-white text-gray-700 h-screen w-56 z-50 py-8 ${
+					isSidebarOpen ? "" : "hidden"
+				}`}
 			>
 				<nav>
 					<ul>
