@@ -429,8 +429,8 @@ const Main = () => {
 					<div>
 						<section>
 							<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-							<div className="flex items-center gap-8">
-								<div className="flex items-center gap-10 w-1/2">
+							<div className="flex items-center gap-8 flex-wrap">
+								<div className="flex items-center gap-5 w-[48%]">
 									<BarChart width={150} height={180} data={userCompareResult}>
 										<Bar dataKey="value">
 											{userCompareResult.map((entry, index) => (
@@ -467,7 +467,7 @@ const Main = () => {
 									</div>
 								</div>
 								
-								<div className="flex items-center gap-10 w-1/2">
+								<div className="flex items-center gap-5 w-[48%]">
 									<PieChart width={180} height={200}>
 										<Pie
 											data={adminData}
