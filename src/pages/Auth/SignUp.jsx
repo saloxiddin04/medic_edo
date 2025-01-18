@@ -41,7 +41,7 @@ const SignUp = () => {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
         <div className="text-center">
-          <img src={LOGO} alt="logo" className={'w-[200px] h-[100px] object-cover m-auto'}/>
+          <img src={LOGO} alt="logo" className={'w-full object-cover m-auto'}/>
           <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
             Register
           </h2>
