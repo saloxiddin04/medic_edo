@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isSidebarOpen: true
+  isSidebarOpen: true,
+  isTestCountOpen: true
 };
 
 const localStorageSlice = createSlice({
@@ -20,9 +21,12 @@ const localStorageSlice = createSlice({
     },
     toggleSidebar: state => {
       state.isSidebarOpen = !state.isSidebarOpen
+    },
+    toggleTestCount: state => {
+      state.isTestCountOpen = !state.isTestCountOpen
     }
   },
 });
 
-export const { setItem, getItem, toggleSidebar } = localStorageSlice.actions;
+export const { setItem, getItem, toggleSidebar, toggleTestCount } = localStorageSlice.actions;
 export default localStorageSlice.reducer;

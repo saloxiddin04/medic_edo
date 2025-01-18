@@ -12,7 +12,7 @@ import {
 } from "../../features/pastTest/pastTestSlice";
 import {
 	setItem,
-	getItem,
+	getItem, toggleSidebar, toggleTestCount,
 } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
@@ -25,7 +25,7 @@ const PastTest = () => {
 	const {testList, question} = useSelector(
 		({pastTest}) => pastTest
 	);
-	const {testID, exactTestID} = useSelector((state) => state.localStorage);
+	const {testID, exactTestID, isTestCountOpen} = useSelector((state) => state.localStorage);
 	const {seconds} = useSelector(({timer}) => timer);
 	
 	const dispatch = useDispatch();
@@ -68,6 +68,10 @@ const PastTest = () => {
 		});
 		setCountIndex(idx);
 		dispatch(setItem({key: "idx", value: idx}));
+		
+		if (window.innerWidth <= 425) {
+			dispatch(toggleTestCount())
+		}
 	};
 	
 	const currentAnswer = (option) => {
@@ -243,23 +247,30 @@ const PastTest = () => {
 	}, []);
 	
 	return (
-		<div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20">
-			<ul className="w-[6%] h-full overflow-y-auto bg-white border-r-2">
-				{testList &&
-					testList?.test_ids?.map((test, index) => (
-						<li
-							onClick={() =>
-								changeTest(testList.id, test.test_question.id, index)
-							}
-							key={index}
-							className={`${index % 2 === 0 && "bg-gray-300"}
+		<div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20 relative">
+			<div
+				className={`${
+					isTestCountOpen ? 'block sm:block md:hidden lg:hidden' : 'hidden'
+				} fixed top-12 sm:top-14 md:top-[56px] lg:top-16 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 z-50`}
+				onClick={() => dispatch(toggleTestCount())}
+			></div>
+			{isTestCountOpen && (
+				<ul className={"w-[12%] z-50 h-full overflow-y-auto bg-white border-r-2 fixed md:relative sm:fixed md:w-[6%]"}>
+					{testList &&
+						testList?.test_ids?.map((test, index) => (
+							<li
+								onClick={() =>
+									changeTest(testList.id, test.test_question.id, index)
+								}
+								key={index}
+								className={`${index % 2 === 0 && "bg-gray-300"}
                 h-6 flex items-center justify-center cursor-pointer ${
-								test?.order_number === question?.order_number
-									? "bg-blue-400 text-white"
-									: ""
-							}`}
-						>
-							<div className="flex relative justify-center items-center w-full">
+									test?.order_number === question?.order_number
+										? "bg-blue-400 text-white"
+										: ""
+								}`}
+							>
+								<div className="flex relative justify-center items-center w-full">
                 <span
 	                className={`absolute top-2 left-2 ${
 		                test?.order_number === question?.order_number
@@ -269,16 +280,17 @@ const PastTest = () => {
                 >
                   {!test.is_check && <FaCircle size="6"/>}
                 </span>
-								{test.order_number}
-								<span className="absolute top-1 right-2">
+									{test.order_number}
+									<span className="absolute top-1 right-2">
                   {test.mark && (
 	                  <FcBookmark className="text-white ml-1" size="14"/>
                   )}
                 </span>
-							</div>
-						</li>
-					))}
-			</ul>
+								</div>
+							</li>
+						))}
+				</ul>
+			)}
 			
 			<Header
 				index={countIndex}
@@ -290,7 +302,12 @@ const PastTest = () => {
 				calculator={handleCalculatorOpen}
 			/>
 			
-			<div className={`mt-[3rem] p-5 overflow-y-auto ${lab_values ? 'w-[64%]' : 'w-[94%]'} question`}>
+			<div
+				className={`mt-[3rem] overflow-y-scroll p-5 ${
+					!isTestCountOpen ? "w-full" : lab_values ? "w-[64%]" : "w-[94%]"
+				} question md:w-[64%]`}
+			>
+			
 				{/*<button*/}
 				{/*  onClick={() => {*/}
 				{/*    dispatch(*/}
@@ -459,7 +476,7 @@ const PastTest = () => {
 			{lab_values && (
 				<LabValues closeModal={handleLabValuesClose}/>
 			)}
-			{calculator && <Calculator closeModal={handleCalculatorClose} />}
+			{calculator && <Calculator closeModal={handleCalculatorClose}/>}
 		</div>
 	);
 };

@@ -53,7 +53,7 @@ const Calculator = ({ closeModal }) => {
 	
 	return (
 		<div
-			className="absolute bg-blue-100 shadow-lg p-4 rounded-lg w-64 cursor-grab"
+			className="absolute bg-blue-100 shadow-lg p-4 rounded-lg w-64 cursor-grab z-50"
 			style={{top: `${position.y}px`, left: `${position.x}px`}}
 			onMouseDown={handleMouseDown}
 			onMouseMove={handleMouseMove}

@@ -3,18 +3,20 @@ import LOGO from "../../images/logo-white.png";
 import AreYouSure from "./AreYouSureModal";
 import { useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate()
   const location = useLocation()
+  const {isTestCountOpen} = useSelector((state) => state.localStorage);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
   return (
-    <nav className="fixed bottom-0 right-0 w-[94%] h-[50px] z-10 bg-primary px-4 py-4 overflow-hidden ">
+    <nav className={`fixed bottom-0 right-0 h-[50px] z-10 bg-primary px-4 py-4 overflow-hidden ${!isTestCountOpen ? 'w-full' : 'w-[90vw] sm:w-[94vw]'} h-[50px] z-10 bg-primary px-4`}>
       <div className="flex justify-between items-center">
         <img className="absolute w-32" src={LOGO} alt="" />
         <div>

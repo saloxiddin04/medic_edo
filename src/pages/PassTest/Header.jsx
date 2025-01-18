@@ -7,7 +7,7 @@ import {
 	getTestsById,
 	submitMarked, submitSelectQuestion,
 } from "../../features/pastTest/pastTestSlice";
-import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
+import {setItem, toggleTestCount} from "../../features/LocalStorageSlice/LocalStorageSlice";
 import Timer from "../../components/Timer";
 import {AiOutlineClear} from "react-icons/ai";
 import {SlChemistry} from "react-icons/sl";
@@ -26,7 +26,7 @@ const Header =
 	 }) => {
 		const dispatch = useDispatch();
 		const {testList, question} = useSelector(({pastTest}) => pastTest);
-		const {testID, exactTestID} = useSelector((state) => state.localStorage);
+		const {testID, exactTestID, isTestCountOpen} = useSelector((state) => state.localStorage);
 		const location = useLocation()
 		
 		const handleStep = (direction) => {
@@ -95,10 +95,18 @@ const Header =
 		};
 		
 		return (
-			<nav className="fixed top-0 right-0 w-[94vw] h-[50px] z-10 bg-primary px-4">
+			<nav className={`fixed top-0 right-0 ${!isTestCountOpen ? 'w-full' : 'w-[90vw] sm:w-[94vw]'} h-[50px] z-10 bg-primary px-4`}>
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-5 mt-1">
-						<h1 className="text-white text-center text-sm">
+						<div className="flex items-center gap-7 md:hidden">
+							<button
+								onClick={() => dispatch(toggleTestCount())}
+								className="text-white text-3xl"
+							>
+								&#9776;
+							</button>
+						</div>
+						<h1 className="text-white text-center text-[10px] md:text-sm">
 							Question {question?.order_number} of {testList?.count}
 							<span className="block font-medium">ID: {question?.test_question?.id}</span>
 						</h1>
@@ -108,7 +116,7 @@ const Header =
 						</div>
 					</div>
 					
-					<div className="flex items-center gap-x-10 -mt-2 text-white">
+					<div className="flex items-center gap-x-2 md:gap-x-10 -mt-2 text-white">
 						<button
 							onClick={() => handleStep("prev")}
 							className={`text-5xl ${index === 0 ? "opacity-20" : ""}`}
