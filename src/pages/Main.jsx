@@ -248,12 +248,13 @@ const Main = () => {
 		
 		return (
 			<text
-				x={x + width - 45}
-				y={y - 10}
-				fill="#343B45"
-				textAnchor="end"
+				x={x}
+				y={y - 10} // Vertikal pozitsiyani yuqoriga siljitish
+				fill="#000"
+				textAnchor="middle" // Markazga joylashtirish
+				fontSize="12px" // Matn hajmi
 			>
-				{`${value}`}
+				{value}
 			</text>
 		);
 	}
@@ -285,7 +286,7 @@ const Main = () => {
 			{(getUserData()?.role === "admin" || getUserData()?.role === "teacher") ? (
 				<div className="card mt-8">
 					<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-					<div className="flex item-center justify-between flex-wrap">
+					<div className="flex item-center justify-between flex-wrap gap-5">
 						<div className="flex items-center gap-5">
 							<PieChart width={180} height={200}>
 								<Pie
@@ -520,8 +521,9 @@ const Main = () => {
 				className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'hidden'}`}>
 				{(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") && (
 					<>
-						<div className="flex items-center gap-[80px] mb-5">
-							<div className="w-1/3 flex items-end gap-5">
+						<div className="flex flex-wrap items-center gap-5 lg:gap-[80px] mb-5">
+							{/* Modules Select */}
+							<div className="w-full lg:w-1/3 flex items-end gap-3 lg:gap-5">
 								<div className="w-full">
 									<label htmlFor="modul">Modules</label>
 									<Select
@@ -533,20 +535,23 @@ const Main = () => {
 										className="w-full"
 									/>
 								</div>
-								<div className="mb-3 cursor-pointer" onClick={() => {
-									// dispatch(getTopFiveStudents())
-									dispatch(getTopFiveStudents())
-									dispatch(getTopModules())
-									dispatch(allResultModules())
-									dispatch(getModules())
-									dispatch(getUsers())
-									dispatch(getTopModules())
-									setModules(null)
-								}}>
-									<AiOutlineClose size={20}/>
+								<div
+									className="mb-3 cursor-pointer"
+									onClick={() => {
+										dispatch(getTopFiveStudents());
+										dispatch(getTopModules());
+										dispatch(allResultModules());
+										dispatch(getModules());
+										dispatch(getUsers());
+										setModules(null);
+									}}
+								>
+									<AiOutlineClose size={20} />
 								</div>
 							</div>
-							<div className="w-1/3 flex items-end gap-5">
+							
+							{/* Users Select */}
+							<div className="w-full lg:w-1/3 flex items-end gap-3 lg:gap-5">
 								<div className="w-full">
 									<label htmlFor="user">Users</label>
 									<Select
@@ -558,30 +563,44 @@ const Main = () => {
 										className="w-full"
 									/>
 								</div>
-								<div className="mb-3 cursor-pointer" onClick={() => {
-									// dispatch(getTopFiveStudents())
-									dispatch(getTopFiveStudents())
-									dispatch(getTopModules())
-									dispatch(allResultModules())
-									dispatch(getModules())
-									dispatch(getUsers())
-									dispatch(getTopModules())
-									setUser(null)
-								}}>
-									<AiOutlineClose size={20}/>
+								<div
+									className="mb-3 cursor-pointer"
+									onClick={() => {
+										dispatch(getTopFiveStudents());
+										dispatch(getTopModules());
+										dispatch(allResultModules());
+										dispatch(getModules());
+										dispatch(getUsers());
+										setUser(null);
+									}}
+								>
+									<AiOutlineClose size={20} />
 								</div>
 							</div>
 						</div>
-						<ResponsiveContainer width={'100%'} aspect={3.0}>
+						
+						{/* Responsive BarChart */}
+						<ResponsiveContainer
+							width="100%"
+							aspect={1.5} // Moslashtirilgan (3:1 planshet va kichik ekranda qisqaradi)
+							className="mt-5"
+						>
 							<BarChart
 								height={400}
 								data={allTestResultModules}
-								margin={{left: 10, right: 10, top: 30}}
+								margin={{ left: 10, right: 10, top: 30 }}
 							>
-								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
-								<XAxis dataKey="interest"/>
+								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
+								<XAxis dataKey="interest" />
 								<Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
-									<LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
+									<LabelList
+									content={renderCustomizedLabelSort} // Agar maxsus label funksiyasi ishlatilayotgan bo‘lsa
+									position="top" // Ustiga joylashadi
+									dataKey="count"
+									dx={0} // Horizontal siljish (kerak bo‘lsa o‘zgartiring)
+									dy={-10} // Vertikal siljish (biroz yuqoriga siljiydi)
+									textAnchor="middle" // Matnni markazga joylashtirish
+									/>
 								</Bar>
 							</BarChart>
 						</ResponsiveContainer>
@@ -592,25 +611,30 @@ const Main = () => {
 			{(getUserData()?.role !== 'admin' || getUserData()?.role !== 'teacher') && (
 				<div className="card mt-8">
 					<section className="overflow-y-auto">
-						<div className="flex items-center justify-center text-center gap-8">
-							<div className="border py-2 px-2.5 rounded">
-								<h1>All tests</h1>
-								<span>{userTestHistory.all_test_count}</span>
+						<div className="flex flex-wrap items-center justify-center text-center gap-4 sm:gap-8">
+							{/* All tests */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">All tests</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory.all_test_count}</span>
 							</div>
-							<div className="border py-2 px-2.5 rounded">
-								<h1>Correct answers</h1>
-								<span>{userTestHistory.correct_answer_count}</span>
+							{/* Correct answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Correct answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory.correct_answer_count}</span>
 							</div>
-							<div className="border py-2 px-2.5 rounded">
-								<h1>Unsolved answers</h1>
-								<span>{userTestHistory.unsolved_test}</span>
+							{/* Unsolved answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Unsolved answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory.unsolved_test}</span>
 							</div>
-							<div className="border py-2 px-2.5 rounded">
-								<h1>Wrong answers</h1>
-								<span>{userTestHistory.worning_answer_count}</span>
+							{/* Wrong answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Wrong answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory.worning_answer_count}</span>
 							</div>
 						</div>
 					</section>
+					
 					<div className="mt-3 overflow-y-auto">
 						<table className="min-w-full bg-gray-200">
 							<thead className="bg-gray-50">
