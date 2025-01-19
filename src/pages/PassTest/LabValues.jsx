@@ -388,7 +388,7 @@ const LabValues = ({closeModal}) => {
 	};
 	
 	return (
-		<div className="fixed top-10 right-0 h-screen w-full lg:w-[30%] md:w-[50%] bg-white border-l-2 shadow-lg">
+		<div className="fixed h-screen top-10 right-0 w-full lg:w-[30%] md:w-[50%] bg-white border-l-2 shadow-lg">
 			<div className="p-6">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-lg font-bold">Lab Values</h2>
@@ -430,11 +430,18 @@ const LabValues = ({closeModal}) => {
 							key={tab.id}
 							onClick={() => setActiveTab(tab.id)}
 							className={`px-4 py-2 whitespace-nowrap rounded-t-lg border-b-2 ${
-								searchTerm === '' ?
-								(activeTab === tab.id
-									? 'bg-gray-200 border-gray-300 text-gray-700'
-									: 'bg-transparent text-dark')
-									: (tabContainsSearchTerm ? `text-yellow border ${activeTab === tab.id && 'bg-gray-200 border-gray-300 text-gray-700'}` : (activeTab === tab.id ? 'bg-gray-200 border-gray-300 text-gray-700' : ''))
+								searchTerm === ''
+									? activeTab === tab.id
+										? 'bg-gray-200 border-gray-300 text-gray-700'
+										: 'bg-transparent text-dark'
+									: tabContainsSearchTerm
+										? `text-yellow border ${
+											activeTab === tab.id &&
+											'bg-gray-200 border-gray-300 text-gray-700'
+										}`
+										: activeTab === tab.id
+											? 'bg-gray-200 border-gray-300 text-gray-700'
+											: ''
 							}`}
 						>
 							{tab.label}
@@ -442,7 +449,10 @@ const LabValues = ({closeModal}) => {
 					);
 				})}
 				
-				<div className="h-[700px] overflow-y-auto border border-gray-300 rounded-b-lg p-4">
+				<div
+					className="overflow-y-auto border border-gray-300 rounded-b-lg p-4"
+					style={{maxHeight: 'calc(100vh - 300px)'}}
+				>
 					<table className="w-full border-collapse border border-gray-300">
 						<thead>
 						<tr className="bg-gray-100">
@@ -452,8 +462,14 @@ const LabValues = ({closeModal}) => {
 								{activeTab === 'blood' && 'Hematologic'}
 								{activeTab === 'urineBmi' && 'Urine'}
 							</th>
-							<th className="border border-gray-300 px-4 py-2">Reference Range</th>
-							{check && <th className="border border-gray-300 px-4 py-2">SI Reference Interval</th>}
+							<th className="border border-gray-300 px-4 py-2">
+								Reference Range
+							</th>
+							{check && (
+								<th className="border border-gray-300 px-4 py-2">
+									SI Reference Interval
+								</th>
+							)}
 						</tr>
 						</thead>
 						<tbody>
