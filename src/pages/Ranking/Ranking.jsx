@@ -4,6 +4,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCoins, getScores} from "../../features/Ranking/RankingSlice";
 import {getUserData} from "../../auth/jwtService";
 import {AiFillEdit} from "react-icons/ai";
+import UpdateRankingModal from "./UpdateRankingModal";
+
+export const getInitialsName = (name) => {
+	if (!name) return '';
+	const words = name.split(' ');
+	if (words.length === 1) {
+		return words[0].charAt(0).toUpperCase();
+	}
+	
+	return (
+		words[0].charAt(0).toUpperCase() +
+		words[1].charAt(0).toUpperCase()
+	);
+};
 
 const Ranking = () => {
 	const dispatch = useDispatch()
@@ -26,6 +40,13 @@ const Ranking = () => {
 	
 	const [page, setPage] = useState(1)
 	
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	
+	const [id, setId] = useState(null)
+	const [coin, setCoin] = useState(null)
+	const [score, setScore] = useState(null)
+	const [user, setUser] = useState(null)
+	
 	useEffect(() => {
 		const params = {
 			page,
@@ -40,18 +61,23 @@ const Ranking = () => {
 		}
 	}, [dispatch, activeTopTab, activeBottomTab, page]);
 	
-	const getInitialsName = (name) => {
-		if (!name) return '';
-		const words = name.split(' ');
-		if (words.length === 1) {
-			return words[0].charAt(0).toUpperCase();
+	const handleOpenModal = (id, coin, score, user) => {
+		setId(id)
+		if (activeTopTab === 1) {
+			setScore(score)
+		} else {
+			setCoin(coin)
 		}
-		
-		return (
-			words[0].charAt(0).toUpperCase() +
-			words[1].charAt(0).toUpperCase()
-		);
-	};
+		setUser(user)
+		setIsModalOpen(true)
+	}
+	
+	const handleCloseModal = () => {
+		setIsModalOpen(false)
+		setScore(null)
+		setCoin(null)
+		setUser(null)
+	}
 	
 	const renderRanking = () => {
 		switch (activeTopTab) {
@@ -116,6 +142,9 @@ const Ranking = () => {
 										>
 											<button
 												className="btn-warning btn-sm ml-3"
+												onClick={() => {
+													handleOpenModal(item?.id, null, item?.score, item?.name)
+												}}
 											>
 												<AiFillEdit/>
 											</button>
@@ -202,6 +231,9 @@ const Ranking = () => {
 										>
 											<button
 												className="btn-warning btn-sm ml-3"
+												onClick={() => {
+													handleOpenModal(item?.id, item?.coin, null, item?.name)
+												}}
 											>
 												<AiFillEdit/>
 											</button>
@@ -279,6 +311,17 @@ const Ranking = () => {
 			</div>
 			
 			{renderRanking()}
+			
+			<UpdateRankingModal
+				isModalOpen={isModalOpen}
+				closeModal={handleCloseModal}
+				id={id}
+				score={score}
+				coin={coin}
+				user={user}
+				page={page}
+				activeBottomTab={activeBottomTab}
+			/>
 		</div>
 	);
 };

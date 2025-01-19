@@ -34,6 +34,18 @@ export const getScores = createAsyncThunk(
 	}
 )
 
+export const updateRank = createAsyncThunk(
+	'ranking/updateRank',
+	async (data, thunkAPI) => {
+		try {
+			return await $axios.patch(`/users/${data.type}/`, data.data)
+		} catch (err) {
+			toast.error(err.message);
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+)
+
 const rankingSlice = createSlice({
 	name: 'ranking',
 	initialState,
@@ -63,6 +75,18 @@ const rankingSlice = createSlice({
 			})
 			.addCase(getScores.rejected, (state) => {
 				state.scores = null
+				state.loading = false
+			})
+		
+		// updateRank
+		builder
+			.addCase(updateRank.pending, state => {
+				state.loading = true
+			})
+			.addCase(updateRank.fulfilled, (state, {payload}) => {
+				state.loading = false
+			})
+			.addCase(updateRank.rejected, (state) => {
 				state.loading = false
 			})
 	}
