@@ -75,3 +75,7 @@
 .test::-webkit-scrollbar {
 	display: none;
 }
+
+.ranking {
+	background: url("../images/ranking.png") center center / cover no-repeat;
+}

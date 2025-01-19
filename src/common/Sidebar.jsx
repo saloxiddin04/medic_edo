@@ -8,6 +8,7 @@ import {FaUserAlt, FaUserFriends} from "react-icons/fa";
 import {MdGroupAdd} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleSidebar} from "../features/LocalStorageSlice/LocalStorageSlice";
+import {GiTrophyCup} from "react-icons/gi";
 
 const Sidebar = () => {
 	const dispatch = useDispatch()
@@ -134,6 +135,17 @@ const Sidebar = () => {
 									</NavLink>
 								</>
 							)}
+							
+							<NavLink
+								onClick={handleCleanCurrentPage}
+								activeclassname="active"
+								to={ROUTES.RANKING}
+								className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+							>
+								<GiTrophyCup size="22" className="mt-1"/>
+								<span>Ranking</span>
+							</NavLink>
+							
 						</li>
 					</ul>
 				</nav>
