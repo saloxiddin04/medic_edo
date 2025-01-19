@@ -135,84 +135,86 @@ const Ranking = () => {
 							</div>
 						</div>
 						
-						<table className="w-full divide-y divide-gray-200 overflow-y-auto border">
-							<thead className="bg-gray-50">
-							<tr>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									NO
-								</th>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									Full Name
-								</th>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									Score
-								</th>
-								{getUserData().role === "admin" && (
+						<div className="overflow-y-auto">
+							<table className="w-full divide-y divide-gray-200 border">
+								<thead className="bg-gray-50">
+								<tr>
 									<th
 										scope="col"
 										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
-										Action
+										NO
 									</th>
-								)}
-							</tr>
-							</thead>
-							<tbody className="bg-white divide-y divide-gray-200 text-center">
-							{loading
-								?
-								<tr>
-									<td colSpan={4}>
-										<div className="py-10 flex justify-center items-center">
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										Full Name
+									</th>
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										Score
+									</th>
+									{getUserData().role === "admin" && (
+										<th
+											scope="col"
+											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											Action
+										</th>
+									)}
+								</tr>
+								</thead>
+								<tbody className="bg-white divide-y divide-gray-200 text-center">
+								{loading
+									?
+									<tr>
+										<td colSpan={4}>
+											<div className="py-10 flex justify-center items-center">
 						          <span className="relative flex h-16 w-16">
 						            <span
 							            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
 						            <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
 						          </span>
-										</div>
-									</td>
-								</tr>
-								:
-								scores?.data?.map((item) => (
-									<tr key={item.id}>
-										<td className="px-6 py-4 whitespace-nowrap text-center">
-											{item?.rank}
+											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-center">
+									</tr>
+									:
+									scores?.data?.map((item) => (
+										<tr key={item.id}>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
+												{item?.rank}
+											</td>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
 										<span
 											className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item.name}
-										</td>
-										<td
-											className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-											{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
-										</td>
-										{getUserData().role === 'admin' && (
-											<td
-												className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-											>
-												<button
-													className="btn-warning btn-sm ml-3"
-													onClick={() => {
-														handleOpenModal(item?.id, null, item?.score, item?.name)
-													}}
-												>
-													<AiFillEdit/>
-												</button>
 											</td>
-										)}
-									</tr>
-								))
-							}
-							</tbody>
-						</table>
+											<td
+												className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+												{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
+											</td>
+											{getUserData().role === 'admin' && (
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
+												>
+													<button
+														className="btn-warning btn-sm ml-3"
+														onClick={() => {
+															handleOpenModal(item?.id, null, item?.score, item?.name)
+														}}
+													>
+														<AiFillEdit/>
+													</button>
+												</td>
+											)}
+										</tr>
+									))
+								}
+								</tbody>
+							</table>
+						</div>
 						
 						<div className="mt-5 flex justify-center">
 							<button
@@ -304,84 +306,86 @@ const Ranking = () => {
 							</div>
 						</div>
 						
-						<table className="w-full divide-y divide-gray-200 overflow-y-auto border">
-							<thead className="bg-gray-50">
-							<tr>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									NO
-								</th>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									Full Name
-								</th>
-								<th
-									scope="col"
-									className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-								>
-									Coins
-								</th>
-								{getUserData().role === "admin" && (
+						<div className="overflow-y-auto">
+							<table className="w-full divide-y divide-gray-200 overflow-y-auto border">
+								<thead className="bg-gray-50">
+								<tr>
 									<th
 										scope="col"
 										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
-										Action
+										NO
 									</th>
-								)}
-							</tr>
-							</thead>
-							<tbody className="bg-white divide-y divide-gray-200">
-							{loading
-								?
-								<tr>
-									<td colSpan={4}>
-										<div className="py-10 flex justify-center items-center">
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										Full Name
+									</th>
+									<th
+										scope="col"
+										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+									>
+										Coins
+									</th>
+									{getUserData().role === "admin" && (
+										<th
+											scope="col"
+											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
+											Action
+										</th>
+									)}
+								</tr>
+								</thead>
+								<tbody className="bg-white divide-y divide-gray-200">
+								{loading
+									?
+									<tr>
+										<td colSpan={4}>
+											<div className="py-10 flex justify-center items-center">
 						          <span className="relative flex h-16 w-16">
 						            <span
 							            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
 						            <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
 						          </span>
-										</div>
-									</td>
-								</tr>
-								:
-								coins?.data?.map((item) => (
-									<tr key={item.id}>
-										<td className="px-6 py-4 whitespace-nowrap text-center">
-											{item?.rank}
+											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-center">
+									</tr>
+									:
+									coins?.data?.map((item) => (
+										<tr key={item.id}>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
+												{item?.rank}
+											</td>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
 										<span
 											className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item?.name}
-										</td>
-										<td
-											className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-											{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
-										</td>
-										{getUserData().role === 'admin' && (
-											<td
-												className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-											>
-												<button
-													className="btn-warning btn-sm ml-3"
-													onClick={() => {
-														handleOpenModal(item?.id, item?.coin, null, item?.name)
-													}}
-												>
-													<AiFillEdit/>
-												</button>
 											</td>
-										)}
-									</tr>
-								))
-							}
-							</tbody>
-						</table>
+											<td
+												className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+												{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
+											</td>
+											{getUserData().role === 'admin' && (
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
+												>
+													<button
+														className="btn-warning btn-sm ml-3"
+														onClick={() => {
+															handleOpenModal(item?.id, item?.coin, null, item?.name)
+														}}
+													>
+														<AiFillEdit/>
+													</button>
+												</td>
+											)}
+										</tr>
+									))
+								}
+								</tbody>
+							</table>
+						</div>
 						
 						<div className="mt-5 flex justify-center">
 							<button
