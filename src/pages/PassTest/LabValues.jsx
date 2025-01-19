@@ -388,7 +388,7 @@ const LabValues = ({closeModal}) => {
 	};
 	
 	return (
-		<div className="fixed top-10 right-0 h-screen w-[30%] bg-white border-l-2 shadow-lg">
+		<div className="fixed top-10 right-0 h-screen w-full lg:w-[30%] md:w-[50%] bg-white border-l-2 shadow-lg">
 			<div className="p-6">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-lg font-bold">Lab Values</h2>

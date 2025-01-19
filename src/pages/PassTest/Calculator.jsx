@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const Calculator = ({ closeModal }) => {
 	const [input, setInput] = useState('');
-	const [position, setPosition] = useState({ x: 1000, y: 400 });
+	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [dragging, setDragging] = useState(false);
 	const [offset, setOffset] = useState({ x: 0, y: 0 });
 	
@@ -20,12 +20,67 @@ const Calculator = ({ closeModal }) => {
 		}
 	};
 	
+	// const handleMouseDown = (e) => {
+	// 	setDragging(true);
+	// 	setOffset({
+	// 		x: e.clientX - position.x,
+	// 		y: e.clientY - position.y,
+	// 	});
+	// };
+	
+	// const handleMouseMove = (e) => {
+	// 	if (dragging) {
+	// 		setPosition({
+	// 			x: e.clientX - offset.x,
+	// 			y: e.clientY - offset.y,
+	// 		});
+	// 	}
+	// };
+	//
+	// const handleMouseUp = () => {
+	// 	setDragging(false);
+	// };
+	
+	const handleStart = (e) => {
+		const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+		const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+		
+		setDragging(true);
+		setOffset({
+			x: clientX - position.x,
+			y: clientY - position.y,
+		});
+		
+		document.addEventListener(e.touches ? 'touchmove' : 'mousemove', handleMove);
+		document.addEventListener(e.touches ? 'touchend' : 'mouseup', handleEnd);
+	};
+	
+	const handleMove = (e) => {
+		if (dragging) {
+			const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+			const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+			
+			setPosition({
+				x: clientX - offset.x,
+				y: clientY - offset.y,
+			});
+		}
+	};
+	
+	const handleEnd = (e) => {
+		setDragging(false);
+		document.removeEventListener(e.touches ? 'touchmove' : 'mousemove', handleMove);
+		document.removeEventListener(e.touches ? 'touchend' : 'mouseup', handleEnd);
+	};
+	
 	const handleMouseDown = (e) => {
 		setDragging(true);
 		setOffset({
 			x: e.clientX - position.x,
 			y: e.clientY - position.y,
 		});
+		document.addEventListener('mousemove', handleMouseMove);
+		document.addEventListener('mouseup', handleMouseUp);
 	};
 	
 	const handleMouseMove = (e) => {
@@ -37,8 +92,11 @@ const Calculator = ({ closeModal }) => {
 		}
 	};
 	
+	// Mouse up
 	const handleMouseUp = () => {
 		setDragging(false);
+		document.removeEventListener('mousemove', handleMouseMove);
+		document.removeEventListener('mouseup', handleMouseUp);
 	};
 	
 	const buttons = [
@@ -50,7 +108,6 @@ const Calculator = ({ closeModal }) => {
 		["0", ".", "="],
 	];
 	
-	
 	return (
 		<div
 			className="absolute bg-blue-100 shadow-lg p-4 rounded-lg w-64 cursor-grab z-50"
@@ -59,6 +116,7 @@ const Calculator = ({ closeModal }) => {
 			onMouseMove={handleMouseMove}
 			onMouseUp={handleMouseUp}
 			onMouseLeave={handleMouseUp}
+			onTouchStart={handleStart}
 		>
 			<div className="flex justify-between bg-blue-500 rounded mb-4 p-2">
 				<div className="font-bold text-white">

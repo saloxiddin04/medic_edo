@@ -305,7 +305,7 @@ const PastTest = () => {
 			<div
 				className={`mt-[3rem] overflow-y-auto p-5 ${
 					!isTestCountOpen ? "w-full" : lab_values ? "w-[64%]" : "w-[94%]"
-				} question md:w-[64%] test`}
+				} question md:w-[93%] test`}
 			>
 			
 				{/*<button*/}
