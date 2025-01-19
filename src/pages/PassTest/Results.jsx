@@ -78,9 +78,9 @@ const Results = () => {
         <h1 className="ml-5 text-xl">Test Results</h1>
       </nav>
 
-      <section className="card w-8/12 mt-10 mx-auto">
+      <section className="card w-11/12 mt-10 mx-auto flex-wrap">
         <div className="mt-10">
-          <div className={'flex justify-between items-center'}>
+          <div className={'flex justify-center lg:justify-between md:justify-between items-center flex-wrap gap-5'}>
             <div>
               <h1 className="text-xl font-semibold text-gray-600">
                 Date: {moment(testResults?.end_date).format('DD.MM.YYYY, h:mm:ss')}
@@ -107,8 +107,8 @@ const Results = () => {
         </div>
 
         <div className="my-10">
-          <div className="flex item-center gap-8">
-            <div className="flex items-center gap-10 w-1/2">
+          <div className="flex item-center gap-8 flex-wrap">
+            <div className="flex items-center gap-5 w-full lg:w-[48%] flex-wrap justify-center md:justify-normal sm:justify-center">
               <PieChart width={180} height={200}>
                 <Pie
                   data={data}
@@ -152,7 +152,7 @@ const Results = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-10 w-1/2">
+            <div className="flex items-center gap-5 w-full lg:w-[48%] flex-wrap justify-center md:justify-normal sm:justify-center">
               <BarChart width={150} height={180} data={comparison}>
                 <Bar dataKey="value">
                   {comparison.map((entry, index) => (
@@ -181,7 +181,7 @@ const Results = () => {
           </div>
         </div>
 
-        <div>
+        <div className="overflow-y-auto">
           <h1 className="text-lg font-medium text-gray-600 mb-5">Details</h1>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -243,7 +243,7 @@ const Results = () => {
           </table>
           {!testResults.isFilled && <p className="text-center mt-5">No data</p>}
         </div>
-        <div className="mt-20">
+        <div className="mt-20 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
