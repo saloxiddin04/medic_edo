@@ -76,6 +76,6 @@
 	display: none;
 }
 
-.ranking {
-	background: url("../images/ranking.png") center center / cover no-repeat;
-}
+/*.ranking {*/
+/*	background: url("../images/ranking.png") center center / contain no-repeat;*/
+/*}*/

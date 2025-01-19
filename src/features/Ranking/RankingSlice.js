@@ -77,18 +77,6 @@ const rankingSlice = createSlice({
 				state.scores = null
 				state.loading = false
 			})
-		
-		// updateRank
-		builder
-			.addCase(updateRank.pending, state => {
-				state.loading = true
-			})
-			.addCase(updateRank.fulfilled, (state, {payload}) => {
-				state.loading = false
-			})
-			.addCase(updateRank.rejected, (state) => {
-				state.loading = false
-			})
 	}
 })
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
 import {useDispatch} from "react-redux";
 import {getInitialsName} from "./Ranking";
@@ -11,6 +11,11 @@ const UpdateRankingModal = ({isModalOpen, closeModal, id, score, coin, user, pag
 	
 	const [update_coin, setCoin] = useState(coin)
 	const [update_score, setScore] = useState(score)
+	
+	useEffect(() => {
+		setCoin(coin)
+		setScore(score)
+	}, [isModalOpen, coin, score]);
 	
 	const updatedRank = () => {
 		if (isSubmitted) return;
