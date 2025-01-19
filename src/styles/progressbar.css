@@ -67,3 +67,11 @@
 	height: 40px;
 	animation: spin 1s linear infinite;
 }
+
+.test {
+	scrollbar-width: none;
+}
+
+.test::-webkit-scrollbar {
+	display: none;
+}

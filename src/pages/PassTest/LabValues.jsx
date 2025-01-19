@@ -378,7 +378,7 @@ const LabValues = ({closeModal}) => {
 		const regex = new RegExp(`(${searchTerm})`, 'gi');
 		return text.split(regex).map((part, index) =>
 			regex.test(part) ? (
-				<span key={index} className="text-yellow">
+				<span key={index} className="text-dark bg-yellow">
           {part}
         </span>
 			) : (
