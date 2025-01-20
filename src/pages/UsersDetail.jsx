@@ -74,14 +74,14 @@ const UsersDetail = () => {
       <div className="card-8 mt-2">
         <div>
           <div className='flex gap-10'>
-            <div className="card">
+            <div className="card hidden lg:block">
               <div className='bg-gray-100 p-5 rounded'>
                 <FaUserAlt size="200"/>
               </div>
             </div>
-            <div className='card flex items-center justify-between flex-wrap w-11/12'>
+            <div className='card flex items-center justify-between flex-wrap gap-5 lg:w-11/12 w-full'>
               <div
-                className='input flex flex-col w-[48%]'
+                className='input flex flex-col lg:w-[48%] w-full'
                 onFocus={() => handleDivFocus(3)}
                 onBlur={handleDivBlur}
               >
@@ -96,7 +96,7 @@ const UsersDetail = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className='input flex flex-col w-[48%]'>
+              <div className='input flex flex-col lg:w-[48%] w-full'>
                 <label htmlFor="password">Password</label>
                 <div
                   ref={divRef}
@@ -210,7 +210,7 @@ const UsersDetail = () => {
       <div className="card">
         <div>
           <section>
-            <div className='flex items-center justify-center text-center gap-8'>
+            <div className='flex items-center md:justify-center justify-normal text-center gap-8 overflow-y-auto'>
               <div className='border py-2 px-2.5 rounded'>
                 <h1>All tests</h1>
                 <span>{userTestHistory.all_test_count}</span>
@@ -230,7 +230,7 @@ const UsersDetail = () => {
             </div>
           </section>
         </div>
-        <div className='mt-3'>
+        <div className='mt-3 overflow-y-auto'>
           <table className='min-w-full bg-gray-200'>
             <thead className='bg-gray-50'>
             <tr>
