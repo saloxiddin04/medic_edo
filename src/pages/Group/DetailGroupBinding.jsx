@@ -51,7 +51,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
       <div
         className={
           isModalOpen
-            ? "fixed z-10 inset-0 overflow-y-auto"
+            ? "fixed z-50 inset-0 overflow-y-auto"
             : "opacity-0 pointer-events-none"
         }
       >
@@ -63,12 +63,12 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
           }
         >
           <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
-          <div className='bg-white w-full rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full'>
+          <div className='bg-white w-[90%] lg:w-11/12 rounded-lg overflow-hidden shadow-xl transform transition-all'>
             <div className='w-full p-4 flex items-center justify-between'>
               <input
                 type="text"
                 placeholder={'Search'}
-                className={'w-1/4 border py-2 px-1 divide-y divide-gray-200 rounded'}
+                className={'lg:w-1/4 w-3/4 border py-2 px-1 divide-y divide-gray-200 rounded'}
                 value={searchUserState}
                 onChange={(e) => searchUserFunc(e.target.value)}
               />
@@ -76,7 +76,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                 <IoClose/>
               </button>
             </div>
-            <div className={'w-[97%] m-auto'}>
+            <div className={'w-[97%] m-auto overflow-y-auto'}>
               <table className="w-full divide-y divide-gray-200 border px-4">
                 <thead className="whitespace-nowrap">
                 <tr>
@@ -127,7 +127,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                 </tbody>
               </table>
             </div>
-            <div className='flex justify-end p-2'>
+            <div className='flex justify-end p-2 overflow-y-auto'>
               <Pagination
                 totalItems={bindingUsers?.count} // Replace with the total number of items you have
                 itemsPerPage={10} // Replace with the number of items to display per page

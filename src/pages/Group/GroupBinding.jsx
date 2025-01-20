@@ -99,12 +99,12 @@ const GroupBinding = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-center lg:justify-between items-center flex-wrap lg:flex-nowrap">
         <div className={'flex w-full items-center gap-3'}>
           <input
             type="text"
             placeholder={'Search'}
-            className={'w-1/4 border py-2 px-1 divide-y divide-gray-200 rounded'}
+            className={'lg:w-1/4 w-11/12 border py-2 px-1 divide-y divide-gray-200 rounded'}
             value={searchGroupState}
             onChange={(e) => searchUserFunc(e.target.value)}
           />
@@ -121,15 +121,15 @@ const GroupBinding = () => {
         </div>
         <Link
           to={ROUTES.GROUP_BINDING_BINDING}
-          className="btn-primary mt-3 inline-block w-1/6"
+          className="btn-primary mt-3 inline-block text-center lg:w-1/6 w-2/4 text-sm lg:text-lg"
         >
           Group Binding
         </Link>
       </div>
-      <div className="flex flex-col mt-3">
-        <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="flex flex-col mt-3 overflow-y-auto">
+        <div className="my-2 sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <div className="shadow border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                 <tr>

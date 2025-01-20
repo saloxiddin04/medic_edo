@@ -85,8 +85,8 @@ const CreateGroupBinding = () => {
   
   return (
     <div>
-      <div className={'flex items-center justify-between'}>
-        <div className='w-[45%]'>
+      <div className={'flex items-center justify-between flex-wrap lg:flex-nowrap gap-5'}>
+        <div className='lg:w-[45%] w-full'>
           <label htmlFor="moduleName">Select Users</label>
           <Select
             options={groupBindingUsers?.results}
@@ -103,7 +103,7 @@ const CreateGroupBinding = () => {
             placeholder={'Select Users'}
           />
         </div>
-        <div className='w-[45%]'>
+        <div className='lg:w-[45%] w-full'>
           <label htmlFor="moduleName">Select Group</label>
           <Select
             options={groupUnused?.results}

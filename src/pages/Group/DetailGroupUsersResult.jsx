@@ -33,7 +33,7 @@ const DetailGroupUsersResult = ({closeModal, isOpen, id}) => {
     <div
       className={
         isOpen
-          ? "fixed z-10 inset-0 overflow-y-auto flex items-center justify-center"
+          ? "fixed z-50 inset-0 overflow-y-auto flex items-center justify-center"
           : "opacity-0 pointer-events-none"
       }
     >
