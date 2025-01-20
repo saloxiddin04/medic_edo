@@ -83,57 +83,55 @@ const Ranking = () => {
 				return (
 					<>
 						<div className="flex flex-col items-center my-6">
-							<h2 className="text-2xl font-bold mb-1">Ranking</h2>
-							<div className="flex justify-evenly items-end relative w-full h-[300px] ranking">
+							<div className="flex justify-center items-end relative w-full h-[300px] ranking">
+								
 								{/* 2nd Place */}
-								<div className="flex flex-col items-center">
-									<div>
-										<FaTrophy size={50} color="rgb(209 213 219)"/>
-									</div>
+								<div className="flex flex-col items-center justify-start w-1/4">
+									<FaTrophy size={50} color="rgb(209 213 219)"/>
 									<div
 										className="bg-gray-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[1]?.name)}
 									</div>
+									<h3 className="text-lg font-semibold">{scores?.data[1]?.name}</h3>
 									<div
-										className="bg-gray-200 text-center w-[95%] h-32 flex items-center justify-center rounded-t-md shadow-md"
-									>
-										<h3 className="text-lg font-semibold">{scores?.data[1]?.name}</h3>
+										className="bg-gray-200 text-center w-full h-32 flex items-start justify-center rounded-t-md shadow-md pt-5">
+										<h3
+											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">2</h3>
 									</div>
 								</div>
 								
 								{/* 1st Place */}
-								<div className="flex flex-col items-center w-[20%]">
-									<div>
-										<FaTrophy size={50} color="rgb(255 207 0)"/>
-									</div>
+								<div className="flex flex-col items-center w-1/3">
+									<FaTrophy size={50} color="rgb(255 207 0)"/>
 									<div
 										className="bg-yellow w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[0]?.name)}
 									</div>
+									<h3 className="text-lg font-semibold">{scores?.data[0]?.name}</h3>
 									<div
-										className="bg-yellow text-center w-[95%] h-48 flex items-center justify-center rounded-t-md shadow-md"
-									>
-										<h3 className="text-lg font-semibold">{scores?.data[0]?.name}</h3>
+										className="bg-yellow text-center w-full h-48 flex items-start justify-center rounded-t-md shadow-md pt-5">
+										<h3 className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">1</h3>
 									</div>
 								</div>
 								
 								{/* 3rd Place */}
-								<div className="flex flex-col items-center">
-									<div>
-										<FaTrophy size={50} color="rgb(253 186 116)"/>
-									</div>
+								<div className="flex flex-col items-center w-1/4">
+									<FaTrophy size={50} color="rgb(253 186 116)"/>
 									<div
 										className="bg-orange-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[2]?.name)}
 									</div>
+									<h3 className="text-lg font-semibold">{scores?.data[2]?.name}</h3>
 									<div
-										className="bg-orange-300 text-center w-[95%] h-24 flex items-center rounded-t-md shadow-md"
-									>
-										<h3 className="text-lg font-semibold">{scores?.data[2]?.name}</h3>
+										className="bg-orange-300 text-center w-full h-24 flex items-center justify-center rounded-t-md shadow-md">
+										<h3
+											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">3</h3>
 									</div>
 								</div>
+							
 							</div>
 						</div>
+						
 						
 						<div className="overflow-y-auto">
 							<table className="w-full divide-y divide-gray-200 border">
