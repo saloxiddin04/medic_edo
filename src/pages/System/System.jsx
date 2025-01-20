@@ -31,10 +31,10 @@ const System = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-between">
+      <div className="flex justify-center flex-wrap lg:flex-nowrap lg:justify-between">
         <Link
           to={ROUTES.CREATE_SYSTEM}
-          className="btn-primary mt-3 inline-block"
+          className="btn-primary mt-3 inline-block text-sm lg:text-lg"
         >
           Create System
         </Link>

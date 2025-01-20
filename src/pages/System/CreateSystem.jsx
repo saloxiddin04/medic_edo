@@ -56,8 +56,8 @@ const CreateSystem = () => {
   
   return (
     <form className="card" onSubmit={saveData}>
-      <div className="my-5 flex items-center gap-10">
-        <div className="w-1/2">
+      <div className="my-5 flex flex-wrap lg:flex-nowrap items-center lg:gap-10 gap-5">
+        <div className="w-full lg:w-1/2">
           <label htmlFor="moduleName">System name</label>
           <input
             required
@@ -69,7 +69,7 @@ const CreateSystem = () => {
             onChange={(e) => setModuleName(e.target.value)}
           />
         </div>
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <label htmlFor="modulUniqueName">System unique name</label>
           <input
             required
