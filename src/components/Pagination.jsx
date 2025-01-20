@@ -137,7 +137,7 @@ const Pagination = ({totalItems, itemsPerPage, onPageChange}) => {
   };
   
   return (
-    <ul className="flex items-center mt-4">
+    <ul className="flex items-center mt-4 justify-center">
       <li>
         <button
           className={currentPage === 1 ? "cursor-not-allowed opacity-50" : ''}

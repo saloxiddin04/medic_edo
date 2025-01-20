@@ -73,44 +73,46 @@ const ModuleTest = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-between">
-        <div className={'flex items-center gap-5'}>
+      <div className="flex justify-center flex-col lg:flex-row lg:justify-between">
+        <div className={'flex items-center gap-5 flex-col lg:flex-row'}>
           <Link
             to={ROUTES.CREATEMODULETEST}
-            className="btn-primary mt-1 inline-block"
+            className="btn-primary mt-1 inline-block text-sm lg:text-lg"
           >
             Create Test
           </Link>
-          <input
-            className='border focus:border-blue-400 py-2 mt-1 px-2.5 rounded'
-            type={'text'}
-            value={searchTestState}
-            onChange={(e) => {
-              const {value} = e.target
-              if(searchTestState !== '') {
-                setTestUser(value)
-                searchTestFunc(value)
-              } else {
-                localStorage.setItem('ModuleTest', '1')
-                localStorage.setItem('currentPage', '1')
-                localStorage.setItem('searchTestState', value)
-                setTestUser(value)
-                searchTestFunc(value)
-              }
-            }}
-            placeholder={'Search Test'}
-          />
-          <div
-            className={'cursor-pointer'}
-            onClick={() => {
-              localStorage.removeItem('searchTestState')
-              localStorage.removeItem('ModuleTest')
-              localStorage.removeItem('currentPage')
-              setTestUser('')
-              dispatch(getTests({page_size: 10, page}))
-            }}
-          >
-            <AiOutlineClose size={20}/>
+          <div className="flex gap-1 items-center">
+            <input
+              className="border focus:border-blue-400 py-2 mt-1 px-2.5 rounded"
+              type={'text'}
+              value={searchTestState}
+              onChange={(e) => {
+                const {value} = e.target
+                if (searchTestState !== '') {
+                  setTestUser(value)
+                  searchTestFunc(value)
+                } else {
+                  localStorage.setItem('ModuleTest', '1')
+                  localStorage.setItem('currentPage', '1')
+                  localStorage.setItem('searchTestState', value)
+                  setTestUser(value)
+                  searchTestFunc(value)
+                }
+              }}
+              placeholder={'Search Test'}
+            />
+            <div
+              className={'cursor-pointer'}
+              onClick={() => {
+                localStorage.removeItem('searchTestState')
+                localStorage.removeItem('ModuleTest')
+                localStorage.removeItem('currentPage')
+                setTestUser('')
+                dispatch(getTests({page_size: 10, page}))
+              }}
+            >
+              <AiOutlineClose size={20}/>
+            </div>
           </div>
         </div>
         
@@ -120,8 +122,8 @@ const ModuleTest = () => {
           onPageChange={handlePageChange} // Pass the handlePageChange function
         />
       </div>
-      <div className="flex flex-col mt-3">
-        <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="flex flex-col mt-3 overflow-y-auto">
+        <div className="my-2 sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">

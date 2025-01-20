@@ -233,10 +233,10 @@ const CreateModuleTest = () => {
   
   return (
     <form onSubmit={saveDatas} className="card">
-      <div className="my-5 flex items-start gap-5">
-        <div className="w-1/2">
-          <div className='flex items-center gap-5'>
-            <div className='w-1/2'>
+      <div className="my-5 flex flex-wrap lg:flex-nowrap items-start gap-5">
+        <div className="w-full lg:w-1/2">
+          <div className='flex items-center flex-wrap lg:flex-nowrap gap-5'>
+            <div className='w-full lg:w-1/2'>
               <label htmlFor="moduleName">Select Modul</label>
               <Select
                 options={moduleList?.results}
@@ -249,7 +249,7 @@ const CreateModuleTest = () => {
                 {showRequired && !data.modul_id && "required"}
               </p>
             </div>
-            <div className='w-1/2'>
+            <div className='w-full lg:w-1/2'>
               <label htmlFor="moduleName">Select System</label>
               <Select
                 options={systemList?.results}
@@ -265,8 +265,8 @@ const CreateModuleTest = () => {
           </div>
           {data.options &&
             data.options.map((section, index) => (
-              <div key={index} className="flex items-center gap-5 mt-5">
-                <label className="w-2/12">
+              <div key={index} className="flex items-center flex-wrap lg:flex-nowrap gap-5 mt-5">
+                <label className="w-full lg:w-2/12">
                   Key
                   <Select
                     placeholder=""
@@ -285,7 +285,7 @@ const CreateModuleTest = () => {
                     {showRequired && !section.key && "required"}
                   </p>
                 </label>
-                <label className="w-9/12">
+                <label className="w-10/12 lg:w-9/12">
                   Answer
                   <input
                     type="text"
@@ -322,7 +322,7 @@ const CreateModuleTest = () => {
             ))}
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <label htmlFor="testQuestion">Test question</label>
           <JoditEditor
             className="mt-1 mb-3"
