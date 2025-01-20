@@ -50,12 +50,12 @@ const Users = () => {
   
   return (
     <>
-      <div className={'card flex justify-between items-center'}>
-        <div className='w-1/4 flex items-center gap-5'>
+      <div className={'card flex flex-wrap lg:flex-nowrap justify-center lg:justify-between items-center'}>
+        <div className='lg:w-1/4 w-full flex justify-center lg:justify-normal items-center gap-5'>
           <input
             className='border focus:border-blue-400 py-2 px-2.5 rounded'
             type={'text'}
-            value={searchUserState}
+            value={searchUserState || ''}
             onChange={(e) => searchUserFunc(e.target.value)}
             placeholder={'Search User'}
           />
@@ -67,7 +67,7 @@ const Users = () => {
             <AiOutlineClose size={20}/>
           </div>
         </div>
-        <div>
+        <div className="overflow-y-auto">
           <Pagination
             totalItems={users && users.count}
             itemsPerPage={10}
@@ -75,7 +75,7 @@ const Users = () => {
           />
         </div>
       </div>
-      <div className="card mt-8">
+      <div className="card mt-8 overflow-y-auto">
         <table className='min-w-full bg-gray-200'>
           <thead className='bg-gray-50'>
           <tr>
@@ -126,7 +126,7 @@ const Users = () => {
                       navigate(`/users/${item.id}`)
                     }}
                   >
-                    <BiChevronRightCircle size='30' color={'#28CD41'}/>
+                    <BiChevronRightCircle size='22' color={'#28CD41'}/>
                   </button>
                   <button
                     onClick={() => {
@@ -134,10 +134,10 @@ const Users = () => {
                     }}
                     className='bg-yellow rounded mr-3'
                   >
-                    <HiPencil size={30} color={'#fff'}/>
+                    <HiPencil size={22} color={'#fff'}/>
                   </button>
                   <button onClick={() => handleOpenModal(item.id)} className='bg-red-500 rounded'>
-                    <HiTrash size={30} color={'#fff'}/>
+                    <HiTrash size={22} color={'#fff'}/>
                   </button>
                 </td>
               </tr>
