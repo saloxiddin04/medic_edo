@@ -61,14 +61,14 @@ const Explanation = () => {
 
       <div className="w-[94vw] mt-20 p-5 h-[80vh] overflow-y-scroll">
         <div
-          className="w-[50vw]"
+          className="lg:w-[50vw] w-full"
           dangerouslySetInnerHTML={{
             __html: explanation.isFilled
               ? explanation.test_question.question
               : "",
           }}
         />
-        <div className="w-[50vw]">
+        <div className="lg:w-[50vw] w-full">
           {explanation?.isFilled && explanation?.test_question?.image2 && (
             <img
               src={explanation?.test_question?.image2}
@@ -112,7 +112,7 @@ const Explanation = () => {
           <h1 className="text-2xl text-center">Correct Answer</h1>
           <hr className="my-5" />
           <div
-            className="w-[50vw] mb-3"
+            className="lg:w-[50vw] w-full mb-3"
             dangerouslySetInnerHTML={{
               __html: explanation.isFilled
                 ? explanation.test_question.correct_answer

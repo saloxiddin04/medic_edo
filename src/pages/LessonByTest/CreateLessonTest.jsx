@@ -281,7 +281,7 @@ const CreateLessonTest = () => {
 			<div className="card">
 				<h1 className="text-xl">Test Mode</h1>
 				
-				<div className="flex items-center gap-10 mt-10 mb-5">
+				<div className="flex items-center gap-10 mt-10 mb-5 flex-wrap">
 					<div className="flex items-center gap-3">
 						<span>Tutor:</span>
 						<label className="relative inline-flex items-center cursor-pointer">
@@ -378,7 +378,7 @@ const CreateLessonTest = () => {
 	            className="rounded-full border border-purple-400 py-1 px-2 ml-1">{questionModeList?.question_total}</span>
           </span>
 				</h1>
-				<div className="mb-5 mt-2 flex gap-10 justify-start items-center">
+				<div className="mb-5 mt-2 flex gap-10 justify-start items-center flex-wrap">
 					{questionModeList?.question_mode?.length > 0 && questionModeList?.question_mode?.filter(el => el?.name !== 'Unused' && el?.name !== 'Used')?.map((item) => (
 						<div key={item.name}>
 							<label className="mb-2 inline-block cursor-pointer">
@@ -414,9 +414,9 @@ const CreateLessonTest = () => {
 						<span className="ml-2 font-bold">All Modules</span>
 					</label>
 				</div>
-				<div className="flex flex-wrap mb-5 mt-2 ml-4">
+				<div className="flex flex-wrap mb-5 mt-2 ml-4 sm:ml-4">
 					{moduleListForLesson && moduleListForLesson?.map((item) => (
-						<div className="w-1/2" key={item.id}>
+						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input
 									type="checkbox"
@@ -439,7 +439,7 @@ const CreateLessonTest = () => {
 				<h1 className="text-xl">Lessons</h1>
 				<hr/>
 				
-				<div className="w-1/3 mt-5">
+				<div className="w-full sm:w-1/3 sm:mb-0">
 					<label className="mb-2 inline-block cursor-pointer">
 						<input
 							type="checkbox"
@@ -452,7 +452,7 @@ const CreateLessonTest = () => {
 				</div>
 				<div className="flex flex-wrap mb-5 ml-4">
 					{systemListForLesson?.length > 0 && systemListForLesson?.map((item) => (
-						<div className="w-1/2" key={item.id}>
+						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
 							<label className="mb-2 inline-block cursor-pointer">
 								<input
 									type="checkbox"
@@ -485,7 +485,7 @@ const CreateLessonTest = () => {
 				) : (
 					<div className="flex items-end gap-4">
 						<button
-							className="btn-primary"
+							className="btn-primary sm:text-sm"
 							onClick={pastTest}
 							disabled={
 								(
