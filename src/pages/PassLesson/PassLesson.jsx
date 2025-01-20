@@ -238,10 +238,10 @@ const PassLesson = () => {
 		
 		return (
 			<text
-				x={x + width - 45}
+				x={x}
 				y={y - 10}
 				fill="#343B45"
-				textAnchor="end"
+				textAnchor="start"
 			>
 				{`${value}`}
 			</text>
@@ -272,7 +272,7 @@ const PassLesson = () => {
 			{(getUserData()?.role === "admin" || getUserData()?.role === "teacher") ? (
 				<div className="card mt-8">
 					<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-					<div className="flex item-center justify-between">
+					<div className="flex item-center justify-between flex-wrap gap-5">
 						<div className="flex items-center gap-5">
 							<PieChart width={180} height={200}>
 								<Pie
@@ -284,7 +284,7 @@ const PassLesson = () => {
 									fill="#8884d8"
 									dataKey="value"
 								>
-									{adminData.map((entry, index) => (
+									{adminData?.map((entry, index) => (
 										<Cell
 											key={`cell-${index}`}
 											fill={COLORS[index % COLORS.length]}
@@ -299,7 +299,7 @@ const PassLesson = () => {
 									<li className="flex items-center gap-3 ">
 										<GiPlainCircle className="mt-1 text-primary" size="20"/>
 										<span>
-								        {" "}
+                        {" "}
 											Correct Answers:{" "}
 											<b>
 								          {resultUserStatistic?.correct_answer_interest}%
@@ -309,7 +309,7 @@ const PassLesson = () => {
 									<li className="flex items-center gap-3 mt-2">
 										<GiPlainCircle className="mt-1 text-yellow" size="20"/>
 										<span>
-								        {" "}
+                        {" "}
 											Incorrect Answer:{" "}
 											<b>{resultUserStatistic?.worning_interest}%</b>
 								      </span>
@@ -328,7 +328,7 @@ const PassLesson = () => {
 									bottom: 5
 								}}
 								maxBarsize={10}
-								width={400}
+								width={window.innerWidth <= 768 ? 300 : 400}
 								height={250}
 								data={topFiveStudents}
 								layout="vertical"
@@ -373,7 +373,7 @@ const PassLesson = () => {
 									left: 50,
 									bottom: 5
 								}}
-								width={350}
+								width={window.innerWidth <= 768 ? 300 : 400}
 								height={250}
 								data={topModules}
 								layout="vertical"
@@ -415,8 +415,8 @@ const PassLesson = () => {
 					<div>
 						<section>
 							<h1 className="text-xl mb-5">Performance & Adaptive Review</h1>
-							<div className="flex items-center gap-8">
-								<div className="flex items-center gap-10 w-1/2">
+							<div className="flex items-center gap-8 flex-wrap">
+								<div className="flex items-center gap-10 w-[48%]">
 									<BarChart width={150} height={180} data={userCompareResult}>
 										<Bar dataKey="value">
 											{userCompareResult.map((entry, index) => (
@@ -453,7 +453,7 @@ const PassLesson = () => {
 									</div>
 								</div>
 								
-								<div className="flex items-center gap-10 w-1/2">
+								<div className="flex items-center gap-10 w-[48%]">
 									<PieChart width={180} height={200}>
 										<Pie
 											data={adminData}
@@ -507,8 +507,8 @@ const PassLesson = () => {
 				className={`card mt-8 ${(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") ? 'block' : 'hidden'}`}>
 				{(getUserData()?.role === 'admin' || getUserData()?.role === "teacher") && (
 					<>
-						<div className="flex items-center gap-[80px] mb-5">
-							<div className="w-1/3 flex items-end gap-5">
+						<div className="flex flex-wrap items-center gap-5 lg:gap-[80px] mb-5">
+							<div className="w-full lg:w-1/3 flex items-end gap-3 lg:gap-5">
 								<div className="w-full">
 									<label htmlFor="modul">Modules</label>
 									<Select
@@ -531,7 +531,7 @@ const PassLesson = () => {
 									<AiOutlineClose size={20}/>
 								</div>
 							</div>
-							<div className="w-1/3 flex items-end gap-5">
+							<div className="w-full lg:w-1/3 flex items-end gap-3 lg:gap-5">
 								<div className="w-full">
 									<label htmlFor="user">Users</label>
 									<Select
@@ -555,7 +555,7 @@ const PassLesson = () => {
 								</div>
 							</div>
 						</div>
-						<ResponsiveContainer width={'100%'} aspect={3.0}>
+						<ResponsiveContainer width={'100%'} aspect={1.5} className={'mt-5'}>
 							<BarChart
 								height={400}
 								data={allTestResultModules}
@@ -564,7 +564,7 @@ const PassLesson = () => {
 								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
 								<XAxis dataKey="interest"/>
 								<Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
-									<LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'}/>
+									<LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'} dx={0} dy={-10} textAnchor="middle"/>
 								</Bar>
 							</BarChart>
 						</ResponsiveContainer>
@@ -574,29 +574,32 @@ const PassLesson = () => {
 			
 			{(getUserData()?.role !== 'admin' || getUserData()?.role !== 'teacher') && (
 				<div className="card mt-8">
-					<div>
-						<section>
-							<div className="flex items-center justify-center text-center gap-8">
-								<div className="border py-2 px-2.5 rounded">
-									<h1>All tests</h1>
-									<span>{userTestHistory?.all_test_count}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Correct answers</h1>
-									<span>{userTestHistory?.correct_answer_count}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Unsolved answers</h1>
-									<span>{userTestHistory?.unsolved_test}</span>
-								</div>
-								<div className="border py-2 px-2.5 rounded">
-									<h1>Wrong answers</h1>
-									<span>{userTestHistory?.worning_answer_count}</span>
-								</div>
+					<section className="overflow-y-auto">
+						<div className="flex flex-wrap items-center justify-center text-center gap-4 sm:gap-8">
+							{/* All tests */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">All tests</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.all_test_count}</span>
 							</div>
-						</section>
-					</div>
-					<div className="mt-3">
+							{/* Correct answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Correct answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.correct_answer_count}</span>
+							</div>
+							{/* Unsolved answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Unsolved answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.unsolved_test}</span>
+							</div>
+							{/* Wrong answers */}
+							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
+								<h1 className="text-base sm:text-lg font-semibold">Wrong answers</h1>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.worning_answer_count}</span>
+							</div>
+						</div>
+					</section>
+					
+					<div className="mt-3 overflow-y-auto">
 						<table className="min-w-full bg-gray-200">
 							<thead className="bg-gray-50">
 							<tr>
@@ -645,8 +648,7 @@ const PassLesson = () => {
 							</tr>
 							</thead>
 							<tbody>
-							{userTestHistory && (
-								userTestHistory?.tests_history.map((item) => (
+							{userTestHistory?.tests_history?.map((item) => (
 									<tr className="bg-white px-2 py-1 text-center mt-2" key={item.id}>
 										<td>{item.id}</td>
 										<td>{item.correct_answer_count}</td>
@@ -677,8 +679,7 @@ const PassLesson = () => {
 											</button>
 										</td>
 									</tr>
-								))
-							)}
+								))}
 							</tbody>
 						</table>
 					</div>

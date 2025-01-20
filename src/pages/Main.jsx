@@ -615,22 +615,22 @@ const Main = () => {
 							{/* All tests */}
 							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
 								<h1 className="text-base sm:text-lg font-semibold">All tests</h1>
-								<span className="text-lg sm:text-xl font-bold">{userTestHistory.all_test_count}</span>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.all_test_count}</span>
 							</div>
 							{/* Correct answers */}
 							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
 								<h1 className="text-base sm:text-lg font-semibold">Correct answers</h1>
-								<span className="text-lg sm:text-xl font-bold">{userTestHistory.correct_answer_count}</span>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.correct_answer_count}</span>
 							</div>
 							{/* Unsolved answers */}
 							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
 								<h1 className="text-base sm:text-lg font-semibold">Unsolved answers</h1>
-								<span className="text-lg sm:text-xl font-bold">{userTestHistory.unsolved_test}</span>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.unsolved_test}</span>
 							</div>
 							{/* Wrong answers */}
 							<div className="border py-2 px-2.5 rounded w-full sm:w-auto">
 								<h1 className="text-base sm:text-lg font-semibold">Wrong answers</h1>
-								<span className="text-lg sm:text-xl font-bold">{userTestHistory.worning_answer_count}</span>
+								<span className="text-lg sm:text-xl font-bold">{userTestHistory?.worning_answer_count}</span>
 							</div>
 						</div>
 					</section>
@@ -684,8 +684,7 @@ const Main = () => {
 							</tr>
 							</thead>
 							<tbody>
-							{userTestHistory.isFilled && (
-								userTestHistory.tests_history.map((item) => (
+							{userTestHistory?.tests_history?.map((item) => (
 									<tr className="bg-white px-2 py-1 text-center mt-2" key={item.id}>
 										<td>{item.id}</td>
 										<td>{item.correct_answer_count}</td>
@@ -716,8 +715,7 @@ const Main = () => {
 											</button>
 										</td>
 									</tr>
-								))
-							)}
+								))}
 							</tbody>
 						</table>
 					</div>
