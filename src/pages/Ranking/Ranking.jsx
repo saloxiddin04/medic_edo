@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FaCoins, FaStar, FaTrophy, FaUsers} from "react-icons/fa";
+import {FaChevronCircleRight, FaCoins, FaStar, FaTrophy, FaUsers} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {getCoins, getScores} from "../../features/Ranking/RankingSlice";
 import {getUserData} from "../../auth/jwtService";
@@ -82,8 +82,8 @@ const Ranking = () => {
 			case 1:
 				return (
 					<>
-						<div className="flex flex-col items-center my-6">
-							<div className="flex justify-center items-end relative w-full h-[300px] ranking">
+						<div className="flex flex-col items-center my-6 mt-20 md:mt-6">
+							<div className="flex justify-center items-end relative w-full md:w-4/6 h-[300px] ranking">
 								
 								{/* 2nd Place */}
 								<div className="flex flex-col items-center justify-start w-1/4">
@@ -92,11 +92,11 @@ const Ranking = () => {
 										className="bg-gray-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[1]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{scores?.data[1]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{scores?.data[1]?.name}</h3>
 									<div
 										className="bg-gray-200 text-center w-full h-32 flex items-start justify-center rounded-t-md shadow-md pt-5">
 										<h3
-											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">2</h3>
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">2</h3>
 									</div>
 								</div>
 								
@@ -107,10 +107,11 @@ const Ranking = () => {
 										className="bg-yellow w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[0]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{scores?.data[0]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{scores?.data[0]?.name}</h3>
 									<div
 										className="bg-yellow text-center w-full h-48 flex items-start justify-center rounded-t-md shadow-md pt-5">
-										<h3 className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">1</h3>
+										<h3
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">1</h3>
 									</div>
 								</div>
 								
@@ -121,20 +122,19 @@ const Ranking = () => {
 										className="bg-orange-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(scores?.data[2]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{scores?.data[2]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{scores?.data[2]?.name}</h3>
 									<div
 										className="bg-orange-300 text-center w-full h-24 flex items-center justify-center rounded-t-md shadow-md">
 										<h3
-											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">3</h3>
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">3</h3>
 									</div>
 								</div>
 							
 							</div>
 						</div>
 						
-						
 						<div className="overflow-y-auto">
-							<table className="w-full divide-y divide-gray-200 border">
+							<table className="w-5/6 mx-auto divide-y divide-gray-200 border">
 								<thead className="bg-gray-50">
 								<tr>
 									<th
@@ -180,35 +180,78 @@ const Ranking = () => {
 										</td>
 									</tr>
 									:
-									scores?.data?.map((item) => (
-										<tr key={item.id}>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-												{item?.rank}
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-										<span
-											className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item.name}
-											</td>
-											<td
-												className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-												{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
-											</td>
-											{getUserData().role === 'admin' && (
-												<td
-													className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-												>
-													<button
-														className="btn-warning btn-sm ml-3"
-														onClick={() => {
-															handleOpenModal(item?.id, null, item?.score, item?.name)
-														}}
-													>
-														<AiFillEdit/>
-													</button>
+									<>
+										{scores?.data?.map((item) => (
+											<tr key={item.id}>
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+													{item?.rank}
 												</td>
-											)}
-										</tr>
-									))
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+												<span
+													className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item.name}
+												</td>
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+													{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
+												</td>
+												{getUserData().role === 'admin' && (
+													<td
+														className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
+													>
+														<button
+															className="btn-warning btn-sm ml-3"
+															onClick={() => {
+																handleOpenModal(item?.id, null, item?.score, item?.name)
+															}}
+														>
+															<AiFillEdit/>
+														</button>
+													</td>
+												)}
+											</tr>
+										))}
+										
+										{scores?.current_user?.rank && (
+											<tr className="bg-gray-200">
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+													{scores.current_user.rank}
+												</td>
+												
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+				            <span className="rounded-full bg-gray-300 text-dark p-2">
+				              {getInitialsName(scores.current_user.name)}
+				            </span>{" "}
+													{scores.current_user.name}
+												</td>
+												
+												{/* Score Column */}
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+													{scores.current_user.score}{" "}
+													<FaStar size={20} color="rgb(255 207 0)"/>
+												</td>
+												
+												{/* Action Column (Admin Only) */}
+												{getUserData().role === "admin" && (
+													<td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+														<button
+															className="btn-warning btn-sm ml-3"
+															onClick={() => {
+																handleOpenModal(
+																	scores.current_user.id,
+																	null,
+																	scores.current_user.score,
+																	scores.current_user.name
+																);
+															}}
+														>
+															<AiFillEdit/>
+														</button>
+													</td>
+												)}
+											</tr>
+										)}
+									</>
 								}
 								</tbody>
 							</table>
@@ -232,8 +275,8 @@ const Ranking = () => {
 			case 2:
 				return (
 					<>
-						<div className="flex flex-col items-center my-6">
-							<div className="flex justify-center items-end relative w-full h-[300px] ranking">
+						<div className="flex flex-col items-center my-6 mt-20 md:mt-6">
+							<div className="flex justify-center items-end relative w-full md:w-4/6 h-[300px] ranking">
 								
 								{/* 2nd Place */}
 								<div className="flex flex-col items-center justify-start w-1/4">
@@ -242,11 +285,11 @@ const Ranking = () => {
 										className="bg-gray-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(coins?.data[1]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{coins?.data[1]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{coins?.data[1]?.name}</h3>
 									<div
 										className="bg-gray-200 text-center w-full h-32 flex items-start justify-center rounded-t-md shadow-md pt-5">
 										<h3
-											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">2</h3>
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">2</h3>
 									</div>
 								</div>
 								
@@ -257,11 +300,11 @@ const Ranking = () => {
 										className="bg-yellow w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(coins?.data[0]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{coins?.data[0]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{coins?.data[0]?.name}</h3>
 									<div
 										className="bg-yellow text-center w-full h-48 flex items-start justify-center rounded-t-md shadow-md pt-5">
 										<h3
-											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">1</h3>
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">1</h3>
 									</div>
 								</div>
 								
@@ -272,11 +315,11 @@ const Ranking = () => {
 										className="bg-orange-300 w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold">
 										{getInitialsName(coins?.data[2]?.name)}
 									</div>
-									<h3 className="text-lg font-semibold">{coins?.data[2]?.name}</h3>
+									<h3 className="text-sm md:text-lg font-semibold text-center">{coins?.data[2]?.name}</h3>
 									<div
 										className="bg-orange-300 text-center w-full h-24 flex items-center justify-center rounded-t-md shadow-md">
 										<h3
-											className="text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">3</h3>
+											className="text-sm md:text-lg font-semibold w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">3</h3>
 									</div>
 								</div>
 							
@@ -284,7 +327,7 @@ const Ranking = () => {
 						</div>
 						
 						<div className="overflow-y-auto">
-							<table className="w-full divide-y divide-gray-200 overflow-y-auto border">
+							<table className="w-5/6 mx-auto divide-y divide-gray-200 overflow-y-auto border">
 								<thead className="bg-gray-50">
 								<tr>
 									<th
@@ -330,35 +373,78 @@ const Ranking = () => {
 										</td>
 									</tr>
 									:
-									coins?.data?.map((item) => (
-										<tr key={item.id}>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-												{item?.rank}
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
+									<>
+										{coins?.data?.map((item) => (
+											<tr key={item.id}>
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+													{item?.rank}
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap text-center">
 										<span
 											className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item?.name}
-											</td>
-											<td
-												className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-												{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
-											</td>
-											{getUserData().role === 'admin' && (
-												<td
-													className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-												>
-													<button
-														className="btn-warning btn-sm ml-3"
-														onClick={() => {
-															handleOpenModal(item?.id, item?.coin, null, item?.name)
-														}}
-													>
-														<AiFillEdit/>
-													</button>
 												</td>
-											)}
-										</tr>
-									))
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+													{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
+												</td>
+												{getUserData().role === 'admin' && (
+													<td
+														className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
+													>
+														<button
+															className="btn-warning btn-sm ml-3"
+															onClick={() => {
+																handleOpenModal(item?.id, item?.coin, null, item?.name)
+															}}
+														>
+															<AiFillEdit/>
+														</button>
+													</td>
+												)}
+											</tr>
+										))}
+										
+										{coins?.current_user?.rank && (
+											<tr className="bg-gray-200">
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+													{coins?.current_user?.rank}
+												</td>
+												
+												<td className="px-6 py-4 whitespace-nowrap text-center">
+				            <span className="rounded-full bg-gray-300 text-dark p-2">
+				              {getInitialsName(coins?.current_user?.name)}
+				            </span>{" "}
+													{coins?.current_user?.name}
+												</td>
+												
+												{/* Score Column */}
+												<td
+													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+													{coins?.current_user?.coin}{" "}
+													<FaCoins size={20} color="rgb(255 207 0)"/>
+												</td>
+												
+												{/* Action Column (Admin Only) */}
+												{getUserData().role === "admin" && (
+													<td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+														<button
+															className="btn-warning btn-sm ml-3"
+															onClick={() => {
+																handleOpenModal(
+																	coins?.current_user?.id,
+																	coins?.current_user?.coin,
+																	null,
+																	coins?.current_user?.name
+																);
+															}}
+														>
+															<AiFillEdit/>
+														</button>
+													</td>
+												)}
+											</tr>
+										)}
+									</>
 								}
 								</tbody>
 							</table>
