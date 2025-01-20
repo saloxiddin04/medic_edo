@@ -56,8 +56,8 @@ const CreateGroup = () => {
   
   return (
     <form className="card" onSubmit={saveData}>
-      <div className="my-5 flex items-center gap-10">
-        <div className="w-1/2">
+      <div className="my-5 flex items-center flex-wrap lg:flex-nowrap gap-10">
+        <div className="lg:w-1/2 w-full">
           <label htmlFor="moduleName">Group name</label>
           <input
             required
@@ -69,7 +69,7 @@ const CreateGroup = () => {
             onChange={(e) => setModuleName(e.target.value)}
           />
         </div>
-        <div className="w-1/2">
+        <div className="lg:w-1/2 w-full">
           <label htmlFor="modulUniqueName">Group unique name</label>
           <input
             required

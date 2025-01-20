@@ -33,10 +33,10 @@ const Group = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-between">
+      <div className="flex justify-center flex-wrap lg:flex-nowrap lg:justify-between">
         <Link
           to={ROUTES.CREATE_GROUP}
-          className="btn-primary mt-3 inline-block"
+          className="btn-primary mt-3 inline-block text-sm md:text-lg"
         >
           Create Group
         </Link>

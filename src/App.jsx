@@ -82,7 +82,7 @@ const App = () => {
           <div
             className={`${
               isSidebarOpen ? 'sm:ml-0 lg:ml-56' : 'ml-0'
-            } lg:p-8 pt-24 p-4 min-h-screen bg-[#f5f5f5]`}
+            } lg:px-8 pt-24 p-4 min-h-screen bg-[#f5f5f5]`}
           >
             <AppRoutes/>
           </div>
