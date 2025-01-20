@@ -56,8 +56,8 @@ const CreateModule = () => {
 
   return (
     <form className="card" onSubmit={saveData}>
-      <div className="my-5 flex items-center gap-10">
-        <div className="w-1/2">
+      <div className="my-5 flex flex-wrap items-center gap-10">
+        <div className="w-full md:w-1/2">
           <label htmlFor="moduleName">Modul name</label>
           <input
             required
@@ -69,7 +69,7 @@ const CreateModule = () => {
             onChange={(e) => setModuleName(e.target.value)}
           />
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <label htmlFor="modulUniqueName">Modul unique name</label>
           <input
             required
@@ -93,9 +93,15 @@ const CreateModule = () => {
             Processing...
           </button>
         ) : (
-          <button type="submit" className="btn-primary">
-            Save
-          </button>
+          <div className="flex items-center justify-between w-full">
+            <button type="submit" className="btn-danger" onClick={() => navigate('/module')}>
+              Back
+            </button>
+            
+            <button type="submit" className="btn-primary">
+              Save
+            </button>
+          </div>
         )}
       </div>
     </form>
