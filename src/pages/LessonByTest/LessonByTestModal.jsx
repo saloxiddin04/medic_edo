@@ -31,7 +31,7 @@ const LessonByTestModal = ({isModalOpen, modulId, closeModal}) => {
 			<div
 				className={
 					isModalOpen
-						? "fixed z-10 inset-0 overflow-y-auto"
+						? "fixed z-50 inset-0 overflow-y-auto"
 						: "opacity-0 pointer-events-none"
 				}
 			>
@@ -44,7 +44,7 @@ const LessonByTestModal = ({isModalOpen, modulId, closeModal}) => {
 				>
 					<div className="fixed inset-0 bg-gray-500 opacity-75"></div>
 					<div
-						className="bg-white w-full rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full">
+						className="bg-white w-11/12 rounded-lg overflow-hidden shadow-xl transform transition-all md:w-11/12">
 						<div className="w-full p-4 flex items-center justify-between">
 							<div className="flex items-center gap-2 w-4/5">
 								<input
@@ -68,8 +68,8 @@ const LessonByTestModal = ({isModalOpen, modulId, closeModal}) => {
 								<IoClose/>
 							</button>
 						</div>
-						<div className={'w-[97%] m-auto'}>
-							<table className="w-full divide-y divide-gray-200 border px-4">
+						<div className={'w-[97%] overflow-y-auto m-auto'}>
+							<table className="w-full divide-y divide-gray-200 border px-4 overflow-y-auto">
 								<thead className="whitespace-nowrap">
 								<tr>
 									<th

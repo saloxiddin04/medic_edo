@@ -36,7 +36,7 @@ const Module = () => {
 
   return (
     <div className="card">
-      <div className="flex justify-between">
+      <div className="flex justify-center flex-wrap lg:flex-nowrap lg:justify-between">
         <Link
           to={ROUTES.CREATEMODULE}
           className="btn-primary mt-3 inline-block text-sm md:text-lg"

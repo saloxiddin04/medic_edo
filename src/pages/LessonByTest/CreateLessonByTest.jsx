@@ -112,7 +112,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		<div
 			className={
 				isModalOpen
-					? "fixed z-10 inset-0 overflow-y-auto"
+					? "fixed z-50 inset-0 overflow-y-auto"
 					: "opacity-0 pointer-events-none"
 			}
 		>
@@ -125,14 +125,14 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 			>
 				<div className="fixed inset-0 bg-gray-500 opacity-75"></div>
 				<div
-					className="bg-white px-4 py-4 w-full flex flex-col justify-between rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-5xl sm:w-full">
+					className="bg-white px-4 py-4 w-11/12 flex flex-col justify-between rounded-lg overflow-hidden shadow-xl transform transition-all">
 					<div className={'text-right mb-6'}>
 						<button className={'btn-danger btn-sm'} onClick={handleClose}>
 							<IoClose/>
 						</button>
 					</div>
-					<div className={'flex items-center justify-between py-6'}>
-						<div className="w-[45%] flex flex-col">
+					<div className={'flex items-center justify-between py-6 flex-wrap gap-5 lg:flex-nowrap'}>
+						<div className="w-full lg:w-[45%] flex flex-col">
 							<label htmlFor="lesson">Lesson name</label>
 							<input
 								type="text"
@@ -141,15 +141,15 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 								onChange={(e) => setLesson(e.target.value)}
 							/>
 						</div>
-						<div className="w-[45%]">
+						<div className="w-full lg:w-[45%]">
 							<label htmlFor="moduleName">Select Question {question?.length}</label>
 							<div className="relative w-full max-w-md mx-auto">
 								<div
-									className="border border-gray-300 rounded-md p-2 cursor-pointer bg-white max-h-40 overflow-y-auto"
+									className="w-full border border-gray-300 rounded-md p-2 cursor-pointer bg-white max-h-40 overflow-y-auto"
 									ref={selectRef}
 									onClick={toggleDropdown}
 								>
-									<div className="flex flex-wrap gap-2">
+									<div className="flex flex-wrap gap-2 w-full">
 										{question.length > 0 ? (
 											question.map((id) => (
 												<div

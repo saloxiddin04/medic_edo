@@ -89,7 +89,7 @@ const LessonByTests = () => {
 	return (
 		<>
 			<div className="card">
-				<div className="flex justify-between">
+				<div className="flex justify-center flex-wrap md:flex-nowrap md:justify-between">
 					<div className="flex items-center gap-2">
 						<input
 							className="border focus:border-blue-400 py-2 mt-1 px-2.5 rounded"
@@ -125,7 +125,7 @@ const LessonByTests = () => {
 					</div>
 					
 					<button
-						className="btn-primary mt-1 inline-block"
+						className="btn-primary mt-1 inline-block text-sm lg:text-lg"
 						onClick={() => setCreateModal(true)}
 					>
 						Create Lesson By Test
@@ -216,7 +216,7 @@ const LessonByTests = () => {
 					</div>
 				</div>
 				
-				<div className="w-full flex justify-end">
+				<div className="w-full flex justify-end overflow-y-auto">
 					<Pagination
 						totalItems={lessonByTestsList?.count}
 						itemsPerPage={10}
