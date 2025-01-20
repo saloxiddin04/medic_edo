@@ -369,11 +369,12 @@ const CreateModuleTest = () => {
       <hr />
       <div className="mt-5">
         <h1>Correct answer</h1>
-        <div className="mt-10 flex gap-5">
-          <div>
-            <label className="w-1/12">
+        <div className="mt-10 flex gap-5 flex-wrap lg:flex-nowrap">
+          <div className="w-full">
+            <label className="w-full lg:w-1/12">
               Key
               <Select
+                className="w-full"
                 placeholder=""
                 options={variants}
                 value={{
@@ -448,7 +449,7 @@ const CreateModuleTest = () => {
             </div>
           </div>
 
-          <label className="w-11/12">
+          <label className="w-full lg:w-11/12">
             Answer
             <JoditEditor
               ref={correctAnswerRef}

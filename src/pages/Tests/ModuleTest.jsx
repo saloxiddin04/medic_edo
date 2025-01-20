@@ -73,7 +73,7 @@ const ModuleTest = () => {
   
   return (
     <div className="card">
-      <div className="flex justify-center flex-col lg:flex-row lg:justify-between">
+      <div className="flex justify-center flex-col overflow-y-auto lg:flex-row lg:justify-between">
         <div className={'flex items-center gap-5 flex-col lg:flex-row'}>
           <Link
             to={ROUTES.CREATEMODULETEST}
