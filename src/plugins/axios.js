@@ -1,5 +1,6 @@
 import { getAccessToken, logout } from "../auth/jwtService.js";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 const axiosIns = axios.create({
   // baseURL: "https://c75d-81-95-230-194.ngrok-free.app", //ngrok
@@ -22,6 +23,7 @@ axiosIns.interceptors.request.use(
     return config;
   },
   (error) => {
+    toast.error(error?.message)
     return Promise.reject(error);
   }
 );
