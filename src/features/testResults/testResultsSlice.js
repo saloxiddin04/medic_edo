@@ -19,7 +19,7 @@ export const getTestResults = createAsyncThunk(
         return res.data
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -34,7 +34,7 @@ export const getExplanation = createAsyncThunk(
       });
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -49,7 +49,7 @@ export const getUserStatisticsForAdmin = createAsyncThunk(
       );
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -64,7 +64,7 @@ export const getTopFiveStudents = createAsyncThunk(
       )
       return res.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -86,7 +86,7 @@ export const getUserTestHistory = createAsyncThunk(
         return res.data;
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -108,7 +108,7 @@ export const getUserTestHistoryForGroup = createAsyncThunk(
         return res.data;
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -123,7 +123,7 @@ export const getTopModules = createAsyncThunk(
       )
       return res.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -138,7 +138,7 @@ export const patchTestResult = createAsyncThunk(
       })
       return res.data
     } catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -161,7 +161,7 @@ export const allResultModules = createAsyncThunk(
       }
     } catch (e) {
       console.log(e)
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -176,7 +176,7 @@ export const getUserResultCompare = createAsyncThunk(
       )
       return res.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -191,7 +191,7 @@ export const getModules = createAsyncThunk(
       )
       return res.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -209,7 +209,7 @@ export const getUsers = createAsyncThunk(
         return res.data
       }
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -221,7 +221,7 @@ export const deleteUser = createAsyncThunk(
     try {
       await $axios.delete(`/users/register/${payload}`)
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }
@@ -239,7 +239,7 @@ export const searchUser = createAsyncThunk(
         return res.data
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }

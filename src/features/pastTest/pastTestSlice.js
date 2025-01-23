@@ -10,7 +10,7 @@ export const startTest = createAsyncThunk(
       const res = await $axios.post(`/test/test_result/start_test/`, payload);
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -25,7 +25,7 @@ export const getTestsById = createAsyncThunk(
         return res.data;
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -40,7 +40,7 @@ export const getExactTest = createAsyncThunk(
         return res.data;
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -57,7 +57,7 @@ export const submitTheAnswer = createAsyncThunk(
       setItem({key: "testID", value: res.data.id});
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -73,7 +73,7 @@ export const submitMarked = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      toast.error(e.message);
+      // toast.error(e.message);
       return thunkAPI.rejectWithValue(e);
     }
   }
@@ -89,7 +89,7 @@ export const submitSelectQuestion = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      toast.error(e.message);
+      // toast.error(e.message);
       return thunkAPI.rejectWithValue(e);
     }
   }
@@ -105,7 +105,7 @@ export const patchLineOption = createAsyncThunk(
       )
       return res.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }

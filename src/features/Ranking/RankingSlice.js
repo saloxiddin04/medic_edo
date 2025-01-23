@@ -15,7 +15,7 @@ export const getCoins = createAsyncThunk(
 			const res = await $axios.get(`/users/coin/`, {params})
 			return res.data
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
@@ -28,7 +28,7 @@ export const getScores = createAsyncThunk(
 			const res = await $axios.get(`/users/score/`, {params})
 			return res.data
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
@@ -40,7 +40,7 @@ export const updateRank = createAsyncThunk(
 		try {
 			return await $axios.patch(`/users/${data.type}/`, data.data)
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}

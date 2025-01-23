@@ -11,7 +11,7 @@ export const getUserDetail = createAsyncThunk(
         return res.data
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }

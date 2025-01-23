@@ -10,7 +10,7 @@ export const createModule = createAsyncThunk(
       toast.success("successfully created");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -24,7 +24,7 @@ export const createSystem = createAsyncThunk(
       toast.success("successfully created");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -38,7 +38,7 @@ export const updateModule = createAsyncThunk(
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -52,7 +52,7 @@ export const updateSystem = createAsyncThunk(
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -65,7 +65,7 @@ export const getModules = createAsyncThunk(
       const res = await $axios.get(`test/modul/`, { params });
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -78,7 +78,7 @@ export const getSystems = createAsyncThunk(
       const res = await $axios.get(`test/sistema/`, { params });
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -91,7 +91,7 @@ export const getModulesForTest = createAsyncThunk(
       const res = await $axios.get(`test/modul/get_modules_used/`, {params});
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -109,7 +109,7 @@ export const getSystemsForTest = createAsyncThunk(
       );
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -127,7 +127,7 @@ export const getQuestionModeForTest = createAsyncThunk(
       );
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -140,7 +140,7 @@ export const getModuleById = createAsyncThunk(
       const res = await $axios.get(`/test/modul/${id}`);
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -153,7 +153,7 @@ export const getSystemById = createAsyncThunk(
       const res = await $axios.get(`/test/sistema/${id}`);
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -167,7 +167,7 @@ export const deleteModul = createAsyncThunk(
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -181,7 +181,7 @@ export const deleteSystem = createAsyncThunk(
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -195,7 +195,7 @@ export const createTest = createAsyncThunk(
       toast.success("successfully created");
       return res.data;
     } catch (err) {
-      toast.error(err?.response?.data?.error);
+      // toast.error(err?.response?.data?.error);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -212,7 +212,7 @@ export const updateTest = createAsyncThunk(
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
-      toast.error(err?.response?.data?.error);
+      // toast.error(err?.response?.data?.error);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -225,7 +225,7 @@ export const getTests = createAsyncThunk(
       const res = await $axios.get(`/test/create_test/`, { params });
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -243,7 +243,7 @@ export const searchTests = createAsyncThunk(
         return res.data;
       }
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -256,7 +256,7 @@ export const getTestById = createAsyncThunk(
       const res = await $axios.get(`/test/create_test/${id}/`);
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -270,7 +270,7 @@ export const deleteTest = createAsyncThunk(
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -283,7 +283,7 @@ export const getGroup = createAsyncThunk(
       const res = await $axios.get('/group/groups/', {params})
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -296,7 +296,7 @@ export const getGroupById = createAsyncThunk(
       const res = await $axios.get(`/group/groups/${id}`)
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -310,7 +310,7 @@ export const postGroup = createAsyncThunk(
       toast.success("successfully created");
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -327,7 +327,7 @@ export const updateGroup = createAsyncThunk(
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -343,7 +343,7 @@ export const deleteGroup = createAsyncThunk(
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
-      toast.error(err.message);
+      // toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -362,7 +362,7 @@ export const getGroupBinding = createAsyncThunk(
         return res.data
       }
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -375,7 +375,7 @@ export const getGroupBindingById = createAsyncThunk(
       const res = await $axios.get(`/group/group_binding_user/${id}/`)
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -389,7 +389,7 @@ export const postGroupBinding = createAsyncThunk(
       toast.success("successfully created");
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -403,7 +403,7 @@ export const updateGroupBinding = createAsyncThunk(
       toast.success("successfully updated");
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -417,7 +417,7 @@ export const deleteGroupBinding = createAsyncThunk(
       toast.success("successfully deleted");
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -430,7 +430,7 @@ export const getUsersGroupBinding = createAsyncThunk(
       const res = await $axios.get(`/group/group_binding_user/get_group_not_joined_users/?page_size=1000000`)
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -448,7 +448,7 @@ export const getGroupBindingUsersDetail = createAsyncThunk(
         return res.data
       }
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -461,7 +461,7 @@ export const getGroupUnused = createAsyncThunk(
       const res = await $axios.get(`/group/groups/get_unused_groups/`, {params})
       return res.data
     }catch (err) {
-      toast.error(err.message)
+      // toast.error(err.message)
       return thunkAPI.rejectWithValue(err)
     }
   }
@@ -474,7 +474,7 @@ export const getTeacherList = createAsyncThunk(
       const response = await $axios.get('/users/register/get_teacher_list/', {params})
       return response.data
     } catch (e) {
-      toast.error(e.message)
+      // toast.error(e.message)
       return thunkAPI.rejectWithValue(e)
     }
   }

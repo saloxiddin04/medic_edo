@@ -32,13 +32,14 @@ axiosIns.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      if (
-        window.location.pathname !== "/sign-in" &&
-        window.location.pathname !== "/sign-up"
-      ) {
+      // if (
+      //   window.location.pathname !== "/sign-in" &&
+      //   window.location.pathname !== "/sign-up"
+      // ) {
         window.location.href = "/sign-in";
         logout();
-      }
+        window.location.reload()
+      // }
     }
     // else if (error.response.status === 422) {
     //   console.log("422", error.response);

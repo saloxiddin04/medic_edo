@@ -9,7 +9,7 @@ export const getLessonsByTests = createAsyncThunk(
 			const response = await $axios.get('group/lesson_binding/', {params})
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -22,7 +22,7 @@ export const getLessonsByTestDetail = createAsyncThunk(
 			const response = await $axios.get(`group/lesson_binding/${id}/`)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -35,7 +35,7 @@ export const deleteLessonByTest = createAsyncThunk(
 			const response = await $axios.delete(`group/lesson_binding/${id}/`)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -53,7 +53,7 @@ export const questionsDetail = createAsyncThunk(
 				return res.data
 			}
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -66,7 +66,7 @@ export const getQuestionUnused = createAsyncThunk(
 			const response = await $axios.get('group/lesson_binding/get_not_used_lesson/', {params})
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -79,7 +79,7 @@ export const getQuestionUnusedSearch = createAsyncThunk(
 			const response = await $axios.get('group/lesson_binding/get_not_used_lesson/', {params})
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -92,7 +92,7 @@ export const createLessonBinding = createAsyncThunk(
 			const response = await $axios.post('group/lesson_binding/', data)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -105,7 +105,7 @@ export const patchLessonBinding = createAsyncThunk(
 			const response = await $axios.patch(`group/lesson_binding/${data.id}/`, data.data)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -118,7 +118,7 @@ export const getResultUserStatistic = createAsyncThunk(
 			const response = await $axios.get(`test/test_result/${id}/result_user_statistic_by_lessons/`)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -131,7 +131,7 @@ export const getTopFiveStudentsLesson = createAsyncThunk(
 			const response = await $axios.get('test/test_result/top_five_students_by_lessons/')
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -144,7 +144,7 @@ export const getTopModulesLesson = createAsyncThunk(
 			const response = await $axios.get('test/test_result/top_activ_moduls_by_lessons/')
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -157,7 +157,7 @@ export const getUserResultHistoryLesson = createAsyncThunk(
 			const response = await $axios.get(`test/test_result/${id}/user_result_history_by_lessons/`)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -170,7 +170,7 @@ export const allResultModulesLesson = createAsyncThunk(
 			const response = await $axios.get(`test/test_result/all_moduls_graph_by_lessons/`, {params})
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -183,7 +183,7 @@ export const getUserResultCompareLesson = createAsyncThunk(
 			const response = await $axios.get(`test/test_result/${id}/user_result_compare_by_lessons/`)
 			return response.data
 		} catch (e) {
-			toast.error(e.message)
+			// toast.error(e.message)
 			return thunkAPI.rejectWithValue(e)
 		}
 	}
@@ -196,7 +196,7 @@ export const getModulesForLesson = createAsyncThunk(
 			const res = await $axios.get(`test/modul/get_modules_used_by_lessons/`, {params});
 			return res.data;
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
@@ -211,7 +211,7 @@ export const getSystemsForLesson = createAsyncThunk(
 			);
 			return res.data;
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
@@ -226,7 +226,7 @@ export const getQuestionModeForLesson = createAsyncThunk(
 			);
 			return res.data;
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
@@ -239,7 +239,7 @@ export const startLesson = createAsyncThunk(
 			const res = await $axios.post(`/test/test_result/start_test_by_lessons/`, payload);
 			return res.data;
 		} catch (err) {
-			toast.error(err.message);
+			// toast.error(err.message);
 			return thunkAPI.rejectWithValue(err);
 		}
 	}
