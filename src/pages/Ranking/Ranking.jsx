@@ -193,9 +193,15 @@ const Ranking = () => {
 												<td className="px-10 py-4 whitespace-nowrap text-center">
 													{rankIcons[item?.rank] || item?.rank}
 												</td>
-												<td className="px-24 py-4 whitespace-nowrap text-start">
-												<span
-													className="rounded-full bg-gray-300 text-dark p-2">{getInitialsName(item?.name)}</span> {item.name}
+												<td className="px-28 py-4 whitespace-nowrap">
+													<div className="flex items-center gap-2">
+												    <span
+													    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
+												    >
+												      {getInitialsName(item?.name)}
+												    </span>
+														<span>{item.name}</span>
+													</div>
 												</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
@@ -222,7 +228,7 @@ const Ranking = () => {
 								</tbody>
 							</table>
 							
-							<table className="mt-4 w-[62%] mx-auto divide-y divide-gray-200 border">
+							<table className="mt-4 w-[65%] mx-auto divide-y divide-gray-200 border">
 								{currentUser?.rank && (
 									<tr className="bg-blue-100">
 										<td className="px-10 py-4 whitespace-nowrap flex items-center gap-2">
@@ -231,10 +237,14 @@ const Ranking = () => {
 										</td>
 										
 										<td className="px-2 py-4 whitespace-nowrap text-start">
-							            <span className="rounded-full bg-gray-300 text-dark p-2">
-							              {getInitialsName(currentUser.name)}
-							            </span>{" "}
-											{currentUser.name}
+											<div className="flex items-center gap-2">
+										    <span
+											    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
+										    >
+										      {getInitialsName(currentUser?.name)}
+										    </span>
+												<span>{currentUser.name}</span>
+											</div>
 										</td>
 										
 										{/* Score Column */}
@@ -371,11 +381,14 @@ const Ranking = () => {
 													{rankIcons[item?.rank] || item?.rank}
 												</td>
 												<td className="px-24 py-4 whitespace-nowrap text-start">
-													<span
-														className="rounded-full bg-gray-300 text-dark p-2">
-														{getInitialsName(item?.name)}
-													</span> {" "}
-													{item?.name}
+													<div className="flex items-center gap-2">
+												    <span
+													    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
+												    >
+												      {getInitialsName(item?.name)}
+												    </span>
+														<span>{item.name}</span>
+													</div>
 												</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
@@ -410,15 +423,19 @@ const Ranking = () => {
 										</td>
 										
 										<td className="px-2 py-4 whitespace-nowrap text-start">
-							            <span className="rounded-full bg-gray-300 text-dark p-2">
-							              {getInitialsName(currentUser?.name)}
-							            </span>{" "}
-											{currentUser?.name}
+											<div className="flex items-center gap-2">
+										    <span
+											    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
+										    >
+										      {getInitialsName(currentUser?.name)}
+										    </span>
+												<span>{currentUser.name}</span>
+											</div>
 										</td>
 										
 										{/* Score Column */}
 										<td
-											className="px-10 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
+											className="px-12 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
 											{currentUser?.coin}{" "}
 											<FaCoins size={20} color="rgb(255 207 0)"/>
 										</td>
