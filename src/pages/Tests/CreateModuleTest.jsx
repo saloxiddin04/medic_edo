@@ -280,6 +280,7 @@ const CreateModuleTest = () => {
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, index)
                     }
+                    className="z-50"
                   />
                   <p className="text-danger">
                     {showRequired && !section.key && "required"}

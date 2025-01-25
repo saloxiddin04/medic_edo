@@ -23,7 +23,7 @@ const Footer = () => {
           <div></div>
         </div>
         <div className="flex items-center gap-7 -mt-2">
-          {location?.pathname === '/test-review' ? (
+          {location?.pathname === '/test-review' || location?.pathname?.startsWith('/explanation') ? (
             <button
               className="btn-danger btn-xs"
               onClick={() => navigate('/test-results')}

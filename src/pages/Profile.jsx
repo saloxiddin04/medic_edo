@@ -55,12 +55,12 @@ const Profile = () => {
   return (
     <div>
       <div className='flex gap-10'>
-        <div className="card">
+        <div className="card hidden lg:block">
           <div className='bg-gray-100 p-5 rounded'>
             <FaUserAlt size="200"/>
           </div>
         </div>
-        <div className='card flex items-center justify-between flex-wrap gap-2 w-11/12'>
+        <div className='card flex items-center justify-between flex-wrap gap-2 w-full lg:w-11/12'>
           {/*<div*/}
           {/*  className='input flex flex-col w-[48%]'*/}
           {/*  onFocus={() => handleDivFocus(1)}*/}
@@ -78,7 +78,7 @@ const Profile = () => {
           {/*  />*/}
           {/*</div>*/}
           <div
-            className='input flex flex-col w-[48%]'
+            className='input flex flex-col lg:w-[48%] w-full'
             onFocus={() => handleDivFocus(3)}
             onBlur={handleDivBlur}
           >
@@ -94,7 +94,7 @@ const Profile = () => {
             />
           </div>
           <div
-            className='input flex flex-col w-[48%]'
+            className='input flex flex-col lg:w-[48%] w-full'
             onFocus={() => handleDivFocus(4)}
             onBlur={handleDivBlur}
           >
