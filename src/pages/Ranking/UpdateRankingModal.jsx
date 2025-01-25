@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {getInitialsName} from "./Ranking";
 import {FaCoins, FaStar} from "react-icons/fa";
 import {getCoins, getScores, updateRank} from "../../features/Ranking/RankingSlice";
+import {IoMdClose} from "react-icons/io";
 
 const UpdateRankingModal = ({isModalOpen, closeModal, id, score, coin, user, page, activeBottomTab}) => {
 	const dispatch = useDispatch();
@@ -61,8 +62,11 @@ const UpdateRankingModal = ({isModalOpen, closeModal, id, score, coin, user, pag
 			>
 				<div className="fixed inset-0 bg-gray-500 opacity-75"></div>
 				<div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-					<div className="bg-gray-100 p-4">
+					<div className="bg-gray-100 p-4 flex justify-between items-center">
 						<h3 className="text-lg font-medium text-gray-900">Update rank</h3>
+						<button onClick={closeModal}>
+							<IoMdClose className="text-xl"/>
+						</button>
 					</div>
 					<div className="p-4 flex flex-col items-center gap-2">
 						<span className="py-2 px-3 rounded-full text-dark bg-gray-300">{getInitialsName(user)}</span>

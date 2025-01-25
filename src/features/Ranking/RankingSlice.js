@@ -4,9 +4,18 @@ import {toast} from "react-toastify";
 
 const initialState = {
 	loading: false,
-	coins: null,
-	scores: null
-}
+	coins: [],
+	scores: [],
+	coinsPagination: {
+		currentPage: 1,
+		per_page: null,
+	},
+	scoresPagination: {
+		currentPage: 1,
+		per_page: null,
+	},
+	currentUser: null,
+};
 
 export const getCoins = createAsyncThunk(
 	'ranking/getCoins',
@@ -52,31 +61,43 @@ const rankingSlice = createSlice({
 	extraReducers: (builder) => {
 		// getCoins
 		builder
-			.addCase(getCoins.pending, state => {
-				state.loading = true
+			.addCase(getCoins.pending, (state) => {
+				state.loading = true;
 			})
-			.addCase(getCoins.fulfilled, (state, {payload}) => {
-				state.coins = payload
-				state.loading = false
+			.addCase(getCoins.fulfilled, (state, { payload }) => {
+				const { data, current_page, total, current_user, per_page } = payload;
+				
+				state.currentUser = current_user; // Update `current_user`
+				state.coins = current_page === 1 ? data : [...state.coins, ...data]; // Append or replace
+				
+				state.coinsPagination.currentPage = current_page;
+				state.coinsPagination.per_page = per_page; // Check if there's more data
+				
+				state.loading = false;
 			})
 			.addCase(getCoins.rejected, (state) => {
-				state.coins = null
-				state.loading = false
-			})
+				state.loading = false;
+			});
 		
 		// getScores
 		builder
-			.addCase(getScores.pending, state => {
-				state.loading = true
+			.addCase(getScores.pending, (state) => {
+				state.loading = true;
 			})
-			.addCase(getScores.fulfilled, (state, {payload}) => {
-				state.scores = payload
-				state.loading = false
+			.addCase(getScores.fulfilled, (state, { payload }) => {
+				const { data, current_page, total, current_user, per_page } = payload;
+				
+				state.currentUser = current_user; // Update `current_user`
+				state.scores = current_page === 1 ? data : [...state.scores, ...data]; // Append or replace
+				
+				state.scoresPagination.currentPage = current_page;
+				state.scoresPagination.per_page = per_page; // Check if there's more data
+				
+				state.loading = false;
 			})
 			.addCase(getScores.rejected, (state) => {
-				state.scores = null
-				state.loading = false
-			})
+				state.loading = false;
+			});
 	}
 })
 
