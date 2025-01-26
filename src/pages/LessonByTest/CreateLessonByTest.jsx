@@ -18,6 +18,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 	const dropdownRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	
+	const [module_name, setModuleName] = useState(null)
 	const [lesson, setLesson] = useState(null)
 	const [question, setQuestion] = useState([])
 	const [filterText, setFilterText] = useState("");
@@ -48,6 +49,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 			dispatch(getLessonsByTestDetail(id)).then(({payload}) => {
 				setQuestion(payload?.question?.map(item => item?.id))
 				setLesson(payload?.lesson)
+				setModuleName(payload?.module_name)
 			})
 		}
 	}, [isModalOpen, id, dispatch]);
@@ -56,13 +58,14 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 		close()
 		setLesson(null)
 		setQuestion([])
+		setModuleName(null)
 		setIsOpen(false)
 		setFilterText('')
 	}
 	
 	const create = () => {
 		if (id) {
-			dispatch(patchLessonBinding({id, data: {lesson, question}})).then(({payload}) => {
+			dispatch(patchLessonBinding({id, data: {lesson, question, module_name}})).then(({payload}) => {
 				if (payload?.id) {
 					toast.success('Success')
 					handleClose()
@@ -72,7 +75,7 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 				}
 			})
 		} else {
-			dispatch(createLessonBinding({lesson, question})).then(({payload}) => {
+			dispatch(createLessonBinding({lesson, question, module_name})).then(({payload}) => {
 				if (payload?.id) {
 					toast.success('Success')
 					handleClose()
@@ -133,6 +136,15 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 					</div>
 					<div className={'flex items-center justify-between py-6 flex-wrap gap-5 lg:flex-nowrap'}>
 						<div className="w-full lg:w-[45%] flex flex-col">
+							<label htmlFor="module_name">Module name</label>
+							<input
+								type="text"
+								className="border border-gray-300 rounded outline-none p-2"
+								value={module_name || ''}
+								onChange={(e) => setModuleName(e.target.value)}
+							/>
+						</div>
+						<div className="w-full lg:w-[45%] flex flex-col">
 							<label htmlFor="lesson">Lesson name</label>
 							<input
 								type="text"
@@ -156,7 +168,8 @@ const CreateLessonByTest = ({isModalOpen, close, id}) => {
 													key={id}
 													className="flex items-center bg-gray-200 px-1 py-1 rounded-md"
 												>
-													<span className="text-gray-700">{questionsUnused?.results?.find((item) => item?.id === id)?.question}</span>
+													<span
+														className="text-gray-700">{questionsUnused?.results?.find((item) => item?.id === id)?.question}</span>
 													<button
 														onClick={(e) => {
 															e.stopPropagation();

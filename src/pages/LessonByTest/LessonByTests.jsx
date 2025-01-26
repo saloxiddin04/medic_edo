@@ -149,6 +149,12 @@ const LessonByTests = () => {
 											scope="col"
 											className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 										>
+											Module name
+										</th>
+										<th
+											scope="col"
+											className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										>
 											Lesson name
 										</th>
 										<th
@@ -172,6 +178,9 @@ const LessonByTests = () => {
 												{item.id}
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-center">
+												{item?.module_name}
+											</td>
+											<td className="px-6 py-4 whitespace-nowrap text-center">
 												{item?.lesson}
 											</td>
 											<td className="px-1 py-4 whitespace-nowrap text-center">
@@ -192,9 +201,9 @@ const LessonByTests = () => {
 														setCreateModal(true)
 													}}
 												>
-		                        <span>
-		                          <AiFillEdit/>
-		                        </span>
+	                        <span>
+	                          <AiFillEdit/>
+	                        </span>
 												</button>
 												
 												<button
