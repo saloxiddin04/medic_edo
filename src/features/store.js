@@ -8,6 +8,7 @@ import timerSlice from "./Timer/timerSlice";
 import userDetailSlice from "./userDetail/userDetailSlice";
 import lessonsByTestsSlice from "./LessonsByTests/LessonsByTestsSlice";
 import rankingSlice from "./Ranking/RankingSlice";
+import attendanceSlice from "./attendance/attendanceSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
     testResults: testResultsSlice,
     timer: timerSlice,
     userDetail: userDetailSlice,
-    ranking: rankingSlice
+    ranking: rankingSlice,
+    attendance: attendanceSlice
   },
   devTools: true,
   // middleware: (getDefaultMiddleware) =>

@@ -6,7 +6,7 @@ import {ROUTES} from "../../Routes/constants";
 import Pagination from "../../components/Pagination";
 import {AiFillDelete, AiFillEdit, AiOutlineClose} from "react-icons/ai";
 import { GiTeacher } from "react-icons/gi";
-import {FaUsers} from "react-icons/fa";
+import {FaUserCheck, FaUsers} from "react-icons/fa";
 import DeleteGroupBinding from "./DeleteGroupBinding";
 import {FaChevronCircleRight} from "react-icons/fa";
 import DetailGroupBinding from "./DetailGroupBinding";
@@ -195,6 +195,15 @@ const GroupBinding = () => {
                       
                       {getUserData()?.role !== 'teacher' && (
                         <>
+                          <Link
+                            className="btn-primary btn-sm inline-block mr-3"
+                            to={`/attendance/${item.id}`}
+                            state={{group: item?.group?.id}}
+                          >
+                            <span>
+                              <FaUserCheck/>
+                            </span>
+                          </Link>
                           <button
                             className="btn-info btn-sm mr-3"
                             onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
@@ -224,6 +233,19 @@ const GroupBinding = () => {
                           >
                             <FaChevronCircleRight/>
                           </button>
+                        </>
+                      )}
+                      
+                      {getUserData()?.role === 'teacher' && (
+                        <>
+                          <Link
+                            className="btn-primary btn-sm inline-block mr-3"
+                            to={`/attendance/${item.id}`}
+                          >
+                            <span>
+                              <FaUserCheck/>
+                            </span>
+                          </Link>
                         </>
                       )}
                     </td>

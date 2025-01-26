@@ -26,6 +26,7 @@ import LessonByTests from "../pages/LessonByTest/LessonByTests";
 import PassLesson from "../pages/PassLesson/PassLesson";
 import CreateLessonTest from "../pages/LessonByTest/CreateLessonTest";
 import Ranking from "../pages/Ranking/Ranking";
+import Attendance from "../pages/Attendance/Attendance";
 
 const AppRoutes = () => {
   return (
@@ -59,6 +60,7 @@ const AppRoutes = () => {
           <Route path={ROUTES.GROUP_BINDING} element={<GroupBinding/>} />
           <Route path={ROUTES.GROUP_BINDING_BINDING} element={<CreateGroupBinding/>} />
           <Route path={ROUTES.LESSON_BY_TESTS} element={<LessonByTests/>} />
+          <Route path={ROUTES.ATTENDANCE} element={<Attendance/>} />
         </>
       )}
       
@@ -67,6 +69,7 @@ const AppRoutes = () => {
           {" "}
           <Route path={ROUTES.GROUP_BINDING} element={<GroupBinding/>} />
           <Route path={ROUTES.GROUP_BINDING_BINDING} element={<CreateGroupBinding/>} />
+          <Route path={ROUTES.ATTENDANCE} element={<Attendance/>} />
         </>
       )}
 
