@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import {getAttendance, patchAttendance, postAttendance} from "../../features/attendance/attendanceSlice";
 import {useLocation, useParams} from "react-router-dom";
 import {getUserData} from "../../auth/jwtService";
+import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
 
 const Attendance = () => {
 	const dispatch = useDispatch();
 	const {id} = useParams()
 	const {state} = useLocation()
+	
+	const tableRef = useRef(null);
+	
 	const { loading, attendance } = useSelector((state) => state.attendance);
 	
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -21,6 +25,21 @@ const Attendance = () => {
 	).getDate();
 	
 	const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+	
+	useEffect(() => {
+		// Get the index of the current date in the daysArray
+		const today = moment().format("D");
+		const currentDayIndex = daysArray.indexOf(parseInt(today));
+		
+		// Scroll to the column of the current day
+		if (tableRef.current && currentDayIndex !== -1) {
+			const headerCells = tableRef.current.querySelectorAll("thead th");
+			const targetCell = headerCells[currentDayIndex + 1]; // +1 to account for the "Name" column
+			if (targetCell) {
+				targetCell.scrollIntoView({behavior: "smooth", block: "nearest", inline: "center"});
+			}
+		}
+	}, [daysArray]);
 	
 	// Fetch attendance data when `id` or `currentDate` changes
 	useEffect(() => {
@@ -89,29 +108,42 @@ const Attendance = () => {
 		<div className="card">
 			<div className="p-4">
 				<h1 className="text-2xl font-bold mb-4">Attendance Table</h1>
-				<div className="flex justify-between items-center mb-4">
+				<div className="flex items-center justify-between mb-4">
 					<button
-						onClick={() => handleMonthChange("prev")}
-						className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+						className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+						onClick={() => setCurrentDate(new Date())}
 					>
-						Previous
+						Current
 					</button>
-					<span className="text-xl font-semibold">{getMonthYearLabel()}</span>
-					<button
-						onClick={() => handleMonthChange("next")}
-						className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-					>
-						Next
-					</button>
+					<div className="flex items-center gap-2">
+						<button
+							onClick={() => handleMonthChange("prev")}
+							className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+						>
+							<BiChevronLeft/>
+						</button>
+						<span className="font-medium">{getMonthYearLabel()}</span>
+						<button
+							onClick={() => handleMonthChange("next")}
+							className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+						>
+							<BiChevronRight/>
+						</button>
+					</div>
 				</div>
 				<div className="overflow-x-auto">
-					<table className="table-auto w-full border-collapse border border-gray-300">
+					<table ref={tableRef} className="table-auto w-full border-collapse border border-gray-300">
 						<thead>
 						<tr className="bg-gray-200">
-							<th className="border border-gray-300 px-4 py-2">Name</th>
+							<th className="border border-gray-300 px-4 py-2 sticky left-0 bg-gray-200">
+								Name
+							</th>
 							{daysArray.map((day) => (
-								<th key={day} className="border border-gray-300 px-4 py-2">
-									{day}
+								<th key={day} className="border border-gray-300 px-2 py-1">
+									{day}{" "}
+									{currentDate.toLocaleString("default", {
+										month: "short",
+									})}
 								</th>
 							))}
 						</tr>
@@ -119,7 +151,9 @@ const Attendance = () => {
 						<tbody>
 						{attendance?.map((user) => (
 							<tr key={user.id}>
-								<td className="border border-gray-300 px-4 py-2">{user.name}</td>
+								<td className="border border-gray-300 px-4 py-2 sticky left-0 bg-white z-40">
+									{user.name}
+								</td>
 								{daysArray.map((day) => {
 									const date = moment(currentDate)
 										.date(day)
@@ -132,17 +166,35 @@ const Attendance = () => {
 									const isTeacher = role === "teacher";
 									const isAdmin = role === "admin";
 									const isEditable =
-										isAdmin || (isTeacher && moment(currentDate).date(day).isSame(moment(), "day"));
+										isAdmin ||
+										(isTeacher && moment(currentDate).date(day).isSame(moment(), "day"));
+									
+									const isCurrentDate = moment().isSame(moment(currentDate).date(day), "day");
 									
 									return (
-										<td key={day} className="border border-gray-300 px-4 py-2">
+										<td
+											key={day}
+											className={`border border-gray-300 px-4 py-2 ${!isEditable ? 'bg-gray-100' : ''} ${isCurrentDate ? 'border-2 border-x-blue-500' : ''}`}
+										>
 											<select
 												value={existAttendance?.status || ""}
 												onChange={(e) =>
-													handleChange(e, existAttendance, user?.id, date, existAttendance?.id)
+													handleChange(
+														e,
+														existAttendance,
+														user?.id,
+														date,
+														existAttendance?.id
+													)
 												}
 												disabled={!isEditable}
-												className={`focus:outline-none disabled:opacity-25 p-2 border border-gray-300 rounded ${existAttendance?.status ? (existAttendance?.status === 'was' ? 'bg-green-500 text-white' : 'bg-red-500 text-white') : ''}`}
+												className={`focus:outline-none disabled:opacity-25 p-2 border border-gray-300 rounded ${
+													existAttendance?.status
+														? existAttendance?.status === "was"
+															? "bg-green-500 text-white"
+															: "bg-red-500 text-white"
+														: ""
+												}`}
 											>
 												<option value="">--</option>
 												<option value="was">Was</option>
@@ -156,6 +208,7 @@ const Attendance = () => {
 						</tbody>
 					</table>
 				</div>
+			
 			</div>
 		</div>
 	);
