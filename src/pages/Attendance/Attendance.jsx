@@ -151,10 +151,10 @@ const Attendance = () => {
 						<tbody>
 						{attendance?.map((user) => (
 							<tr key={user.id}>
-								<td className="border border-gray-300 px-4 py-2 sticky left-0 bg-white z-40">
+								<td className="border border-gray-300 px-4 py-2 sticky left-0 bg-white z-10">
 									{user.name}
 								</td>
-								{daysArray.map((day) => {
+								{daysArray.map((day, index) => {
 									const date = moment(currentDate)
 										.date(day)
 										.format("YYYY-MM-DD");

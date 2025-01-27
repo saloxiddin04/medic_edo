@@ -126,7 +126,7 @@ const Navbar = () => {
   
   const { pathname } = useLocation();
   return (
-    <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
+    <nav className="fixed top-0 w-full z-20 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           {pathname === "/create-custom-test" ? (
