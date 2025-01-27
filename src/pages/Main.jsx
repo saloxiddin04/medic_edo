@@ -582,7 +582,7 @@ const Main = () => {
 						{/* Responsive BarChart */}
 						<ResponsiveContainer
 							width="100%"
-							aspect={1.5} // Moslashtirilgan (3:1 planshet va kichik ekranda qisqaradi)
+							aspect={3} // Moslashtirilgan (3:1 planshet va kichik ekranda qisqaradi)
 							className="mt-5"
 						>
 							<BarChart
@@ -591,7 +591,7 @@ const Main = () => {
 								margin={{ left: 10, right: 10, top: 30 }}
 							>
 								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
-								<XAxis dataKey="interest" />
+								{window.innerWidth >= 768 && <XAxis dataKey="interest" className="hidden lg:block" />}
 								<Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
 									<LabelList
 									content={renderCustomizedLabelSort} // Agar maxsus label funksiyasi ishlatilayotgan bo‘lsa

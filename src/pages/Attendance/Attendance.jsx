@@ -5,6 +5,7 @@ import {getAttendance, patchAttendance, postAttendance} from "../../features/att
 import {useLocation, useParams} from "react-router-dom";
 import {getUserData} from "../../auth/jwtService";
 import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
+import {LuChevronsLeft, LuChevronsRight} from "react-icons/lu";
 
 const Attendance = () => {
 	const dispatch = useDispatch();
@@ -61,6 +62,14 @@ const Attendance = () => {
 		});
 	};
 	
+	const handleYearChange = (direction) => {
+		setCurrentDate((prevDate) => {
+			const newDate = new Date(prevDate);
+			newDate.setFullYear(newDate.getFullYear() + (direction === "prev" ? -1 : 1));
+			return newDate;
+		});
+	};
+	
 	// Handle attendance change
 	const handleChange = (e, existAttendance, user, date, attendance_id) => {
 		const data = {
@@ -107,7 +116,7 @@ const Attendance = () => {
 	return (
 		<div className="card">
 			<div className="p-4">
-				<h1 className="text-2xl font-bold mb-4">Attendance Table</h1>
+				<h1 className="text-xl font-bold mb-4">Attendance Table {" "} <span className="text-sm">({state?.group_name})</span></h1>
 				<div className="flex items-center justify-between mb-4">
 					<button
 						className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -116,30 +125,46 @@ const Attendance = () => {
 						Current
 					</button>
 					<div className="flex items-center gap-2">
-						<button
-							onClick={() => handleMonthChange("prev")}
-							className="p-2 bg-gray-200 rounded hover:bg-gray-300"
-						>
-							<BiChevronLeft/>
-						</button>
+						<div className="flex gap-1">
+							<button
+								onClick={() => handleYearChange("prev")}
+								className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+							>
+								<LuChevronsLeft/>
+							</button>
+							<button
+								onClick={() => handleMonthChange("prev")}
+								className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+							>
+								<BiChevronLeft/>
+							</button>
+						</div>
 						<span className="font-medium">{getMonthYearLabel()}</span>
-						<button
-							onClick={() => handleMonthChange("next")}
-							className="p-2 bg-gray-200 rounded hover:bg-gray-300"
-						>
-							<BiChevronRight/>
-						</button>
+						<div className="flex gap-1">
+							<button
+								onClick={() => handleMonthChange("next")}
+								className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+							>
+								<BiChevronRight/>
+							</button>
+							<button
+								onClick={() => handleYearChange("next")}
+								className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+							>
+								<LuChevronsRight/>
+							</button>
+						</div>
 					</div>
 				</div>
 				<div className="overflow-x-auto">
 					<table ref={tableRef} className="table-auto w-full border-collapse border border-gray-300">
 						<thead>
 						<tr className="bg-gray-200">
-							<th className="border border-gray-300 px-4 py-2 sticky left-0 bg-gray-200">
+							<th className="text-xs border border-gray-300 px-4 py-2 sticky left-0 bg-gray-200">
 								Name
 							</th>
 							{daysArray.map((day) => (
-								<th key={day} className="border border-gray-300 px-2 py-1">
+								<th key={day} className="text-xs border border-gray-300 px-2 py-1">
 									{day}{" "}
 									{currentDate.toLocaleString("default", {
 										month: "short",
@@ -151,7 +176,7 @@ const Attendance = () => {
 						<tbody>
 						{attendance?.map((user) => (
 							<tr key={user.id}>
-								<td className="border border-gray-300 px-4 py-2 sticky left-0 bg-white z-10">
+								<td className="text-xs border border-gray-300 px-4 py-2 sticky left-0 bg-white z-10">
 									{user.name}
 								</td>
 								{daysArray.map((day, index) => {
@@ -174,7 +199,7 @@ const Attendance = () => {
 									return (
 										<td
 											key={day}
-											className={`border border-gray-300 px-4 py-2 ${!isEditable ? 'bg-gray-100' : ''} ${isCurrentDate ? 'border-2 border-x-blue-500' : ''}`}
+											className={`border border-gray-300 px-4 py-2 text-xs ${!isEditable ? 'bg-gray-100' : ''} ${isCurrentDate ? 'border-2 border-x-blue-500' : ''}`}
 										>
 											<select
 												value={existAttendance?.status || ""}

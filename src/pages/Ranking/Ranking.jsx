@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {FaChevronCircleRight, FaChevronRight, FaCoins, FaStar, FaTrophy, FaUsers} from "react-icons/fa";
+import {FaChevronRight, FaCoins, FaStar, FaTrophy, FaUsers} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {getCoins, getScores} from "../../features/Ranking/RankingSlice";
 import {getUserData} from "../../auth/jwtService";
 import {AiFillEdit} from "react-icons/ai";
 import UpdateRankingModal from "./UpdateRankingModal";
-import LoadingPage from "../LoadingPage";
 import {GiRank1, GiRank2, GiRank3} from "react-icons/gi";
 
 export const getInitialsName = (name) => {
@@ -24,7 +23,7 @@ export const getInitialsName = (name) => {
 const Ranking = () => {
 	const dispatch = useDispatch()
 	
-	const {coins, scores, loading, currentUser, scoresPagination, coinsPagination} = useSelector((state) => state.ranking)
+	const {coins, scores, currentUser, scoresPagination, coinsPagination} = useSelector((state) => state.ranking)
 	
 	// Top tabs state
 	const [activeTopTab, setActiveTopTab] = useState(1);
@@ -89,7 +88,7 @@ const Ranking = () => {
 			case 1:
 				return (
 					<>
-						<div className="flex flex-col items-center my-6 mt-20 md:mt-6">
+						<div className="flex flex-col items-center my-6 mt-20 md:mt-16">
 							<div className="flex justify-center items-end relative w-full md:w-2/4 h-[300px] ranking">
 								
 								{/* 2nd Place */}
@@ -148,7 +147,7 @@ const Ranking = () => {
 										scope="col"
 										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
-										NO
+										№
 									</th>
 									<th
 										scope="col"
@@ -173,20 +172,6 @@ const Ranking = () => {
 								</tr>
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200 text-center">
-								{loading
-									?
-									<tr>
-										<td colSpan={4}>
-											<div className="py-10 flex justify-center items-center">
-						          <span className="relative flex h-16 w-16">
-						            <span
-							            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-						            <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
-						          </span>
-											</div>
-										</td>
-									</tr>
-									:
 									<>
 										{scores?.map((item, index) => (
 											<tr key={index}>
@@ -224,7 +209,6 @@ const Ranking = () => {
 											</tr>
 										))}
 									</>
-								}
 								</tbody>
 							</table>
 							
@@ -276,7 +260,7 @@ const Ranking = () => {
 			case 2:
 				return (
 					<>
-						<div className="flex flex-col items-center my-6 mt-20 md:mt-6">
+						<div className="flex flex-col items-center my-6 mt-20 md:mt-16">
 							<div className="flex justify-center items-end relative w-full md:w-2/4 h-[300px] ranking">
 								
 								{/* 2nd Place */}
@@ -335,7 +319,7 @@ const Ranking = () => {
 										scope="col"
 										className="px-10 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
-										NO
+										№
 									</th>
 									<th
 										scope="col"
@@ -360,20 +344,6 @@ const Ranking = () => {
 								</tr>
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200">
-								{loading
-									?
-									<tr>
-										<td colSpan={4}>
-											<div className="py-10 flex justify-center items-center">
-						          <span className="relative flex h-16 w-16">
-						            <span
-							            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-						            <span className="relative inline-flex rounded-full h-16 w-16 bg-primary"></span>
-						          </span>
-											</div>
-										</td>
-									</tr>
-									:
 									<>
 										{coins?.map((item, index) => (
 											<tr key={index}>
@@ -411,7 +381,6 @@ const Ranking = () => {
 											</tr>
 										))}
 									</>
-								}
 								</tbody>
 							</table>
 							<table className="mt-4 w-[62%] mx-auto divide-y divide-gray-200 overflow-y-auto border">
@@ -490,7 +459,7 @@ const Ranking = () => {
 			
 			{/* Bottom Tabs */}
 			<div className="flex justify-center">
-				<div className="flex gap-2 mb-4 w-2/4 bg-[#f5f5f5] py-2 px-4 rounded">
+				<div className="flex gap-2 mb-4 w-full lg:w-2/4 bg-[#f5f5f5] py-2 px-4 rounded">
 					{bottomTabs.map((tab) => (
 						<button
 							key={tab.id}
@@ -498,7 +467,7 @@ const Ranking = () => {
 								setPage(1)
 								setActiveBottomTab(tab.id)
 							}}
-							className={`py-2 px-4 w-11/12 flex items-center gap-2 rounded-md font-semibold transition ${
+							className={`py-2 px-4 w-full lg:w-11/12 flex items-center gap-2 rounded-md font-semibold transition ${
 								activeBottomTab === tab.id
 									? "bg-white text-dark"
 									: "bg-transparent text-gray-700 hover:bg-gray-300"

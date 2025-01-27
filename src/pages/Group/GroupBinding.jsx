@@ -167,7 +167,8 @@ const GroupBinding = () => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {groupBindingList?.results?.map((item) => (
+                {groupBindingList &&
+                  groupBindingList?.results?.map((item) => (
                   <tr key={item.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}
@@ -195,7 +196,7 @@ const GroupBinding = () => {
                           <Link
                             className="btn-primary btn-sm inline-block mr-3"
                             to={`/attendance/${item.id}`}
-                            state={{group: item?.group?.id}}
+                            state={{group: item.group.id, group_name: item.group.name}}
                           >
                             <span>
                               <FaUserCheck/>

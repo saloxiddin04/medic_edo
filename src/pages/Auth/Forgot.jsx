@@ -32,7 +32,7 @@ const ForgotPassword = () => {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-3/4 lg:w-1/4 sm:w-2/4">
         <div className="text-center">
-          <img src={LOGO} alt="logo" className={'w-[200px] h-[100px] object-cover m-auto'}/>
+          <img src={LOGO} alt="logo" className={'object-cover m-auto'}/>
           <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
             Send your email
           </h2>
