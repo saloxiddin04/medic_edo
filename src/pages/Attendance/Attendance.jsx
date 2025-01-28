@@ -18,6 +18,8 @@ const Attendance = () => {
 	
 	const [currentDate, setCurrentDate] = useState(new Date());
 	
+	const [shouldScrollToCurrentDay, setShouldScrollToCurrentDay] = useState(true);
+	
 	// Calculate days in the current month
 	const daysInMonth = new Date(
 		currentDate.getFullYear(),
@@ -29,18 +31,26 @@ const Attendance = () => {
 	
 	useEffect(() => {
 		// Get the index of the current date in the daysArray
-		const today = moment().format("D");
-		const currentDayIndex = daysArray.indexOf(parseInt(today));
-		
-		// Scroll to the column of the current day
-		if (tableRef.current && currentDayIndex !== -1) {
-			const headerCells = tableRef.current.querySelectorAll("thead th");
-			const targetCell = headerCells[currentDayIndex + 1]; // +1 to account for the "Name" column
-			if (targetCell) {
-				targetCell.scrollIntoView({behavior: "smooth", block: "nearest", inline: "center"});
+		if (shouldScrollToCurrentDay) {
+			const today = moment().format("D");
+			const currentDayIndex = daysArray.indexOf(parseInt(today));
+			
+			// Scroll to the column of the current day
+			if (tableRef.current && currentDayIndex !== -1) {
+				const headerCells = tableRef.current.querySelectorAll("thead th");
+				const targetCell = headerCells[currentDayIndex + 1]; // +1 to account for the "Name" column
+				
+				if (targetCell) {
+					targetCell.scrollIntoView({behavior: "smooth", inline: "center"});
+					setShouldScrollToCurrentDay(false);
+				}
 			}
 		}
-	}, [daysArray]);
+	}, [daysArray, shouldScrollToCurrentDay, dispatch, currentDate]);
+	
+	useEffect(() => {
+		setShouldScrollToCurrentDay(true);
+	}, [currentDate]);
 	
 	// Fetch attendance data when `id` or `currentDate` changes
 	useEffect(() => {
@@ -72,6 +82,8 @@ const Attendance = () => {
 	
 	// Handle attendance change
 	const handleChange = (e, existAttendance, user, date, attendance_id) => {
+		e.preventDefault()
+		
 		const data = {
 			status: e.target.value,
 			author: getUserData()?.id,
