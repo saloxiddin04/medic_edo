@@ -3,13 +3,13 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 const axiosIns = axios.create({
-  // baseURL: "https://c75d-81-95-230-194.ngrok-free.app", //ngrok
+  baseURL: "https://b039-90-156-162-45.ngrok-free.app", //ngrok
   // baseURL: "http://127.0.0.1:8024", //local_server
   // baseURL: "http://95.46.96.74:8011", //server
-  baseURL: "https://qbank.indoc.uz:8011", //server
+  // baseURL: "https://qbank.indoc.uz:8011", //server
   timeout: 20000,
 
-  headers: { Accept: "application/json" },
+  headers: { Accept: "application/json", 'ngrok-skip-browser-warning': 'true' },
 });
 
 //send token

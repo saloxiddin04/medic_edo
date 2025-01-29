@@ -555,16 +555,27 @@ const PassLesson = () => {
 								</div>
 							</div>
 						</div>
-						<ResponsiveContainer width={'100%'} aspect={1.5} className={'mt-5'}>
+						<ResponsiveContainer
+							width="100%"
+							aspect={3}
+							className="mt-5"
+						>
 							<BarChart
 								height={400}
 								data={allTestResultModules}
-								margin={{left: 10, right: 10, top: 30}}
+								margin={{ left: 10, right: 10, top: 30 }}
 							>
-								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1}/>
-								<XAxis dataKey="interest"/>
+								<CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
+								{window.innerWidth >= 768 && <XAxis dataKey="interest" className="hidden lg:block" />}
 								<Bar dataKey="count" fill="#82ca9d" isAnimationActive={false}>
-									<LabelList content={renderCustomizedLabelSort} position={'top'} dataKey={'count'} dx={0} dy={-10} textAnchor="middle"/>
+									<LabelList
+										content={renderCustomizedLabelSort}
+										position="top"
+										dataKey="count"
+										dx={0}
+										dy={-10}
+										textAnchor="middle"
+									/>
 								</Bar>
 							</BarChart>
 						</ResponsiveContainer>
