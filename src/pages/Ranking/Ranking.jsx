@@ -233,10 +233,25 @@ const Ranking = () => {
 										
 										{/* Score Column */}
 										<td
-											className="px-10 py-4 whitespace-nowrap text-start text-sm text-gray-500 flex items-center gap-1 justify-start">
+											className="px-2 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-1 justify-end">
 											{currentUser.score}{" "}
 											<FaStar size={20} color="rgb(255 207 0)"/>
 										</td>
+										{getUserData().role === 'admin' && (
+											<td
+												className="px-4 py-4 whitespace-nowrap text-end text-sm font-medium"
+											>
+												<button
+													className="btn-warning btn-sm ml-3"
+													onClick={() => {
+														handleOpenModal(currentUser?.id, null, currentUser?.score, currentUser?.name)
+													}}
+												>
+													<AiFillEdit/>
+												</button>
+											</td>
+										)}
+										
 									</tr>
 								)}
 							</table>
@@ -404,10 +419,25 @@ const Ranking = () => {
 										
 										{/* Score Column */}
 										<td
-											className="px-12 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
+											className="px-4 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
 											{currentUser?.coin}{" "}
 											<FaCoins size={20} color="rgb(255 207 0)"/>
 										</td>
+										
+										{getUserData().role === 'admin' && (
+											<td
+												className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"
+											>
+												<button
+													className="btn-warning btn-sm ml-3"
+													onClick={() => {
+														handleOpenModal(currentUser?.id, currentUser?.coin, null, currentUser?.name)
+													}}
+												>
+													<AiFillEdit/>
+												</button>
+											</td>
+										)}
 									</tr>
 								)}
 							</table>
@@ -437,7 +467,7 @@ const Ranking = () => {
 		<div className="card">
 			{/* Top Tabs */}
 			<div className="mb-1 flex justify-center">
-				<div className="flex gap-2 mb-1 w-[70%] bg-[#f5f5f5] py-2 px-4 rounded">
+				<div className="flex gap-2 mb-1 w-full md:w-[70%] bg-[#f5f5f5] py-2 px-4 rounded">
 					{topTabs.map((tab) => (
 						<button
 							key={tab.id}
