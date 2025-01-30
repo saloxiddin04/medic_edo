@@ -423,6 +423,18 @@ export const deleteGroupBinding = createAsyncThunk(
   }
 )
 
+export const removeGroupBinding = createAsyncThunk(
+  "modules/removeGroupBinding",
+  async (data, thunkAPI) => {
+    try {
+      const response = await $axios.delete(`/group/group_binding_user/${data.group_id}/delete_user_statistics/`)
+      return response.data
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e)
+    }
+  }
+)
+
 export const getUsersGroupBinding = createAsyncThunk(
   "modules/getUsersGroupBinding",
   async (_, thunkAPI) => {
@@ -711,6 +723,17 @@ const moduleSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getTeacherList.rejected, (state) => {
+      state.isLoading = false;
+    });
+    
+    // removeGroupBinding
+    builder.addCase(removeGroupBinding.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(removeGroupBinding.fulfilled, (state, {payload}) => {
+      state.isLoading = false
+    })
+    builder.addCase(removeGroupBinding.rejected, (state) => {
       state.isLoading = false;
     });
   },

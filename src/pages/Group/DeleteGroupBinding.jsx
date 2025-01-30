@@ -1,21 +1,31 @@
 import React from "react";
-import {getGroupBinding, deleteGroupBinding} from "../../features/modules/moduleSlice";
+import {getGroupBinding, deleteGroupBinding, removeGroupBinding} from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal }) => {
+const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
   const dispatch = useDispatch();
   const [isSubmitted, setIsSubmitted] = useState(false);
   
   const deleteTestAction = () => {
-    if (isSubmitted) return;
-    dispatch(deleteGroupBinding(modulId)).then(() => {
-      dispatch(getGroupBinding());
-      closeModal();
-      setIsSubmitted(false);
-    });
-    setIsSubmitted(true);
+    if (remove) {
+      if (isSubmitted) return;
+      dispatch(removeGroupBinding({group_id: modulId})).then(() => {
+        dispatch(getGroupBinding());
+        closeModal();
+        setIsSubmitted(false);
+      });
+      setIsSubmitted(true);
+    } else {
+      if (isSubmitted) return;
+      dispatch(deleteGroupBinding(modulId)).then(() => {
+        dispatch(getGroupBinding());
+        closeModal();
+        setIsSubmitted(false);
+      });
+      setIsSubmitted(true);
+    }
   };
   
   return (

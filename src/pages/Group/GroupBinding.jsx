@@ -12,6 +12,7 @@ import {FaChevronCircleRight} from "react-icons/fa";
 import DetailGroupBinding from "./DetailGroupBinding";
 import {getUserData} from "../../auth/jwtService"
 import AddTeacherModal from "./AddTeacherModal";
+import {MdGroupRemove} from "react-icons/md";
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,16 @@ const GroupBinding = () => {
   const [groupName, setGroupName] = useState(null)
   const [id, setId] = useState(null)
   const [teacherId, setTeacherId] = useState(null)
+  
+  const [remove, setRemove] = useState(null)
 
   const handlePageChange = (page) => {
     localStorage.setItem("GroupBinding", page.toString());
     dispatch(getGroupBinding({page_size: 10, page}));
   };
 
-  const handleDeleteModal = (id) => {
+  const handleDeleteModal = (id, deleteBinding) => {
+    setRemove(deleteBinding)
     setIsModalOpen(true);
     setModulToDelete(id);
   };
@@ -72,7 +76,10 @@ const GroupBinding = () => {
     localStorage.removeItem("DetailGroupBinding");
   }
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setRemove(null)
+  }
 
   const searchUserFunc = (value) => {
     setGroupUser(value)
@@ -193,6 +200,13 @@ const GroupBinding = () => {
                       
                       {getUserData()?.role !== 'teacher' && (
                         <>
+                          <button
+                            className="btn-danger btn-sm mr-3"
+                            onClick={() => handleDeleteModal(item.id, true)}
+                          >
+                            <MdGroupRemove/>
+                          </button>
+                          
                           <Link
                             className="btn-primary btn-sm inline-block mr-3"
                             to={`/attendance/${item.id}`}
@@ -220,7 +234,7 @@ const GroupBinding = () => {
                           
                           <button
                             className="btn-danger btn-sm ml-3"
-                            onClick={() => handleDeleteModal(item.id)}
+                            onClick={() => handleDeleteModal(item.id, null)}
                           >
                             <AiFillDelete/>
                           </button>
@@ -267,6 +281,7 @@ const GroupBinding = () => {
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         modulId={ModulToDelete}
+        remove={remove}
       />
 
       <DetailGroupBinding
