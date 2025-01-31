@@ -32,7 +32,7 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
     <div
       className={
         isModalOpen
-          ? "fixed z-10 inset-0 overflow-y-auto"
+          ? "fixed z-50 inset-0 overflow-y-auto"
           : "opacity-0 pointer-events-none"
       }
     >
