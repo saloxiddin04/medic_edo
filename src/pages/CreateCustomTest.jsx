@@ -272,6 +272,15 @@ const CreateCustomTest = () => {
 		if (totalCount) return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
 	};
 	
+	const half = Math.ceil(moduleListForTest?.length / 2);
+	const halfSystem = Math.ceil(systemListForTest?.length / 2);
+	
+	const leftColumn = moduleListForTest?.slice(0, half);
+	const rightColumn = moduleListForTest?.slice(half);
+	
+	const systemLeftColumn = systemListForTest?.slice(0, halfSystem);
+	const systemRightColumn = systemListForTest?.slice(halfSystem);
+	
 	return (
 		<>
 			<div className="card">
@@ -408,10 +417,11 @@ const CreateCustomTest = () => {
 						<span className="ml-2 font-bold">All Modules</span>
 					</label>
 				</div>
-				<div className="flex flex-wrap mb-5 mt-2 ml-4 sm:ml-4">
-					{moduleListForTest?.map((item) => (
-						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
-							<label className="mb-2 inline-block cursor-pointer">
+				
+				<div className="grid grid-cols-2 gap-8 px-4">
+					<div className="flex flex-col gap-2">
+						{leftColumn?.map((item) => (
+							<label key={item.id} className="flex items-center gap-2 cursor-pointer">
 								<input
 									type="checkbox"
 									name={item.id}
@@ -419,13 +429,33 @@ const CreateCustomTest = () => {
 									checked={item.count === 0 ? false : checkedItems[item.id] || false}
 									onChange={handleCheckboxChange}
 								/>
-								<span className="ml-2">{item.name}
+								<span>
+				          {item.name}
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
-                </span>
+				        </span>
 							</label>
-						</div>
-					))}
+						))}
+					</div>
+					
+					<div className="flex flex-col gap-2">
+						{rightColumn?.map((item) => (
+							<label key={item.id} className="flex items-center gap-2 cursor-pointer">
+								<input
+									type="checkbox"
+									name={item.id}
+									disabled={item.count === 0}
+									checked={item.count === 0 ? false : checkedItems[item.id] || false}
+									onChange={handleCheckboxChange}
+								/>
+								<span>
+				          {item.name}
+									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+				        </span>
+							</label>
+						))}
+					</div>
 				</div>
+			
 			</div>
 			<div className="card">
 				<h1 className="text-xl">System Mode</h1>
@@ -441,24 +471,41 @@ const CreateCustomTest = () => {
 						<span className="ml-2 font-bold">All Systems</span>
 					</label>
 				</div>
-				<div className="flex flex-wrap mb-5 ml-4">
-					{systemListForTest?.length > 0 && systemListForTest?.map((item) => (
-						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
-							<label className="mb-2 inline-block cursor-pointer">
-								<input
-									type="checkbox"
-									name={item.id}
-									checked={item.count === 0 ? false : systemItems[item.id] || false}
-									onChange={handleSystemChange}
-									disabled={item.count === 0}
-								/>
-								<span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>{item.name}
-									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+					<div className="grid grid-cols-2 gap-8 px-4">
+						<div className="flex flex-col">
+							{systemLeftColumn?.map((item) => (
+								<label className="mb-2 inline-block cursor-pointer">
+									<input
+										type="checkbox"
+										name={item.id}
+										checked={item.count === 0 ? false : systemItems[item.id] || false}
+										onChange={handleSystemChange}
+										disabled={item.count === 0}
+									/>
+									<span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>{item.name}
+										<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>
-							</label>
+								</label>
+							))}
 						</div>
-					))}
-				</div>
+						
+						<div className="flex flex-col">
+							{systemRightColumn?.map((item) => (
+								<label className="mb-2 inline-block cursor-pointer">
+									<input
+										type="checkbox"
+										name={item.id}
+										checked={item.count === 0 ? false : systemItems[item.id] || false}
+										onChange={handleSystemChange}
+										disabled={item.count === 0}
+									/>
+									<span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>{item.name}
+										<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+                </span>
+								</label>
+							))}
+						</div>
+					</div>
 				<hr/>
 			</div>
 			<div className="card">
