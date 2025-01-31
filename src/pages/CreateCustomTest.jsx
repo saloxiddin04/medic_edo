@@ -241,11 +241,11 @@ const CreateCustomTest = () => {
 					test_count: test_count ? test_count : 40
 				})
 			).then((res) => {
-				dispatch(setItem({key: "testID", value: res.payload.id}));
+				dispatch(setItem({key: "testID", value: res?.payload?.id || '[]'}));
 				dispatch(
 					setItem({
 						key: "exactTestID",
-						value: res.payload.test_ids[0]?.test_question?.id,
+						value: res?.payload?.test_ids[0]?.test_question?.id || '[]',
 					})
 				);
 				dispatch(setItem({key: "idx", value: 0}));

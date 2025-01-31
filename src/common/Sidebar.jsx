@@ -146,7 +146,7 @@ const Sidebar = () => {
 									<NavLink
 										activeclassname="active"
 										to={ROUTES.MAIN}
-										className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+										className="flex w-[90%] items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
 									>
 										<TbLetterQ className="mt-1" size="20"/>
 										<span>Question Bank</span>
@@ -154,7 +154,7 @@ const Sidebar = () => {
 									<NavLink
 										activeclassname="active"
 										to={ROUTES.LESSON_TEST}
-										className="flex w-full items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+										className="flex w-[90%] items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
 									>
 										<TbLetterL className="mt-1" size="20"/>
 										<span>Qbank by lesson</span>
@@ -166,7 +166,7 @@ const Sidebar = () => {
 												onClick={handleCleanCurrentPage}
 												activeclassname="active"
 												to={ROUTES.GROUP_BINDING}
-												className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+												className="flex w-[90%] items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
 											>
 												<FaUserFriends size="22" className="mt-1"/>
 												<span>Group binding</span>
@@ -178,7 +178,7 @@ const Sidebar = () => {
 										onClick={handleCleanCurrentPage}
 										activeclassname="active"
 										to={ROUTES.RANKING}
-										className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+										className="flex w-[90%] items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
 									>
 										<GiTrophyCup size="22" className="mt-1"/>
 										<span>Ranking</span>

@@ -71,7 +71,7 @@ const CreateGroupBinding = () => {
   useEffect(() => {
     if (Number(id)) {
       dispatch(getGroupBindingById(Number(id))).then(({payload}) => {
-        const userIds = payload?.users.map(user => user.id);
+        const userIds = payload?.users?.map(user => user.id);
         bindItems(userIds, payload?.group?.id);
       });
     }
@@ -81,6 +81,7 @@ const CreateGroupBinding = () => {
     dispatch(getUsersGroupBinding())
     dispatch(getUsers())
     dispatch(getGroupUnused())
+    dispatch(getGroup({page_size: 1000}))
   }, [dispatch]);
   
   return (
