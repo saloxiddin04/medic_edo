@@ -316,6 +316,16 @@ const CreateLessonTest = () => {
 		if (totalCount) return (test_count <= totalCount && totalCount <= 40) || (totalCount >= 40 && test_count <= 40);
 	};
 	
+	const half = Math.ceil(moduleListForLesson?.length / 2);
+	const halfSystem = Math.ceil(systemListForLesson?.length / 2);
+	
+	const leftColumn = moduleListForLesson?.slice(0, half);
+	const rightColumn = moduleListForLesson?.slice(half);
+	
+	const systemLeftColumn = systemListForLesson?.slice(0, halfSystem);
+	const systemRightColumn = systemListForLesson?.slice(halfSystem);
+	
+	
 	return (
 		<>
 			<div className="card">
@@ -454,10 +464,11 @@ const CreateLessonTest = () => {
 						<span className="ml-2 font-bold">All Modules</span>
 					</label>
 				</div>
-				<div className="flex flex-wrap mb-5 mt-2 ml-4 sm:ml-4">
-					{moduleListForLesson && moduleListForLesson?.map((item) => (
-						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
-							<label className="mb-2 inline-block cursor-pointer">
+				
+				<div className="grid grid-cols-2 gap-8 px-4">
+					<div className="flex flex-col gap-2">
+						{leftColumn?.map((item) => (
+							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>
 								<input
 									type="checkbox"
 									name={item.id}
@@ -465,12 +476,29 @@ const CreateLessonTest = () => {
 									checked={item.count === 0 ? false : checkedItems[item.id] || false}
 									onChange={handleCheckboxChange}
 								/>
-								<span className="ml-2">{item.name}
+								<span className="ml-2">{item.module_name}
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>
 							</label>
-						</div>
-					))}
+						))}
+					</div>
+					
+					<div className="flex flex-col gap-2">
+						{rightColumn?.map((item) => (
+							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>
+								<input
+									type="checkbox"
+									name={item.id}
+									disabled={item.count === 0}
+									checked={item.count === 0 ? false : checkedItems[item.id] || false}
+									onChange={handleCheckboxChange}
+								/>
+								<span className="ml-2">{item.module_name}
+									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+                </span>
+							</label>
+						))}
+					</div>
 				</div>
 			
 			</div>
@@ -490,10 +518,11 @@ const CreateLessonTest = () => {
 						<span className="ml-2 font-bold">All Lessons</span>
 					</label>
 				</div>
-				<div className="flex flex-wrap mb-5 ml-4">
-					{systemListForLesson?.length > 0 && systemListForLesson?.map((item) => (
-						<div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2" key={item.id}>
-							<label className="mb-2 inline-block cursor-pointer">
+				
+				<div className="grid grid-cols-2 gap-8 px-4">
+					<div className="flex flex-col">
+						{systemLeftColumn?.map((item) => (
+							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>
 								<input
 									type="checkbox"
 									name={item.id}
@@ -506,9 +535,28 @@ const CreateLessonTest = () => {
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>
 							</label>
-						</div>
-					))}
+						))}
+					</div>
+					
+					<div className="flex flex-col">
+						{systemRightColumn?.map((item) => (
+							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>
+								<input
+									type="checkbox"
+									name={item.id}
+									checked={item.count === 0 ? false : systemItems[item.id] || false}
+									onChange={handleSystemChange}
+									disabled={item.count === 0}
+								/>
+								<span className={`ml-2 ${item.count === 0 ? 'opacity-50' : ''}`}>
+									{item?.lesson}
+									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
+                </span>
+							</label>
+						))}
+					</div>
 				</div>
+				
 				<hr/>
 			</div>
 			
@@ -551,7 +599,8 @@ const CreateLessonTest = () => {
 									}
 								}}
 							/>
-							<label htmlFor="count">Max allowed per block{`(${totalCount > 40 ? 40 : totalCount})`}, count{`(${totalCount})`}</label>
+							<label htmlFor="count">Max allowed per block{`(${totalCount > 40 ? 40 : totalCount})`},
+								count{`(${totalCount})`}</label>
 						</div>
 					</div>
 				)}
