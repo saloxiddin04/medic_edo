@@ -35,6 +35,8 @@ import Select from "react-select";
 import {AiOutlineClose} from "react-icons/ai";
 import LoadingPage from "../LoadingPage";
 import {GrCirclePlay} from "react-icons/gr";
+import {getTestsById} from "../../features/pastTest/pastTestSlice";
+import {setItem} from "../../features/LocalStorageSlice/LocalStorageSlice";
 
 const PassLesson = () => {
 	const dispatch = useDispatch()
@@ -673,7 +675,10 @@ const PassLesson = () => {
 													className="mt-2 mr-1"
 													onClick={() => {
 														localStorage.setItem("testID", item.id)
-														navigate(`/test`, {state: {is_reload: true}})
+														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
+															dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
+															navigate(`/test`)
+														})
 													}}
 												>
 													<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>
