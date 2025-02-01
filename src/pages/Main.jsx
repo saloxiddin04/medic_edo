@@ -42,6 +42,8 @@ import {AiOutlineClose} from "react-icons/ai";
 import NotGroupModal from "../components/NotGroup";
 import {IoPlay, IoReload} from "react-icons/io5";
 import {GrCirclePlay} from "react-icons/gr";
+import {getTestsById} from "../features/pastTest/pastTestSlice";
+import {setItem} from "../features/LocalStorageSlice/LocalStorageSlice";
 
 const Main = () => {
 	const [canShowBar, setCanShowBar] = useState(false);
@@ -698,7 +700,10 @@ const Main = () => {
 													className="mt-2 mr-1"
 													onClick={() => {
 														localStorage.setItem("testID", item.id)
-														navigate(`/test`, {state: {is_reload: true}})
+														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
+															dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
+															navigate(`/test`)
+														})
 													}}
 												>
 													<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>

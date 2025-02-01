@@ -16,12 +16,13 @@ import {
 } from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {VscError} from "react-icons/vsc";
 import TimeUpModal from "./TimeUpModal";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import LabValues from "./LabValues";
 import Calculator from "./Calculator";
 
 const PastTest = () => {
 	const location = useLocation()
+	const navigate = useNavigate()
 	const {testList, question} = useSelector(
 		({pastTest}) => pastTest
 	);
@@ -132,19 +133,27 @@ const PastTest = () => {
 	}, [dispatch]);
 	
 	useEffect(() => {
-		if (location?.state?.is_reload !== undefined) {
+		if (location?.state?.is_reload) {
 			dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload})).then(({payload}) => {
 				dispatch(getExactTest({id: testID, test_id: payload?.test_ids[countIndex]?.test_question?.id})).then(() => {
 					dispatch(setItem({key: "exactTestID", value: payload?.test_ids[countIndex]?.test_question?.id}));
 				})
 			})
 		} else {
-			dispatch(getTestsById({id: testID, is_reload: location.state?.is_reload}));
+			dispatch(getTestsById({id: testID}));
 			if (countIndex === 0) {
 				dispatch(getExactTest({id: testID, test_id: exactTestID}));
 			}
 		}
-	}, [dispatch, exactTestID, testID, location]);
+	}, [dispatch, exactTestID, testID]);
+	
+	// useEffect(() => {
+	// 	if (location?.state?.is_reload) {
+	// 		navigate(location.pathname, {
+	// 			state: { is_reload: false }
+	// 		});
+	// 	}
+	// }, []);
 	
 	useEffect(() => {
 		dispatch(getExactTest({id: testID, test_id: exactTestID}));
