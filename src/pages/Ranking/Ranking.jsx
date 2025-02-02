@@ -168,16 +168,16 @@ const Ranking = () => {
 								<tbody className="bg-white divide-y divide-gray-200 text-center">
 								{scores?.map((item, index) => (
 									<tr key={index}>
-										<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-center">
+										<td className="px-1 sm:px-6 py-4 whitespace-nowrap text-center flex justify-center">
 											{rankIcons[item?.rank] || item?.rank}
 										</td>
-										<td className="px-2 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap">
+										<td className="px-1 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 					              <span
 						              className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
 					                {getInitialsName(item?.name)}
 					              </span>
-												<span className="text-xs">{item.name}</span>
+												<span className="text-xs">{item.name?.length > 20 ? `${item?.name?.slice(0, 20)}...` : item?.name}</span>
 											</div>
 										</td>
 										<td
@@ -200,7 +200,7 @@ const Ranking = () => {
 							<table className="mt-4 w-full lg:w-[60%] mx-auto divide-y divide-gray-200 border">
 								{currentUser?.rank && (
 									<tr className="bg-blue-100">
-										<td className="px-4 sm:px-6 py-4 whitespace-nowrap flex items-center gap-2">
+										<td className="px-1 sm:px-6 py-4 whitespace-nowrap flex items-center gap-2">
 											<FaChevronRight className="text-dark text-xl"/> {currentUser?.rank}
 										</td>
 										<td className="px-4 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap text-start">
@@ -209,7 +209,7 @@ const Ranking = () => {
 							            className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
 						              {getInitialsName(currentUser?.name)}
 						            </span>
-												<span className="text-xs">{currentUser.name}</span>
+												<span className="text-xs">{currentUser.name?.length > 20 ? `${currentUser?.name?.slice(0, 20)}...` : currentUser?.name}</span>
 											</div>
 										</td>
 										<td
@@ -325,16 +325,17 @@ const Ranking = () => {
 								<tbody className="bg-white divide-y divide-gray-200">
 								{coins?.map((item, index) => (
 									<tr key={index}>
-										<td className="px-4 sm:px-6 md:px-10 py-4 whitespace-nowrap text-center">
+										<td className="px-1 sm:px-6 md:px-10 py-4 whitespace-nowrap text-center flex justify-center">
 											{rankIcons[item?.rank] || item?.rank}
 										</td>
-										<td className="px-4 sm:px-6 md:px-24 py-4 whitespace-nowrap text-start">
+										<td className="px-1 sm:px-6 md:px-24 py-4 whitespace-nowrap text-start">
 											<div className="flex items-center gap-2">
 					              <span
 						              className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
 					                {getInitialsName(item?.name)}
 					              </span>
-												<span className="text-xs">{item.name}</span>
+												<span
+													className="text-xs">{item.name?.length > 20 ? `${item?.name?.slice(0, 20)}...` : item?.name}</span>
 											</div>
 										</td>
 										<td
@@ -368,7 +369,8 @@ const Ranking = () => {
 							            className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
 						              {getInitialsName(currentUser?.name)}
 						            </span>
-												<span className="text-xs">{currentUser.name}</span>
+												<span
+													className="text-xs">{currentUser.name?.length > 20 ? `${currentUser?.name?.slice(0, 20)}...` : currentUser?.name}</span>
 											</div>
 										</td>
 										<td

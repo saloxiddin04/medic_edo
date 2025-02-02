@@ -21,13 +21,10 @@ const SignIn = () => {
         setTimeout(() => {
           toast.success("You have successfully logged in");
         }, 200);
-        toast.success('click')
       })
       .catch((err) => {
         toast.error(err.response.data.detail || err.message);
       });
-    
-    toast.success('click')
   };
 
   return (
