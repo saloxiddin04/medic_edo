@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {getGroupBinding, deleteGroupBinding, removeGroupBinding} from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -7,7 +7,18 @@ import {toast} from "react-toastify";
 
 const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
   const dispatch = useDispatch();
+  const [seconds, setSeconds] = useState(30);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  useEffect(() => {
+    if (seconds === 0) return;
+    
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev - 1);
+    }, 1000);
+    
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [seconds]);
   
   const deleteTestAction = () => {
     if (remove) {
@@ -16,6 +27,7 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
         dispatch(getGroupBinding());
         closeModal();
         setIsSubmitted(false);
+        setSeconds(30)
         toast.success('Statistics deleted successfully!')
       });
       setIsSubmitted(true);
@@ -58,7 +70,13 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
             </p>
           </div>
           <div className="bg-gray-100 p-4 flex gap-5 justify-end">
-            <button className="btn-secondary" onClick={closeModal}>
+            <button
+              className="btn-secondary"
+              onClick={() => {
+                closeModal()
+                setSeconds(30)
+              }}
+            >
               Cancel
             </button>
             {isSubmitted ? (
@@ -67,7 +85,7 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
                 disabled
                 className="btn-primary flex gap-3 items-center justify-between"
               >
-                <AiOutlineLoading3Quarters className="animate-spin" />
+                <AiOutlineLoading3Quarters className="animate-spin"/>
                 Processing...
               </button>
             ) : (
@@ -75,8 +93,9 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
                 type="submit"
                 className="btn-danger"
                 onClick={deleteTestAction}
+                disabled={seconds}
               >
-                Delete
+                Delete {seconds ? seconds : ''}
               </button>
             )}
           </div>

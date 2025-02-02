@@ -108,7 +108,7 @@ const GroupBinding = () => {
   }, [dispatch, addTeacherModal]);
   
   return (
-    <div className="card">
+    <div className="card overflow-hidden">
       <div className="flex justify-center lg:justify-between items-center flex-wrap lg:flex-nowrap">
         <div className={'flex w-full items-center gap-3'}>
           <input
@@ -136,167 +136,163 @@ const GroupBinding = () => {
           Group Binding
         </Link>
       </div>
-      <div className="flex flex-col mt-3 overflow-y-auto lg:overflow-hidden">
-        <div className="my-2 sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    ID
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Group Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Users length
-                  </th>
-                  
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Teacher
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Delete statistics
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Attendance
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Action
-                  </th>
-                </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                {groupBindingList &&
-                  groupBindingList?.results?.map((item) => (
-                    <tr key={item.id}>
+      <div className="w-full py-2 align-middle inline-block overflow-y-auto">
+        <div className="w-full sm:rounded-lg">
+          <table className="w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Group Name
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Users length
+              </th>
+              
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Teacher
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Delete statistics
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Attendance
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Action
+              </th>
+            </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+            {groupBindingList &&
+              groupBindingList?.results?.map((item) => (
+                <tr key={item.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
-                      {item.id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      {item?.group?.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      <div className="flex gap-2 items-center justify-center cursor-pointer"
-                           onClick={() => handleDetailModal(item.id)}>
-                        <FaUsers size={'22'}/>
-                        {item.users.length}
-                      </div>
-                    </td>
+                    {item.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    {item?.group?.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    <div className="flex gap-2 items-center justify-center cursor-pointer"
+                         onClick={() => handleDetailModal(item.id)}>
+                      <FaUsers size={'22'}/>
+                      {item.users.length}
+                    </div>
+                  </td>
+                  
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    {item?.teacher?.name}
+                  </td>
+                  
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-center">
+                    <button
+                      className="btn-danger btn-sm mr-3"
+                      onClick={() => handleDeleteModal(item.id, true)}
+                    >
+                      <MdGroupRemove/>
+                    </button>
+                  </td>
+                  
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-center">
+                    <Link
+                      className="btn-primary btn-sm inline-block mr-3"
+                      to={`/attendance/${item.id}`}
+                      state={{group: item.group.id, group_name: item.group.name}}
+                    >
+                      <span>
+                        <FaUserCheck/>
+                      </span>
+                    </Link>
+                  </td>
+                  
+                  <td
+                    className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                     
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      {item?.teacher?.name}
-                    </td>
-                      
-                      <td
-                        className="px-6 py-4 whitespace-nowrap text-center">
+                    {getUserData()?.role !== 'teacher' && (
+                      <>
                         <button
-                          className="btn-danger btn-sm mr-3"
-                          onClick={() => handleDeleteModal(item.id, true)}
+                          className="btn-info btn-sm mr-3"
+                          onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
                         >
-                          <MdGroupRemove/>
+                          <GiTeacher/>
                         </button>
-                      </td>
-                      
-                      <td
-                        className="px-6 py-4 whitespace-nowrap text-center">
+                        
+                        <Link
+                          className="btn-warning btn-sm inline-block"
+                          to={`/create-group-binding/${item.id}`}
+                        >
+                        <span>
+                          <AiFillEdit/>
+                        </span>
+                        </Link>
+                        
+                        <button
+                          className="btn-danger btn-sm ml-3"
+                          onClick={() => handleDeleteModal(item.id, null)}
+                        >
+                          <AiFillDelete/>
+                        </button>
+                        
+                        <button
+                          className={'btn-success btn-sm ml-3'}
+                          onClick={() => navigate(`/create-group-binding/${item.id}`)}
+                        >
+                          <FaChevronCircleRight/>
+                        </button>
+                      </>
+                    )}
+                    
+                    {getUserData()?.role === 'teacher' && (
+                      <>
                         <Link
                           className="btn-primary btn-sm inline-block mr-3"
                           to={`/attendance/${item.id}`}
-                          state={{group: item.group.id, group_name: item.group.name}}
                         >
-                          <span>
-                            <FaUserCheck/>
-                          </span>
+                        <span>
+                          <FaUserCheck/>
+                        </span>
                         </Link>
-                      </td>
-                      
-                      <td
-                        className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                        
-                        {getUserData()?.role !== 'teacher' && (
-                          <>
-                            <button
-                              className="btn-info btn-sm mr-3"
-                              onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
-                            >
-                              <GiTeacher/>
-                            </button>
-                            
-                            <Link
-                              className="btn-warning btn-sm inline-block"
-                            to={`/create-group-binding/${item.id}`}
-                          >
-                            <span>
-                              <AiFillEdit/>
-                            </span>
-                          </Link>
-                          
-                          <button
-                            className="btn-danger btn-sm ml-3"
-                            onClick={() => handleDeleteModal(item.id, null)}
-                          >
-                            <AiFillDelete/>
-                          </button>
-                          
-                          <button
-                            className={'btn-success btn-sm ml-3'}
-                            onClick={() => navigate(`/create-group-binding/${item.id}`)}
-                          >
-                            <FaChevronCircleRight/>
-                          </button>
-                        </>
-                      )}
-                      
-                      {getUserData()?.role === 'teacher' && (
-                        <>
-                          <Link
-                            className="btn-primary btn-sm inline-block mr-3"
-                            to={`/attendance/${item.id}`}
-                          >
-                            <span>
-                              <FaUserCheck/>
-                            </span>
-                          </Link>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-                </tbody>
-              </table>
-            </div>
-            <div className={'w-full flex items-center justify-end'}>
-              <Pagination
-                totalItems={groupBindingList.count} // Replace with the total number of items you have
-                itemsPerPage={10} // Replace with the number of items to display per page
-                onPageChange={handlePageChange} // Pass the handlePageChange function
-                resetPage={isModalOpen}
-              />
-            </div>
-          </div>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className={'w-full flex items-center justify-end'}>
+          <Pagination
+            totalItems={groupBindingList.count} // Replace with the total number of items you have
+            itemsPerPage={10} // Replace with the number of items to display per page
+            onPageChange={handlePageChange} // Pass the handlePageChange function
+            resetPage={isModalOpen}
+          />
         </div>
       </div>
 
