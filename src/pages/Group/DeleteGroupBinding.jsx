@@ -3,6 +3,7 @@ import {getGroupBinding, deleteGroupBinding, removeGroupBinding} from "../../fea
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {toast} from "react-toastify";
 
 const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
         dispatch(getGroupBinding());
         closeModal();
         setIsSubmitted(false);
+        toast.success('Statistics deleted successfully!')
       });
       setIsSubmitted(true);
     } else {
@@ -46,11 +48,13 @@ const DeleteGroupBinding = ({ isModalOpen, modulId, closeModal, remove }) => {
         <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
         <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
           <div className="bg-gray-100 p-4">
-            <h3 className="text-lg font-medium text-gray-900">Delete Group</h3>
+            <h3 className="text-lg font-medium text-gray-900">
+              {remove ? 'Delete the statistics' : 'Delete Group'}
+            </h3>
           </div>
           <div className="p-4">
             <p className="text-gray-700">
-              Are you sure you want to delete this item?
+              {remove ? 'Delete the statistics of users bound to the group.' : 'Are you sure you want to delete this item?'}
             </p>
           </div>
           <div className="bg-gray-100 p-4 flex gap-5 justify-end">

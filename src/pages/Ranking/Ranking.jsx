@@ -140,118 +140,90 @@ const Ranking = () => {
 						</div>
 						
 						<div className="overflow-y-auto">
-							<table className="w-[60%] mx-auto divide-y divide-gray-200 border">
+							<table className="w-full lg:w-[60%] mx-auto divide-y divide-gray-200 border">
 								<thead className="bg-gray-50">
 								<tr>
-									<th
-										scope="col"
-										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-									>
+									<th scope="col"
+									    className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 										№
 									</th>
 									<th
 										scope="col"
-										className="px-28 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+										className="px-16 sm:px-20 md:px-24 lg:px-28 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
 										Full Name
 									</th>
-									<th
-										scope="col"
-										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-									>
+									<th scope="col"
+									    className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Score
 									</th>
 									{getUserData().role === "admin" && (
-										<th
-											scope="col"
-											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
+										<th scope="col"
+										    className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 											Action
 										</th>
 									)}
 								</tr>
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200 text-center">
-									<>
-										{scores?.map((item, index) => (
-											<tr key={index}>
-												<td className="px-10 py-4 whitespace-nowrap text-center">
-													{rankIcons[item?.rank] || item?.rank}
-												</td>
-												<td className="px-28 py-4 whitespace-nowrap">
-													<div className="flex items-center gap-2">
-												    <span
-													    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
-												    >
-												      {getInitialsName(item?.name)}
-												    </span>
-														<span>{item.name}</span>
-													</div>
-												</td>
-												<td
-													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-													{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
-												</td>
-												{getUserData().role === 'admin' && (
-													<td
-														className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-													>
-														<button
-															className="btn-warning btn-sm ml-3"
-															onClick={() => {
-																handleOpenModal(item?.id, null, item?.score, item?.name)
-															}}
-														>
-															<AiFillEdit/>
-														</button>
-													</td>
-												)}
-											</tr>
-										))}
-									</>
-								</tbody>
-							</table>
-							
-							<table className="mt-4 w-[65%] mx-auto divide-y divide-gray-200 border">
-								{currentUser?.rank && (
-									<tr className="bg-blue-100">
-										<td className="px-10 py-4 whitespace-nowrap flex items-center gap-2">
-											<FaChevronRight className="text-dark text-xl"/> {" "}
-											{currentUser?.rank}
+								{scores?.map((item, index) => (
+									<tr key={index}>
+										<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-center">
+											{rankIcons[item?.rank] || item?.rank}
 										</td>
-										
-										<td className="px-2 py-4 whitespace-nowrap text-start">
+										<td className="px-2 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap">
 											<div className="flex items-center gap-2">
-										    <span
-											    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
-										    >
-										      {getInitialsName(currentUser?.name)}
-										    </span>
-												<span>{currentUser.name}</span>
+					              <span
+						              className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
+					                {getInitialsName(item?.name)}
+					              </span>
+												<span className="text-xs">{item.name}</span>
 											</div>
 										</td>
-										
-										{/* Score Column */}
 										<td
-											className="px-2 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-1 justify-end">
-											{currentUser.score}{" "}
-											<FaStar size={20} color="rgb(255 207 0)"/>
+											className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+											{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
 										</td>
 										{getUserData().role === 'admin' && (
-											<td
-												className="px-4 py-4 whitespace-nowrap text-end text-sm font-medium"
-											>
-												<button
-													className="btn-warning btn-sm ml-3"
-													onClick={() => {
-														handleOpenModal(currentUser?.id, null, currentUser?.score, currentUser?.name)
-													}}
-												>
+											<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+												<button className="btn-warning btn-sm ml-3"
+												        onClick={() => handleOpenModal(item?.id, null, item?.score, item?.name)}>
 													<AiFillEdit/>
 												</button>
 											</td>
 										)}
-										
+									</tr>
+								))}
+								</tbody>
+							</table>
+							
+							<table className="mt-4 w-full lg:w-[60%] mx-auto divide-y divide-gray-200 border">
+								{currentUser?.rank && (
+									<tr className="bg-blue-100">
+										<td className="px-4 sm:px-6 py-4 whitespace-nowrap flex items-center gap-2">
+											<FaChevronRight className="text-dark text-xl"/> {currentUser?.rank}
+										</td>
+										<td className="px-4 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap text-start">
+											<div className="flex items-center gap-2">
+						            <span
+							            className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
+						              {getInitialsName(currentUser?.name)}
+						            </span>
+												<span className="text-xs">{currentUser.name}</span>
+											</div>
+										</td>
+										<td
+											className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-1 justify-end">
+											{currentUser.score} <FaStar size={20} color="rgb(255 207 0)"/>
+										</td>
+										{getUserData().role === 'admin' && (
+											<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+												<button className="btn-warning btn-sm ml-3"
+												        onClick={() => handleOpenModal(currentUser?.id, null, currentUser?.score, currentUser?.name)}>
+													<AiFillEdit/>
+												</button>
+											</td>
+										)}
 									</tr>
 								)}
 							</table>
@@ -327,113 +299,86 @@ const Ranking = () => {
 						</div>
 						
 						<div className="overflow-y-auto">
-							<table className="w-[60%] mx-auto divide-y divide-gray-200 overflow-y-auto border">
+							<table className="w-full md:w-[80%] lg:w-[60%] mx-auto divide-y divide-gray-200 border">
 								<thead className="bg-gray-50">
 								<tr>
-									<th
-										scope="col"
-										className="px-10 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-									>
+									<th scope="col"
+									    className="px-4 sm:px-6 md:px-10 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 										№
 									</th>
-									<th
-										scope="col"
-										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-									>
+									<th scope="col"
+									    className="px-4 sm:px-6 md:px-24 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Full Name
 									</th>
-									<th
-										scope="col"
-										className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-									>
+									<th scope="col"
+									    className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Coins
 									</th>
 									{getUserData().role === "admin" && (
-										<th
-											scope="col"
-											className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
+										<th scope="col"
+										    className="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 											Action
 										</th>
 									)}
 								</tr>
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200">
-									<>
-										{coins?.map((item, index) => (
-											<tr key={index}>
-												<td className="px-10 py-4 whitespace-nowrap text-center">
-													{rankIcons[item?.rank] || item?.rank}
-												</td>
-												<td className="px-24 py-4 whitespace-nowrap text-start">
-													<div className="flex items-center gap-2">
-												    <span
-													    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
-												    >
-												      {getInitialsName(item?.name)}
-												    </span>
-														<span>{item.name}</span>
-													</div>
-												</td>
-												<td
-													className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
-													{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
-												</td>
-												{getUserData().role === 'admin' && (
-													<td
-														className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium"
-													>
-														<button
-															className="btn-warning btn-sm ml-3"
-															onClick={() => {
-																handleOpenModal(item?.id, item?.coin, null, item?.name)
-															}}
-														>
-															<AiFillEdit/>
-														</button>
-													</td>
-												)}
-											</tr>
-										))}
-									</>
-								</tbody>
-							</table>
-							<table className="mt-4 w-[62%] mx-auto divide-y divide-gray-200 overflow-y-auto border">
-								{currentUser?.rank && (
-									<tr className="bg-blue-100">
-										<td className="px-10 py-4 whitespace-nowrap flex items-center gap-2">
-											<FaChevronRight className="text-dark text-xl" /> {" "}
-											{currentUser?.rank}
+								{coins?.map((item, index) => (
+									<tr key={index}>
+										<td className="px-4 sm:px-6 md:px-10 py-4 whitespace-nowrap text-center">
+											{rankIcons[item?.rank] || item?.rank}
 										</td>
-										
-										<td className="px-2 py-4 whitespace-nowrap text-start">
+										<td className="px-4 sm:px-6 md:px-24 py-4 whitespace-nowrap text-start">
 											<div className="flex items-center gap-2">
-										    <span
-											    className="rounded-full bg-gray-300 w-8 h-8 text-dark text-sm flex justify-center items-center"
-										    >
-										      {getInitialsName(currentUser?.name)}
-										    </span>
-												<span>{currentUser.name}</span>
+					              <span
+						              className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
+					                {getInitialsName(item?.name)}
+					              </span>
+												<span className="text-xs">{item.name}</span>
 											</div>
 										</td>
-										
-										{/* Score Column */}
 										<td
-											className="px-4 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
-											{currentUser?.coin}{" "}
-											<FaCoins size={20} color="rgb(255 207 0)"/>
+											className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+											{item?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
 										</td>
-										
 										{getUserData().role === 'admin' && (
-											<td
-												className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"
-											>
+											<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
 												<button
 													className="btn-warning btn-sm ml-3"
-													onClick={() => {
-														handleOpenModal(currentUser?.id, currentUser?.coin, null, currentUser?.name)
-													}}
+													onClick={() => handleOpenModal(item?.id, item?.coin, null, item?.name)}
 												>
+													<AiFillEdit/>
+												</button>
+											</td>
+										)}
+									</tr>
+								))}
+								</tbody>
+							</table>
+							
+							<table className="mt-4 w-full md:w-[80%] lg:w-[62%] mx-auto divide-y divide-gray-200 border">
+								{currentUser?.rank && (
+									<tr className="bg-blue-100">
+										<td className="px-4 sm:px-6 md:px-10 py-4 whitespace-nowrap flex items-center gap-2">
+											<FaChevronRight className="text-dark text-xl"/> {currentUser?.rank}
+										</td>
+										<td className="px-4 sm:px-6 md:px-24 py-4 whitespace-nowrap text-start">
+											<div className="flex items-center gap-2">
+						            <span
+							            className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
+						              {getInitialsName(currentUser?.name)}
+						            </span>
+												<span className="text-xs">{currentUser.name}</span>
+											</div>
+										</td>
+										<td
+											className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-start">
+											{currentUser?.coin} <FaCoins size={20} color="rgb(255 207 0)"/>
+										</td>
+										{getUserData().role === 'admin' && (
+											<td className="px-4 sm:px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+												<button className="btn-warning btn-sm ml-3"
+												        onClick={() => handleOpenModal(currentUser?.id, currentUser?.coin, null, currentUser?.name)}>
 													<AiFillEdit/>
 												</button>
 											</td>

@@ -244,6 +244,7 @@ const CreateModuleTest = () => {
                 getOptionValue={(modul) => modul.id}
                 onChange={(e) => setData({ ...data, modul_id: e.id })}
                 placeholder={data.modul_name}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }} // << menuPortal uchun z-index
               />
               <p className="text-danger">
                 {showRequired && !data.modul_id && "required"}
@@ -257,6 +258,7 @@ const CreateModuleTest = () => {
                 getOptionValue={(modul) => modul.id}
                 onChange={(e) => setData({ ...data, sistema_id: e.id })}
                 placeholder={data.sistema_name}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9998 }) }} // << menuPortal uchun z-index
               />
               <p className="text-danger">
                 {showRequired && !data.modul_id && "required"}
@@ -280,7 +282,7 @@ const CreateModuleTest = () => {
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, index)
                     }
-                    className="z-50"
+                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9997 }) }} // << menuPortal uchun z-index
                   />
                   <p className="text-danger">
                     {showRequired && !section.key && "required"}
@@ -371,7 +373,7 @@ const CreateModuleTest = () => {
       <div className="mt-5">
         <h1>Correct answer</h1>
         <div className="mt-10 flex gap-5 flex-wrap lg:flex-nowrap">
-          <div className="w-full">
+          <div className="relative z-10 w-full">
             <label className="w-full lg:w-1/12">
               Key
               <Select
@@ -450,7 +452,7 @@ const CreateModuleTest = () => {
             </div>
           </div>
 
-          <label className="w-full lg:w-11/12">
+          <label className="relative z-10 w-full lg:w-11/12">
             Answer
             <JoditEditor
               ref={correctAnswerRef}

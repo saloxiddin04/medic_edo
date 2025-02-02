@@ -465,7 +465,7 @@ const CreateLessonTest = () => {
 					</label>
 				</div>
 				
-				<div className="grid grid-cols-2 gap-8 px-4">
+				<div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 px-4">
 					<div className="flex flex-col gap-2">
 						{leftColumn?.map((item) => (
 							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>
@@ -519,7 +519,7 @@ const CreateLessonTest = () => {
 					</label>
 				</div>
 				
-				<div className="grid grid-cols-2 gap-8 px-4">
+				<div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 px-4">
 					<div className="flex flex-col">
 						{systemLeftColumn?.map((item) => (
 							<label className="mb-2 inline-block cursor-pointer" key={item?.id}>

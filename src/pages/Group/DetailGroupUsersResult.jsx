@@ -17,7 +17,7 @@ const DetailGroupUsersResult = ({closeModal, isOpen, id}) => {
   useEffect(() => {
     if (id) {
       if (storagePage) {
-        dispatch(getUserTestHistoryForGroup({page_size: 10, page: storagePage, id}));
+        dispatch(getUserTestHistoryForGroup({page_size: 10, page: 1, id}));
       } else {
         dispatch(getUserTestHistoryForGroup({id}));
       }

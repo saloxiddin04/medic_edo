@@ -5,10 +5,11 @@ import Pagination from "../../components/Pagination";
 import { IoClose } from "react-icons/io5";
 import DetailGroupUsersResult from "./DetailGroupUsersResult";
 import {FaChevronCircleRight} from "react-icons/fa";
+import LoadingPage from "../LoadingPage";
 
 const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   const dispatch = useDispatch()
-  const {bindingUsers} = useSelector(({module}) => module);
+  const {bindingUsers, isLoading} = useSelector(({module}) => module);
 
   let storagePage = localStorage.getItem("DetailGroupBinding");
   const [searchUserState, setSearchUser] = useState('')
@@ -28,7 +29,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   useEffect(() => {
     if (isModalOpen) {
       if (storagePage) {
-        dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page: storagePage}))
+        dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page: 1}))
       } else {
         dispatch(getGroupBindingUsersDetail({id: modulId}))
       }
@@ -36,15 +37,18 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
   }, [isModalOpen, modulId, dispatch]);
   
   const handlePageChange = (page) => {
-    localStorage.setItem("DetailGroupBinding", page.toString());
     dispatch(getGroupBindingUsersDetail({id: modulId, page_size: 10, page}));
   };
   
   const closeModalDetail = () => {
     setResultModalOpen(false)
+    setSearchUser('')
+    localStorage.removeItem("currentPage"); // Paginationni 1-sahifaga qaytarish
     localStorage.setItem('resultModalOpen', JSON.stringify(false))
     localStorage.removeItem("DetailGroupUsersResult");
   }
+  
+  if (!isModalOpen) return null;
   
   return (
     <div>
@@ -63,8 +67,8 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
           }
         >
           <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
-          <div className='bg-white w-[90%] lg:w-11/12 rounded-lg overflow-hidden shadow-xl transform transition-all'>
-            <div className='w-full p-4 flex items-center justify-between'>
+          <div className="bg-white w-[90%] lg:w-11/12 rounded-lg overflow-hidden shadow-xl transform transition-all">
+            <div className="w-full p-4 flex items-center justify-between">
               <input
                 type="text"
                 placeholder={'Search'}
@@ -127,7 +131,7 @@ const DetailGroupBinding = ({isModalOpen, modulId, closeModal}) => {
                 </tbody>
               </table>
             </div>
-            <div className='flex justify-end p-2 overflow-y-auto'>
+            <div className="flex justify-end p-2 overflow-y-auto">
               <Pagination
                 totalItems={bindingUsers?.count} // Replace with the total number of items you have
                 itemsPerPage={10} // Replace with the number of items to display per page

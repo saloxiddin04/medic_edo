@@ -264,7 +264,7 @@ const PastTest = () => {
 				onClick={() => dispatch(toggleTestCount())}
 			></div>
 			{isTestCountOpen && (
-				<ul className={"w-[12%] z-50 h-full overflow-y-auto bg-white border-r-2 fixed md:relative sm:fixed md:w-[6%]"}>
+				<ul className={`w-[12%] ${window.innerWidth < 768 ? 'z-50' : ''} h-full overflow-y-auto bg-white border-r-2 fixed md:relative sm:fixed md:w-[6%]`}>
 					{testList &&
 						testList?.test_ids?.map((test, index) => (
 							<li

@@ -13,11 +13,12 @@ import DetailGroupBinding from "./DetailGroupBinding";
 import {getUserData} from "../../auth/jwtService"
 import AddTeacherModal from "./AddTeacherModal";
 import {MdGroupRemove} from "react-icons/md";
+import LoadingPage from "../LoadingPage";
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const {groupBindingList} = useSelector(({module}) => module);
+  const {groupBindingList, isLoading} = useSelector(({module}) => module);
 
   const timeoutId = useRef()
 
@@ -38,7 +39,7 @@ const GroupBinding = () => {
   const [remove, setRemove] = useState(null)
 
   const handlePageChange = (page) => {
-    localStorage.setItem("GroupBinding", page.toString());
+    // localStorage.setItem("GroupBinding", page.toString());
     dispatch(getGroupBinding({page_size: 10, page}));
   };
 
@@ -63,6 +64,7 @@ const GroupBinding = () => {
   }
   
   const handleDetailModal = (id) => {
+    localStorage.setItem('currentPage', JSON.stringify(1))
     setIsDetailModalOpen(true)
     setModulToDetail(id)
     localStorage.setItem('detailGroupBinding', JSON.stringify(true))
@@ -77,6 +79,7 @@ const GroupBinding = () => {
   }
 
   const closeModal = () => {
+    localStorage.setItem('currentPage', JSON.stringify(1))
     setIsModalOpen(false);
     setRemove(null)
   }
@@ -92,7 +95,7 @@ const GroupBinding = () => {
 
   useEffect(() => {
     if (storagePage) {
-      dispatch(getGroupBinding({page_size: 10, page: storagePage}));
+      dispatch(getGroupBinding({page_size: 10, page: 1}));
     } else {
       dispatch(getGroupBinding({page_size: 10}));
     }
@@ -169,6 +172,18 @@ const GroupBinding = () => {
                     scope="col"
                     className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
+                    Delete statistics
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Attendance
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Action
                   </th>
                 </tr>
@@ -176,7 +191,7 @@ const GroupBinding = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                 {groupBindingList &&
                   groupBindingList?.results?.map((item) => (
-                  <tr key={item.id}>
+                    <tr key={item.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.id}
                     </td>
@@ -194,37 +209,44 @@ const GroupBinding = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item?.teacher?.name}
                     </td>
-                    
-                    <td
-                      className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                       
-                      {getUserData()?.role !== 'teacher' && (
-                        <>
-                          <button
-                            className="btn-danger btn-sm mr-3"
-                            onClick={() => handleDeleteModal(item.id, true)}
-                          >
-                            <MdGroupRemove/>
-                          </button>
-                          
-                          <Link
-                            className="btn-primary btn-sm inline-block mr-3"
-                            to={`/attendance/${item.id}`}
-                            state={{group: item.group.id, group_name: item.group.name}}
-                          >
-                            <span>
-                              <FaUserCheck/>
-                            </span>
-                          </Link>
-                          <button
-                            className="btn-info btn-sm mr-3"
-                            onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
-                          >
-                            <GiTeacher/>
-                          </button>
-                          
-                          <Link
-                            className="btn-warning btn-sm inline-block"
+                      <td
+                        className="px-6 py-4 whitespace-nowrap text-center">
+                        <button
+                          className="btn-danger btn-sm mr-3"
+                          onClick={() => handleDeleteModal(item.id, true)}
+                        >
+                          <MdGroupRemove/>
+                        </button>
+                      </td>
+                      
+                      <td
+                        className="px-6 py-4 whitespace-nowrap text-center">
+                        <Link
+                          className="btn-primary btn-sm inline-block mr-3"
+                          to={`/attendance/${item.id}`}
+                          state={{group: item.group.id, group_name: item.group.name}}
+                        >
+                          <span>
+                            <FaUserCheck/>
+                          </span>
+                        </Link>
+                      </td>
+                      
+                      <td
+                        className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        
+                        {getUserData()?.role !== 'teacher' && (
+                          <>
+                            <button
+                              className="btn-info btn-sm mr-3"
+                              onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
+                            >
+                              <GiTeacher/>
+                            </button>
+                            
+                            <Link
+                              className="btn-warning btn-sm inline-block"
                             to={`/create-group-binding/${item.id}`}
                           >
                             <span>
@@ -271,6 +293,7 @@ const GroupBinding = () => {
                 totalItems={groupBindingList.count} // Replace with the total number of items you have
                 itemsPerPage={10} // Replace with the number of items to display per page
                 onPageChange={handlePageChange} // Pass the handlePageChange function
+                resetPage={isModalOpen}
               />
             </div>
           </div>

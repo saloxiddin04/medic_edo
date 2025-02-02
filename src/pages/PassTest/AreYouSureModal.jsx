@@ -30,7 +30,7 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
     <div
       className={
         isModalOpen
-          ? "fixed z-10 inset-0 overflow-y-auto"
+          ? "fixed z-50 inset-0 overflow-y-auto"
           : "opacity-0 pointer-events-none"
       }
     >
@@ -49,7 +49,7 @@ const AreYouSure = ({isModalOpen, closeModal}) => {
           </div>
           <div className="p-4">
             <p className="text-gray-700">
-              Are you sure you want to leave the test?
+              Are you sure you want to leave the test? If none of the tests are run, -1 is given to coin and score.
             </p>
           </div>
           <div className="bg-gray-100 p-4 flex gap-5 justify-end">

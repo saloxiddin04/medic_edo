@@ -418,7 +418,7 @@ const CreateCustomTest = () => {
 					</label>
 				</div>
 				
-				<div className="grid grid-cols-2 gap-8 px-4">
+				<div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 px-4">
 					<div className="flex flex-col gap-2">
 						{leftColumn?.map((item) => (
 							<label key={item.id} className="flex items-center gap-2 cursor-pointer">
@@ -471,7 +471,7 @@ const CreateCustomTest = () => {
 						<span className="ml-2 font-bold">All Systems</span>
 					</label>
 				</div>
-					<div className="grid grid-cols-2 gap-8 px-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 px-4">
 						<div className="flex flex-col">
 							{systemLeftColumn?.map((item) => (
 								<label className="mb-2 inline-block cursor-pointer">
