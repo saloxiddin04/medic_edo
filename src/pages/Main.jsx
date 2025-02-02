@@ -43,7 +43,8 @@ import NotGroupModal from "../components/NotGroup";
 import {IoPlay, IoReload} from "react-icons/io5";
 import {GrCirclePlay} from "react-icons/gr";
 import {getTestsById} from "../features/pastTest/pastTestSlice";
-import {setItem} from "../features/LocalStorageSlice/LocalStorageSlice";
+import {setItem, setItemAsync} from "../features/LocalStorageSlice/LocalStorageSlice";
+import {toast} from "react-toastify";
 
 const Main = () => {
 	const [canShowBar, setCanShowBar] = useState(false);
@@ -687,40 +688,47 @@ const Main = () => {
 							</thead>
 							<tbody>
 							{userTestHistory?.tests_history?.map((item) => (
-									<tr className="bg-white px-2 py-1 text-center mt-2" key={item.id}>
-										<td>{item.id}</td>
-										<td>{item.correct_answer_count}</td>
-										<td>{item.worning_answer_count}</td>
-										<td>{item.start_date ? item.start_date?.split('T')[0] : '-'}</td>
-										<td>{item.is_tutor ? 'Tutor' : '-'}</td>
-										<td>{item.end_date ? item.end_date?.split('T')[0] : '-'}</td>
-										<td>
-											{item?.is_tutor && (
-												<button
-													className="mt-2 mr-1"
-													onClick={() => {
-														dispatch(setItem({key: "testID", value: item?.id}));
-														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
-															dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
-															navigate(`/test`)
-														})
-													}}
-												>
-													<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>
-												</button>
-											)}
+								<tr className="bg-white px-2 py-1 text-center mt-2" key={item.id}>
+									<td>{item.id}</td>
+									<td>{item.correct_answer_count}</td>
+									<td>{item.worning_answer_count}</td>
+									<td>{item.start_date ? item.start_date?.split('T')[0] : '-'}</td>
+									<td>{item.is_tutor ? 'Tutor' : '-'}</td>
+									<td>{item.end_date ? item.end_date?.split('T')[0] : '-'}</td>
+									<td>
+										{item?.is_tutor && (
 											<button
-												className="mt-2"
+												className="mt-2 mr-1"
 												onClick={() => {
-													localStorage.setItem("testID", item.id)
-													navigate(`/test-results`)
+													dispatch(setItemAsync({key: "testID", value: item?.id})).then(() => {
+														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
+															if (payload?.test_ids?.length > 0) {
+																dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
+																navigate(`/test`)
+															} else {
+																toast.error('Test not found')
+																localStorage.removeItem('testID')
+																localStorage.removeItem('exactTestID')
+															}
+														})
+													})
 												}}
 											>
-												<BiChevronRightCircle size="30" color={'#28CD41'}/>
+												<GrCirclePlay size="30" color={'rgb(29 137 228)'}/>
 											</button>
-										</td>
-									</tr>
-								))}
+										)}
+										<button
+											className="mt-2"
+											onClick={() => {
+												localStorage.setItem("testID", item.id)
+												navigate(`/test-results`)
+											}}
+										>
+											<BiChevronRightCircle size="30" color={'#28CD41'}/>
+										</button>
+									</td>
+								</tr>
+							))}
 							</tbody>
 						</table>
 					</div>

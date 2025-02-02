@@ -1,9 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   isSidebarOpen: true,
   isTestCountOpen: true
 };
+
+export const setItemAsync = createAsyncThunk(
+  'localStorage/setItemAsync',
+  async (payload, { dispatch }) => {
+    const { key, value } = payload;
+    localStorage.setItem(key, JSON.stringify(value)); // Set localStorage
+    dispatch(setItem({ key, value })); // Dispatch setItem action to update the state
+    return value; // Return value so you can chain `.then()`
+  }
+);
 
 const localStorageSlice = createSlice({
   name: 'localStorage',
