@@ -674,6 +674,7 @@ const PassLesson = () => {
 										{item?.is_tutor && (
 											<button
 												className="mt-2 mr-1"
+												title={`Test replay. ${'\n'}Score and coins will not be awarded when the test is replayed.`}
 												onClick={() => {
 													dispatch(setItemAsync({key: "testID", value: item?.id})).then(() => (
 														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
