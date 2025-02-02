@@ -17,8 +17,8 @@ const SignIn = () => {
     e.preventDefault();
     login(user)
       .then(() => {
-        navigate("/main");
         setTimeout(() => {
+          navigate("/main");
           toast.success("You have successfully logged in");
         }, 200);
       })
