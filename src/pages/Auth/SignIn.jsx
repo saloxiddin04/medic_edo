@@ -26,6 +26,8 @@ const SignIn = () => {
       .catch((err) => {
         toast.error(err.response.data.detail || err.message);
       });
+    
+    toast.success('click')
   };
 
   return (
