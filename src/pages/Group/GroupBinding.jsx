@@ -178,12 +178,14 @@ const GroupBinding = () => {
               >
                 Attendance
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Action
-              </th>
+              {getUserData()?.role === 'admin' && (
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              )}
             </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -265,19 +267,6 @@ const GroupBinding = () => {
                         >
                           <FaChevronCircleRight/>
                         </button>
-                      </>
-                    )}
-                    
-                    {getUserData()?.role === 'teacher' && (
-                      <>
-                        <Link
-                          className="btn-primary btn-sm inline-block mr-3"
-                          to={`/attendance/${item.id}`}
-                        >
-                        <span>
-                          <FaUserCheck/>
-                        </span>
-                        </Link>
                       </>
                     )}
                   </td>
