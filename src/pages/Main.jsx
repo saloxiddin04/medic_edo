@@ -699,7 +699,7 @@ const Main = () => {
 												<button
 													className="mt-2 mr-1"
 													onClick={() => {
-														localStorage.setItem("testID", item.id)
+														dispatch(setItem({key: "testID", value: item?.id}));
 														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
 															dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
 															navigate(`/test`)

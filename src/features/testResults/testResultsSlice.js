@@ -6,7 +6,6 @@ export const getTestResults = createAsyncThunk(
   "testResults/getTestResults",
   async (data, thunkAPI) => {
     try {
-      console.log(data)
       if (data?.state?.is_lesson !== undefined) {
         const res = await $axios.get(
           `test/test_result/${data?.id}/result_worning_answers_statistic_by_lessons/`

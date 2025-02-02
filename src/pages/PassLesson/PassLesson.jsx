@@ -677,7 +677,7 @@ const PassLesson = () => {
 														localStorage.setItem("testID", item.id)
 														dispatch(getTestsById({id: item?.id, is_reload: true})).then(({payload}) => {
 															dispatch(setItem({key: "exactTestID", value: payload?.test_ids[0]?.test_question?.id}));
-															navigate(`/test`)
+															navigate(`/test`, {state: {is_lesson: true}})
 														})
 													}}
 												>
