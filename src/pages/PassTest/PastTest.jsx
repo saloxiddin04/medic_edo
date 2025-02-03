@@ -355,7 +355,8 @@ const PastTest = () => {
 						__html: question?.test_question?.question,
 					}}
 					ref={paragraphRef}
-					// onMouseUp={highlightSelectedText}
+					onMouseUp={highlightSelectedText}
+					onTouchEnd={highlightSelectedText}
 					// onMouseDown={selection}
 					// onMouseEnter={selection}
 					// onBlur={selection}
