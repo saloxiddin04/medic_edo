@@ -17,13 +17,13 @@ import 'react-quill/dist/quill.snow.css';
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-// document.addEventListener('contextmenu', (e) => e.preventDefault());
-//
-// document.addEventListener('keydown', (e) => {
-//   if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
-//     e.preventDefault();
-//   }
-// });
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+    e.preventDefault();
+  }
+});
 
 root.render(
   <Provider store={store}>

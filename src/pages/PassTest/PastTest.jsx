@@ -244,16 +244,32 @@ const PastTest = () => {
 	const paragraphRef = useRef(null);
 	
 	useEffect(() => {
-		if (paragraphRef.current) {
-			paragraphRef.current.addEventListener('mouseup', highlightSelectedText);
+		const paragraph = paragraphRef.current;
+		
+		if (paragraph) {
+			paragraph.addEventListener('mouseup', highlightSelectedText);
+			paragraph.addEventListener('touchend', highlightSelectedText);
 		}
 		
 		return () => {
-			if (paragraphRef.current) {
-				paragraphRef.current.removeEventListener('mouseup', highlightSelectedText);
+			if (paragraph) {
+				paragraph.removeEventListener('mouseup', highlightSelectedText);
+				paragraph.removeEventListener('touchend', highlightSelectedText);
 			}
 		};
 	}, []);
+	
+	// useEffect(() => {
+	// 	if (paragraphRef.current) {
+	// 		paragraphRef.current.addEventListener('mouseup', highlightSelectedText);
+	// 	}
+	//
+	// 	return () => {
+	// 		if (paragraphRef.current) {
+	// 			paragraphRef.current.removeEventListener('mouseup', highlightSelectedText);
+	// 		}
+	// 	};
+	// }, []);
 	
 	return (
 		<div className="min-h-screen bg-darkLayoutStrm flex flex-wrap pb-20 relative">
@@ -339,7 +355,7 @@ const PastTest = () => {
 						__html: question?.test_question?.question,
 					}}
 					ref={paragraphRef}
-					onMouseUp={highlightSelectedText}
+					// onMouseUp={highlightSelectedText}
 					// onMouseDown={selection}
 					// onMouseEnter={selection}
 					// onBlur={selection}
