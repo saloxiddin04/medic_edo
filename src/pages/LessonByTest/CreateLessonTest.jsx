@@ -134,56 +134,56 @@ const CreateLessonTest = () => {
 	};
 	
 	const handleCheckboxChange = (event) => {
-		// const name = event.target.name;
+		const name = event.target.name;
+		const isChecked = event.target.checked;
+
+		setCheckedItems({
+			...checkedItems,
+			[name]: isChecked,
+		});
+		
+		// const id = event.target.name;
 		// const isChecked = event.target.checked;
 		//
-		// setCheckedItems({
-		// 	...checkedItems,
-		// 	[name]: isChecked,
-		// });
-		
-		const id = event.target.name;
-		const isChecked = event.target.checked;
-		
-		setCheckedItems((prev) => ({
-			...prev,
-			[id]: isChecked,
-		}));
-		
-		// If the module ID matches a lesson ID, update systemItems as well
-		const matchedLesson = systemListForLesson?.find((lesson) => lesson.id === Number(id));
-		if (matchedLesson) {
-			setSystemItems((prev) => ({
-				...prev,
-				[id]: isChecked,
-			}));
-		}
+		// setCheckedItems((prev) => ({
+		// 	...prev,
+		// 	[id]: isChecked,
+		// }));
+		//
+		// // If the module ID matches a lesson ID, update systemItems as well
+		// const matchedLesson = systemListForLesson?.find((lesson) => lesson.id === Number(id));
+		// if (matchedLesson) {
+		// 	setSystemItems((prev) => ({
+		// 		...prev,
+		// 		[id]: isChecked,
+		// 	}));
+		// }
 	};
 	
 	const handleSystemChange = (event) => {
-		// const name = event.target.name;
+		const name = event.target.name;
+		const isChecked = event.target.checked;
+
+		setSystemItems({
+			...systemItems,
+			[name]: isChecked,
+		});
+		
+		// const id = event.target.name;
 		// const isChecked = event.target.checked;
 		//
-		// setSystemItems({
-		// 	...systemItems,
-		// 	[name]: isChecked,
-		// });
-		
-		const id = event.target.name;
-		const isChecked = event.target.checked;
-		
-		setSystemItems((prev) => ({
-			...prev,
-			[id]: isChecked,
-		}));
-		
-		const matchedModule = moduleListForLesson?.find((module) => module?.id === Number(id));
-		if (matchedModule) {
-			setCheckedItems((prev) => ({
-				...prev,
-				[id]: isChecked,
-			}));
-		}
+		// setSystemItems((prev) => ({
+		// 	...prev,
+		// 	[id]: isChecked,
+		// }));
+		//
+		// const matchedModule = moduleListForLesson?.find((module) => module?.id === Number(id));
+		// if (matchedModule) {
+		// 	setCheckedItems((prev) => ({
+		// 		...prev,
+		// 		[id]: isChecked,
+		// 	}));
+		// }
 	};
 	
 	const handleQuestionModeChange = (event) => {
@@ -199,18 +199,18 @@ const CreateLessonTest = () => {
 	const handleAllModulesChange = (e) => {
 		const isChecked = e.target.checked;
 		setAllModules(isChecked);
-		setAllSystems(isChecked);
+		// setAllSystems(isChecked);
 		
 		if (isChecked) {
 			const updatedCheckedItems = {};
 			moduleListForLesson.forEach((item) => {
 				updatedCheckedItems[item.id] = true;
 			});
-			const updatedCheckedSystems = {};
-			systemListForLesson?.forEach((item) => {
-				updatedCheckedSystems[item.id] = true;
-			});
-			setSystemItems(updatedCheckedSystems);
+			// const updatedCheckedSystems = {};
+			// systemListForLesson?.forEach((item) => {
+			// 	updatedCheckedSystems[item.id] = true;
+			// });
+			// setSystemItems(updatedCheckedSystems);
 			setCheckedItems(updatedCheckedItems);
 		} else {
 			setCheckedItems([]);
@@ -221,22 +221,15 @@ const CreateLessonTest = () => {
 	const handleAllSystemChange = (e) => {
 		const isChecked = e.target.checked;
 		setAllSystems(isChecked);
-		setAllModules(isChecked);
 		
 		if (isChecked) {
 			const updatedCheckedItems = {};
-			moduleListForLesson.forEach((item) => {
+			systemListForLesson?.forEach((item) => {
 				updatedCheckedItems[item.id] = true;
 			});
-			const updatedCheckedSystems = {};
-			systemListForLesson?.forEach((item) => {
-				updatedCheckedSystems[item.id] = true;
-			});
-			setSystemItems(updatedCheckedSystems);
-			setCheckedItems(updatedCheckedItems);
+			setSystemItems(updatedCheckedItems);
 		} else {
 			setSystemItems([]);
-			setCheckedItems([])
 		}
 	};
 	
