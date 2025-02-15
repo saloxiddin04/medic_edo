@@ -5,7 +5,6 @@ import {getCoins, getScores} from "../../features/Ranking/RankingSlice";
 import {getUserData} from "../../auth/jwtService";
 import {AiFillEdit} from "react-icons/ai";
 import UpdateRankingModal from "./UpdateRankingModal";
-import {GiRank1, GiRank2, GiRank3} from "react-icons/gi";
 import Third from "../../images/Third";
 import SecondIcon from "../../images/SecondIcon";
 import FirstIcon from "../../images/FirstIcon";
@@ -66,9 +65,9 @@ const Ranking = () => {
 	}, [dispatch, activeTopTab, activeBottomTab, page]);
 	
 	const rankIcons = {
-		1: <FirstIcon className="text-yellow text-2xl" />,
-		2: <SecondIcon className="text-gray-600 text-2xl" />,
-		3: <Third className="text-orange-700 text-2xl" />
+		1: <FirstIcon />,
+		2: <SecondIcon />,
+		3: <Third />
 	}
 	
 	const handleOpenModal = (id, coinProps, scoreProps, user) => {
@@ -174,7 +173,7 @@ const Ranking = () => {
 										<td className="px-1 sm:px-6 py-4 whitespace-nowrap text-center flex justify-center">
 											{rankIcons[item?.rank] || item?.rank}
 										</td>
-										<td className="px-1 sm:px-20 md:px-24 lg:px-28 py-4 whitespace-nowrap">
+										<td className="px-1 sm:px-20 md:px-24 lg:px-28 py-2 whitespace-nowrap">
 											<div className="flex items-center gap-2">
 					              <span
 						              className="rounded-full bg-gray-300 w-8 h-8 text-dark text-xs flex justify-center items-center">
@@ -184,7 +183,7 @@ const Ranking = () => {
 											</div>
 										</td>
 										<td
-											className="px-4 sm:px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
+											className="px-4 sm:px-6 py-6 whitespace-nowrap text-center text-sm text-gray-500 flex items-center gap-1 justify-center">
 											{item.score} <FaStar size={20} color="rgb(255 207 0)"/>
 										</td>
 										{getUserData().role === 'admin' && (

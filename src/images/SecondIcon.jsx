@@ -2,7 +2,9 @@ import React from 'react';
 
 const SecondIcon = () => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision"
+		<svg
+			className="w-6"
+			xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision"
 		     imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd" viewBox="0 0 360 511.48">
 			<path fill="#D0401B" d="m144.83 306.61 151.45-26.08L360 429.51l-78.8-.9-64.75 52.53z"/>
 			<path fill="#F60" d="m231.94 290.08-162.37 4.3L0 459.86l78.8-.91 64.75 52.53z"/>
