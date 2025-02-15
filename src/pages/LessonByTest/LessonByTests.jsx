@@ -145,12 +145,12 @@ const LessonByTests = () => {
 										>
 											ID
 										</th>
-										<th
-											scope="col"
-											className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
-											Module name
-										</th>
+										{/*<th*/}
+										{/*	scope="col"*/}
+										{/*	className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"*/}
+										{/*>*/}
+										{/*	Module name*/}
+										{/*</th>*/}
 										<th
 											scope="col"
 											className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -177,9 +177,9 @@ const LessonByTests = () => {
 											<td className="px-6 py-4 whitespace-nowrap text-center">
 												{item.id}
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-center">
-												{item?.module_name}
-											</td>
+											{/*<td className="px-6 py-4 whitespace-nowrap text-center">*/}
+											{/*	{item?.module_name}*/}
+											{/*</td>*/}
 											<td className="px-6 py-4 whitespace-nowrap text-center">
 												{item?.lesson}
 											</td>

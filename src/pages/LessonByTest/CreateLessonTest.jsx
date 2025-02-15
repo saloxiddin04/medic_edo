@@ -486,7 +486,7 @@ const CreateLessonTest = () => {
 									checked={item.count === 0 ? false : checkedItems[item.id] || false}
 									onChange={handleCheckboxChange}
 								/>
-								<span className="ml-2">{item.module_name}
+								<span className="ml-2">{item?.name}
 									<span className="rounded-full border border-purple-400 px-2 py-1 ml-1">{item.count}</span>
                 </span>
 							</label>
