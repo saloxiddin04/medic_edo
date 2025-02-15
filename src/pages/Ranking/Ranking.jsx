@@ -6,6 +6,9 @@ import {getUserData} from "../../auth/jwtService";
 import {AiFillEdit} from "react-icons/ai";
 import UpdateRankingModal from "./UpdateRankingModal";
 import {GiRank1, GiRank2, GiRank3} from "react-icons/gi";
+import Third from "../../images/Third";
+import SecondIcon from "../../images/SecondIcon";
+import FirstIcon from "../../images/FirstIcon";
 
 export const getInitialsName = (name) => {
 	if (!name) return '';
@@ -63,9 +66,9 @@ const Ranking = () => {
 	}, [dispatch, activeTopTab, activeBottomTab, page]);
 	
 	const rankIcons = {
-		1: <GiRank3 className="text-yellow text-2xl" />,
-		2: <GiRank2 className="text-gray-600 text-2xl" />,
-		3: <GiRank1 className="text-orange-700 text-2xl" />
+		1: <FirstIcon className="text-yellow text-2xl" />,
+		2: <SecondIcon className="text-gray-600 text-2xl" />,
+		3: <Third className="text-orange-700 text-2xl" />
 	}
 	
 	const handleOpenModal = (id, coinProps, scoreProps, user) => {

@@ -71,7 +71,7 @@ const UpdateRankingModal = ({isModalOpen, closeModal, id, score, coin, user, pag
 					<div className="p-4 flex flex-col items-center gap-2">
 						<span className="py-2 px-3 rounded-full text-dark bg-gray-300">{getInitialsName(user)}</span>
 						<h4>{user}</h4>
-						{score !== null && score >= 0 && (
+						{score !== null && (
 							<>
 								<FaStar size={20} color="rgb(255 207 0)" />
 								<input
@@ -83,7 +83,7 @@ const UpdateRankingModal = ({isModalOpen, closeModal, id, score, coin, user, pag
 							</>
 						)}
 						
-						{coin !== null && coin >= 0 && (
+						{coin !== null && (
 							<>
 								<FaCoins size={20} color="rgb(255 207 0)" />
 								<input

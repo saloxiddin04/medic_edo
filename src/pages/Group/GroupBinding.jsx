@@ -13,7 +13,6 @@ import DetailGroupBinding from "./DetailGroupBinding";
 import {getUserData} from "../../auth/jwtService"
 import AddTeacherModal from "./AddTeacherModal";
 import {MdGroupRemove} from "react-icons/md";
-import LoadingPage from "../LoadingPage";
 
 const GroupBinding = () => {
   const dispatch = useDispatch();
@@ -166,12 +165,14 @@ const GroupBinding = () => {
               >
                 Teacher
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Delete statistics
-              </th>
+              {getUserData()?.role === "admin" && (
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Delete statistics
+                </th>
+              )}
               <th
                 scope="col"
                 className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -210,15 +211,17 @@ const GroupBinding = () => {
                     {item?.teacher?.name}
                   </td>
                   
-                  <td
-                    className="px-6 py-4 whitespace-nowrap text-center">
-                    <button
-                      className="btn-danger btn-sm mr-3"
-                      onClick={() => handleDeleteModal(item.id, true)}
-                    >
-                      <MdGroupRemove/>
-                    </button>
-                  </td>
+                  {getUserData()?.role === "admin" && (
+                    <td
+                      className="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        className="btn-danger btn-sm mr-3"
+                        onClick={() => handleDeleteModal(item.id, true)}
+                      >
+                        <MdGroupRemove/>
+                      </button>
+                    </td>
+                  )}
                   
                   <td
                     className="px-6 py-4 whitespace-nowrap text-center">
@@ -233,43 +236,41 @@ const GroupBinding = () => {
                     </Link>
                   </td>
                   
-                  <td
-                    className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                    
-                    {getUserData()?.role !== 'teacher' && (
-                      <>
-                        <button
-                          className="btn-info btn-sm mr-3"
-                          onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
-                        >
-                          <GiTeacher/>
-                        </button>
-                        
-                        <Link
-                          className="btn-warning btn-sm inline-block"
-                          to={`/create-group-binding/${item.id}`}
-                        >
+                  {getUserData()?.role !== "teacher" && (
+                    <td
+                      className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                      
+                      <button
+                        className="btn-info btn-sm mr-3"
+                        onClick={() => handleAddTeacher(item?.group?.name, item?.id, item?.teacher?.id)}
+                      >
+                        <GiTeacher/>
+                      </button>
+                      
+                      <Link
+                        className="btn-warning btn-sm inline-block"
+                        to={`/create-group-binding/${item.id}`}
+                      >
                         <span>
                           <AiFillEdit/>
                         </span>
-                        </Link>
-                        
-                        <button
-                          className="btn-danger btn-sm ml-3"
-                          onClick={() => handleDeleteModal(item.id, null)}
-                        >
-                          <AiFillDelete/>
-                        </button>
-                        
-                        <button
-                          className={'btn-success btn-sm ml-3'}
-                          onClick={() => navigate(`/create-group-binding/${item.id}`)}
-                        >
-                          <FaChevronCircleRight/>
-                        </button>
-                      </>
-                    )}
-                  </td>
+                      </Link>
+                      
+                      <button
+                        className="btn-danger btn-sm ml-3"
+                        onClick={() => handleDeleteModal(item.id, null)}
+                      >
+                        <AiFillDelete/>
+                      </button>
+                      
+                      <button
+                        className={'btn-success btn-sm ml-3'}
+                        onClick={() => navigate(`/create-group-binding/${item.id}`)}
+                      >
+                        <FaChevronCircleRight/>
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -284,14 +285,14 @@ const GroupBinding = () => {
           />
         </div>
       </div>
-
+      
       <DeleteGroupBinding
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         modulId={ModulToDelete}
         remove={remove}
       />
-
+      
       <DetailGroupBinding
         isModalOpen={isDetailModalOpen}
         closeModal={closeModalDetail}
