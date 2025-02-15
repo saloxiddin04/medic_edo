@@ -282,7 +282,13 @@ const CreateModuleTest = () => {
                     onChange={(selectedOption) =>
                       handleSelectChange(selectedOption, index)
                     }
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9997 }) }} // << menuPortal uchun z-index
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 19 }), // Increase zIndex value
+                      menu: (base) => ({ ...base, zIndex: 19 }), // Ensure the dropdown menu has a high zIndex
+                    }}
+                    menuPortalTarget={document.body} // Render the dropdown outside the current DOM hierarchy
+                    menuPosition="fixed"
+                    // styles={{ menuPortal: (base) => ({ ...base, zIndex: 9997 }) }} // << menuPortal uchun z-index
                   />
                   <p className="text-danger">
                     {showRequired && !section.key && "required"}
@@ -373,7 +379,7 @@ const CreateModuleTest = () => {
       <div className="mt-5">
         <h1>Correct answer</h1>
         <div className="mt-10 flex gap-5 flex-wrap lg:flex-nowrap">
-          <div className="relative z-10 w-full">
+          <div className="relative z-10 w-full lg:w-3/12">
             <label className="w-full lg:w-1/12">
               Key
               <Select

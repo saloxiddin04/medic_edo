@@ -3,8 +3,8 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 const axiosIns = axios.create({
-  // baseURL: "https://4777-81-95-230-194.ngrok-free.app", //ngrok
-  baseURL: "http://127.0.0.1:8024", //local_server
+  baseURL: "https://4777-81-95-230-194.ngrok-free.app", //ngrok
+  // baseURL: "http://127.0.0.1:8024", //local_server
   // baseURL: "http://192.168.31.21:8024", //local_server
   // baseURL: "http://95.46.96.74:8011", //server
   // baseURL: "https://qbank.indoc.uz:8011", //server
@@ -12,7 +12,7 @@ const axiosIns = axios.create({
 
   headers: {
     Accept: "application/json",
-    // "ngrok-skip-browser-warning": true
+    "ngrok-skip-browser-warning": true
   },
 });
 
