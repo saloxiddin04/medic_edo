@@ -19,6 +19,10 @@ import TimeUpModal from "./TimeUpModal";
 import {useLocation, useNavigate} from "react-router-dom";
 import LabValues from "./LabValues";
 import Calculator from "./Calculator";
+import {ROUTES} from "../../Routes/constants";
+import {resetTimer} from "../../features/Timer/timerSlice";
+import {patchTestResult} from "../../features/testResults/testResultsSlice";
+import {getUserData} from "../../auth/jwtService";
 
 const PastTest = () => {
 	const location = useLocation()
@@ -164,6 +168,28 @@ const PastTest = () => {
 			setIsTimeUp(true);
 		}
 	}, [seconds]);
+	
+	useEffect(() => {
+		const handleBack = () => {
+			// navigate(ROUTES.RESULTS);
+			dispatch(resetTimer());
+			dispatch(
+				patchTestResult({
+					id: testID,
+					user_id: getUserData().id
+				})
+			).then(() => {
+				navigate(ROUTES.RESULTS, {state: {is_lesson: location?.state?.is_lesson}});
+				localStorage.removeItem('highlight')
+			})
+		};
+		
+		window.addEventListener("popstate", handleBack);
+		
+		return () => {
+			window.removeEventListener("popstate", handleBack);
+		};
+	}, [navigate]);
 	
 	const handleStep = (direction) => {
 		if (direction === "next") {
@@ -364,7 +390,7 @@ const PastTest = () => {
 				{question?.test_question?.image2 && (
 					<img
 						src={question?.test_question?.image2}
-						className="max-w-[50vw] max-h-[500px]"
+						className="max-w-[60vw] max-h-[600px]"
 						alt=""
 					/>
 				)}
@@ -468,10 +494,10 @@ const PastTest = () => {
 				{question?.is_tutor && question?.is_check && (
 					<>
 						{question?.test_question.image3 && (
-							<img src={question?.test_question.image3} alt={"img"} className="max-w-[50vw] max-h-[500px]"/>
+							<img src={question?.test_question.image3} alt={"img"} className="max-w-[60vw] max-h-[600px]"/>
 						)}
 						{question?.test_question.image && (
-							<img src={question?.test_question.image} alt={"img"} className="max-w-[50vw] max-h-[500px]"/>
+							<img src={question?.test_question.image} alt={"img"} className="max-w-[60vw] max-h-[600px]"/>
 						)}
 					</>
 				)}
