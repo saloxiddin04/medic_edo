@@ -38,6 +38,8 @@ import {GrCirclePlay} from "react-icons/gr";
 import {getTestsById} from "../../features/pastTest/pastTestSlice";
 import {setItem, setItemAsync} from "../../features/LocalStorageSlice/LocalStorageSlice";
 import {toast} from "react-toastify";
+import Docs from "../../components/Docs";
+import {SlDocs} from "react-icons/sl";
 
 const PassLesson = () => {
 	const dispatch = useDispatch()
@@ -60,6 +62,8 @@ const PassLesson = () => {
 	
 	const [user, setUser] = useState('')
 	const [modulesState, setModules] = useState('')
+	
+	const [docsModal, setDocsModal] = useState(false)
 	
 	const COLORS = ["#1d89e4", "#ffcf00"];
 	const TOP_STUDENTS_COLORS = ['#2C728C', '#AAC6D1', '#A7ECF5', '#E6E6E6', '#0092ED']
@@ -254,21 +258,48 @@ const PassLesson = () => {
 	return (
 		<section>
 			<div className="flex items-center gap-8">
-				<div className="card w-full">
-					<div className="flex items-center gap-5">
-						<MdOutlinePlaylistAdd size="30" className="text-primary"/>
-						<h1 className="text-xl">Lesson By Tests</h1>
+				<div className="card w-full flex justify-between items-start flex-wrap gap-5">
+					<div>
+						<div className="flex items-center gap-5">
+							<MdOutlinePlaylistAdd size="30" className="text-primary"/>
+							<h1 className="text-xl">Lesson By Tests</h1>
+						</div>
+						<p className="my-5">
+							Configure custom tests by choosing test modes, number of questions,
+							subjects, and lessons.
+						</p>
+						<Link
+							to={ROUTES.CREATE_LESSON_TEST}
+							className="btn-primary font-semibold btn-small block w-fit"
+						>
+							CREATE LESSON TEST
+						</Link>
 					</div>
-					<p className="my-5">
-						Configure custom tests by choosing test modes, number of questions,
-						subjects, and lessons.
-					</p>
-					<Link
-						to={ROUTES.CREATE_LESSON_TEST}
-						className="btn-primary font-semibold btn-small block w-fit"
-					>
-						CREATE LESSON TEST
-					</Link>
+					
+					<div>
+						<div className="flex items-center gap-5">
+							<MdOutlinePlaylistAdd size="30" className="text-primary"/>
+							<h1 className="text-xl">Score and Coin</h1>
+						</div>
+						<p className="my-5">
+							How Score and Coin work
+						</p>
+						{getUserData()?.role === "admin" ? (
+							<button
+								className="btn-primary font-semibold btn-small block w-fit text-center"
+								onClick={() => setDocsModal(true)}
+							>
+								Update text
+							</button>
+						) : (
+							<button
+								className="btn-primary font-semibold btn-small block w-fit text-center"
+								onClick={() => setDocsModal(true)}
+							>
+								<SlDocs />
+							</button>
+						)}
+					</div>
 				</div>
 			</div>
 			
@@ -710,6 +741,8 @@ const PassLesson = () => {
 					</div>
 				</div>
 			)}
+			
+			<Docs isModalOpen={docsModal} closeModal={() => setDocsModal(false)} />
 		</section>
 	);
 };

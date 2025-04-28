@@ -24,7 +24,6 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal, teacherI
 			id: Number(groupId),
 			data
 		})).then(({payload}) => {
-			console.log(payload)
 			if (payload?.id) {
 				closeModal()
 				setTeacher(null)
@@ -73,7 +72,7 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal, teacherI
 								type="text"
 								id={'name'}
 								className={`py-2.5 px-2 rounded mt-2 outline-none border`}
-								value={groupName}
+								value={groupName || ""}
 								disabled={true}
 							/>
 						</div>
@@ -90,7 +89,7 @@ const AddTeacherModal = ({ isModalOpen, groupName, groupId, closeModal, teacherI
 								>
 									<option value={null}>select...</option>
 									{teacherList && teacherList?.results?.map((item) => (
-										<option value={item?.id}>{item?.name}</option>
+										<option key={item?.id} value={item?.id}>{item?.name}</option>
 									))}
 								</select>
 							</div>

@@ -117,7 +117,7 @@ const DetailGroupUsersResult = ({closeModal, isOpen, id}) => {
                       className='mt-2'
                       onClick={() => {
                         localStorage.setItem("testID", item.id)
-                        navigate(`/test-results`)
+                        navigate(`/test-results`, {state: {is_lesson: item?.is_lesson}})
                       }}
                     >
                       <BiChevronRightCircle size='30' color={'#28CD41'}/>

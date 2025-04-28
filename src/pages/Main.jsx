@@ -45,6 +45,8 @@ import {GrCirclePlay} from "react-icons/gr";
 import {getTestsById} from "../features/pastTest/pastTestSlice";
 import {setItem, setItemAsync} from "../features/LocalStorageSlice/LocalStorageSlice";
 import {toast} from "react-toastify";
+import Docs from "../components/Docs";
+import {SlDocs} from "react-icons/sl";
 
 const Main = () => {
 	const [canShowBar, setCanShowBar] = useState(false);
@@ -68,6 +70,8 @@ const Main = () => {
 	} = useSelector(
 		({testResults}) => testResults
 	);
+	
+	const [docsModal, setDocsModal] = useState(false)
 	
 	const adminData = [
 		{
@@ -268,21 +272,48 @@ const Main = () => {
 	return (
 		<section>
 			<div className="flex items-center gap-8">
-				<div className="card w-full">
-					<div className="flex items-center gap-5">
-						<MdOutlinePlaylistAdd size="30" className="text-primary"/>
-						<h1 className="text-xl">Custom Tests</h1>
+				<div className="card w-full flex justify-between items-start flex-wrap gap-5">
+					<div>
+						<div className="flex items-center gap-5">
+							<MdOutlinePlaylistAdd size="30" className="text-primary"/>
+							<h1 className="text-xl">Custom Tests</h1>
+						</div>
+						<p className="my-5">
+							Configure custom tests by choosing test modes, number of questions,
+							subjects, and systems.
+						</p>
+						<Link
+							to={ROUTES.CUSTOMTEST}
+							className="btn-primary font-semibold btn-small block w-fit"
+						>
+							CREATE CUSTOM TEST
+						</Link>
 					</div>
-					<p className="my-5">
-						Configure custom tests by choosing test modes, number of questions,
-						subjects, and systems.
-					</p>
-					<Link
-						to={ROUTES.CUSTOMTEST}
-						className="btn-primary font-semibold btn-small block w-fit"
-					>
-						CREATE CUSTOM TEST
-					</Link>
+					
+					<div>
+						<div className="flex items-center gap-5">
+							<MdOutlinePlaylistAdd size="30" className="text-primary"/>
+							<h1 className="text-xl">Score and Coin</h1>
+						</div>
+						<p className="my-5">
+							How Score and Coin work
+						</p>
+						{getUserData()?.role === "admin" ? (
+							<button
+								className="btn-primary font-semibold btn-small block w-fit text-center"
+								onClick={() => setDocsModal(true)}
+							>
+								Update text
+							</button>
+						) : (
+							<button
+								className="btn-primary font-semibold btn-small block w-fit text-center"
+								onClick={() => setDocsModal(true)}
+							>
+								<SlDocs />
+							</button>
+						)}
+					</div>
 				</div>
 			</div>
 			
@@ -735,6 +766,8 @@ const Main = () => {
 					</div>
 				</div>
 			)}
+			
+			<Docs isModalOpen={docsModal} closeModal={() => setDocsModal(false)} />
 		</section>
 	);
 };

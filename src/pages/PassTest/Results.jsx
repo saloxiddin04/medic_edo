@@ -71,7 +71,7 @@ const Results = () => {
   return (
     <div className="bg-[#f5f5f5] pb-10">
       <nav className="bg-white shadow-md flex items-center px-5 py-4">
-        <Link to={state?.is_lesson !== undefined ? ROUTES.LESSON_TEST : ROUTES.MAIN}>
+        <Link to={state?.is_lesson ? ROUTES.LESSON_TEST : ROUTES.MAIN}>
           <AiOutlineHome size="20" className="mt-0.5" />
         </Link>
 
