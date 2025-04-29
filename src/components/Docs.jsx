@@ -96,9 +96,10 @@ const Docs = ({isModalOpen, closeModal}) => {
 							>
 								Cancel
 							</button>
-							<button disabled={getUserData()?.role !== "admin"} className="btn btn-success"
-							        onClick={handleUpdateDocs}>Save
-							</button>
+							{getUserData()?.role === "admin" && (
+								<button className="btn btn-success" onClick={handleUpdateDocs}>Save
+								</button>
+							)}
 						</div>
 					</div>
 				</div>

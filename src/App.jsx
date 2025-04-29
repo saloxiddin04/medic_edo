@@ -25,9 +25,11 @@ import TestReview from "./pages/TestReview/TestReview";
 import Verify from "./pages/Auth/Verify";
 import Forgot from "./pages/Auth/Forgot";
 import NewPassword from "./pages/Auth/NewPassword";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getCoinAndScore} from "./features/userDetail/userDetailSlice";
 
 const App = () => {
+  const dispatch = useDispatch()
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const {isSidebarOpen} = useSelector((state) => state.localStorage)
@@ -40,6 +42,10 @@ const App = () => {
       navigate(ROUTES.MAIN);
     }
   }, [navigate, pathname]);
+  
+  useEffect(() => {
+    dispatch(getCoinAndScore())
+  }, [dispatch, pathname])
 
   const checkRoute = () => {
     if (

@@ -108,7 +108,7 @@ import React from "react";
 import LOGO from "../images/logo.png";
 
 // icons
-import { FaUserAlt } from "react-icons/fa";
+import {FaCoins, FaStar, FaUserAlt} from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
 
 // routes
@@ -123,6 +123,7 @@ import { toggleSidebar } from "../features/LocalStorageSlice/LocalStorageSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { isSidebarOpen } = useSelector((state) => state.localStorage);
+  const {coin, score} = useSelector((state) => state.userDetail)
   
   const { pathname } = useLocation();
   return (
@@ -165,6 +166,14 @@ const Navbar = () => {
           <div className="user-block flex items-center gap-3">
             {getUserData() && (
               <div className="text-end mr-2 flex gap-3">
+                <div className="flex flex-col items-center">
+                  <FaStar size={20} color="rgb(255 207 0)"/>
+                  {score}
+                </div>
+                <div className="flex flex-col items-center">
+                  <FaCoins size={20} color="rgb(255 207 0)"/>
+                  {coin}
+                </div>
                 <div>
                   <span className="block text-xs sm:text-sm font-medium">
                     Group Name:

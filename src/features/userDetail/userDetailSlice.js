@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import $axios from "../../plugins/axios";
 import { toast } from "react-toastify";
+import axiosIns from "../../plugins/axios";
 
 export const getUserDetail = createAsyncThunk(
   'user/getUserDetail',
@@ -41,14 +42,40 @@ export const patchUserDetail = createAsyncThunk(
   }
 )
 
+export const getCoinAndScore = createAsyncThunk(
+  "user/getCoinAndScore",
+  async () => {
+    try {
+      const response = await axiosIns.get("/users/coin_and_score/")
+      return response.data
+    } catch (e) {
+      return e;
+    }
+  }
+)
+
 const userDetailSlice = createSlice({
   name: 'user',
   initialState: {
     user: {},
-    loading: false
+    loading: false,
+    coin: null,
+    score: null
   },
   reducers: {},
   extraReducers: (builder) => {
+    // getCoinAndScore
+    builder.addCase(getCoinAndScore.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getCoinAndScore.fulfilled, (state, {payload}) => {
+      state.loading = false
+      state.coin = payload?.coin
+      state.score = payload?.score
+    })
+    builder.addCase(getCoinAndScore.rejected, (state) => {
+      state.loading = false
+    })
     // get user detail
     builder.addCase(getUserDetail.pending, (state) => {
       state.loading = true
