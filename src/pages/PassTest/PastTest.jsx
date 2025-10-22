@@ -355,8 +355,8 @@ const PastTest = () => {
 			
 			<div
 				className={`mt-[3rem] overflow-y-auto p-5 ${
-					!isTestCountOpen ? "w-full" : lab_values ? "w-[64%]" : "w-[94%]"
-				} question md:w-[93%] test`}
+					!isTestCountOpen ? "w-full" : lab_values ? "xl:w-[64%] lg:w-[64%] md:w-[44%] md:p-1" : "w-[94%]"
+				} question test`}
 			>
 			
 				{/*<button*/}
@@ -390,14 +390,14 @@ const PastTest = () => {
 				{question?.test_question?.image2 && (
 					<img
 						src={question?.test_question?.image2}
-						className="max-w-[60vw] max-h-[600px]"
+						className="max-w-[45vw] max-h-[600px]"
 						alt=""
 					/>
 				)}
 				
 				<div className="border-primary border-2 mt-10 px-5 w-full">
 					{question?.test_question?.options?.map((option, idx) => (
-						<div key={idx} className="flex items-center gap-2 mt-2">
+						<div key={option?.id} className="flex items-center gap-2 mt-2">
 							<label
 								className={`flex items-center gap-2 cursor-pointer my-1 ${
 									question.is_tutor
@@ -469,7 +469,7 @@ const PastTest = () => {
 					<button
 						className="btn-primary mt-10 inline-block"
 						onClick={() => handleStep('next')}
-						disabled={countIndex + 1 === testList.count}
+						disabled={countIndex + 1 === testList?.count}
 					>
 						{'Next'}
 					</button>

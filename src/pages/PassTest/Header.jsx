@@ -127,9 +127,9 @@ const Header =
 						<button
 							onClick={() => handleStep("next")}
 							className={`text-5xl ${
-								index + 1 === testList.count ? "opacity-20" : ""
+								index + 1 === testList?.count ? "opacity-20" : ""
 							}`}
-							disabled={index + 1 === testList.count}
+							disabled={index + 1 === testList?.count}
 						>
 							&#8250;
 						</button>

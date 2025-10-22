@@ -119,7 +119,7 @@ const pastTestSlice = createSlice({
     question: null,
     error: null,
     testList: {
-      isFilled: false,
+      isFilled: true,
     },
     exactTest: {
       isFilled: false,
@@ -140,26 +140,21 @@ const pastTestSlice = createSlice({
     builder.addCase(getTestsById.fulfilled, (state, {payload}) => {
       state.loading = false;
       state.testList = payload;
-      state.testList.isFilled = true;
     });
     builder.addCase(getTestsById.rejected, (state) => {
-      state.testList.isFilled = false;
       state.loading = false;
     });
     
     // get exact test
     builder.addCase(getExactTest.pending, (state) => {
       state.loading = true;
-      state.exactTest.isFilled = false;
     });
     builder.addCase(getExactTest.fulfilled, (state, {payload}) => {
       state.loading = false;
-      state.exactTest.isFilled = true;
       state.question = payload;
     });
     builder.addCase(getExactTest.rejected, (state) => {
       state.loading = false;
-      state.exactTest.isFilled = false;
     });
     
     // submitTheAnswer
